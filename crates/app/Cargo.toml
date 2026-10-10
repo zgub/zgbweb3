@@ -1,0 +1,34 @@
+[package]
+name = "zgbweb"
+description = "Interactive science & maths explainers for curious kids — egui, runs in the browser via wasm."
+version.workspace = true
+edition.workspace = true
+license.workspace = true
+
+[lib]
+crate-type = ["cdylib", "rlib"]
+
+[[bin]]
+name = "zgbweb"
+path = "src/main.rs"
+
+[dependencies]
+sims.workspace = true
+eframe.workspace = true
+egui.workspace = true
+serde.workspace = true
+log.workspace = true
+rand.workspace = true
+
+# native: windowing + logging
+[target.'cfg(not(target_arch = "wasm32"))'.dependencies]
+eframe = { workspace = true, features = ["wayland", "x11"] }
+env_logger = "0.11"
+
+# web
+[target.'cfg(target_arch = "wasm32")'.dependencies]
+wasm-bindgen-futures = "0.4"
+web-sys = { version = "0.3", features = [
+    "Window", "Document", "HtmlCanvasElement", "Element", "Location", "Storage",
+] }
+# Note: no getrandom. rand is used with seeded SmallRng only (see DECISIONS D-009).

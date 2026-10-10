@@ -1,0 +1,33 @@
+[workspace]
+resolver = "3"
+members = ["crates/app", "crates/sims", "crates/server"]
+# `cargo run` / `cargo check` at the root targets the app by default.
+default-members = ["crates/app", "crates/sims"]
+
+[workspace.package]
+version = "0.1.0"
+edition = "2024"
+license = "AGPL-3.0-or-later"
+rust-version = "1.95"
+
+[workspace.dependencies]
+sims = { path = "crates/sims" }
+eframe = { version = "0.36", default-features = false, features = [
+    "default_fonts",
+    "wgpu",
+    "persistence",
+    "accesskit",
+] }
+egui = "0.36"
+serde = { version = "1", features = ["derive"] }
+log = "0.4"
+rand = { version = "0.9", default-features = false, features = ["small_rng", "std"] }
+
+[profile.release]
+opt-level = 2       # smaller than 3, still fast; wasm size matters
+lto = "thin"
+codegen-units = 1
+
+# Keep the sims usable in debug builds.
+[profile.dev.package."*"]
+opt-level = 2
