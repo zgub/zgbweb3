@@ -1,6 +1,6 @@
-# zgbweb — project brief
+# zgbweb3 — project brief
 
-*Working name. See QUESTIONS Q-001.*
+*Third attempt, hence the 3 (see D-016). Public name still open: Q-001.*
 
 ## What
 A website of small interactive science and maths explainers — "sims and

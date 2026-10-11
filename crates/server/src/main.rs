@@ -1,4 +1,4 @@
-//! zgbweb server (placeholder).
+//! zgbweb3 server (placeholder).
 //!
 //! Today it only serves the static site built by `trunk build --release` from `dist/`.
 //! It exists so the deployment shape is settled early: one binary behind a reverse
@@ -7,7 +7,7 @@
 //! It also serves the language catalogs at `/i18n/<lang>.ftl`, so the app can
 //! later fetch newer texts without a rebuild (see DECISIONS D-013).
 //!
-//! Usage: `cargo run -p zgbweb-server -- [dist-dir] [addr] [locales-dir]`
+//! Usage: `cargo run -p zgbweb3-server -- [dist-dir] [addr] [locales-dir]`
 //! defaults: `dist`, `127.0.0.1:8090`, `crates/app/locales`
 
 use axum::{Router, http::HeaderValue, routing::get};

@@ -1,5 +1,10 @@
 # Status
 
+## 2026-10-11 (evening) — renamed to zgbweb3, handed over for a new GitHub repo
+
+Packages renamed (`zgbweb3`, `zgbweb3-server`), native storage id `zgbweb3`, D-016.
+Repo copied to `C:\devel\rust\zgbweb3` with its git history; Peter pushes it to GitHub.
+
 ## 2026-10-11 (afternoon) — v0.2.0: playful look, Slovak + English, puzzle cubes
 
 **Done**

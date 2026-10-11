@@ -2,8 +2,9 @@
 
 Answer inline, then move the outcome to DECISIONS.md.
 
-**Q-001 — Name and domain.** "zgbweb" is the project name from the claude.ai
-Project. Public name? Domain? (Affects title, footer, storage origin.)
+**Q-001 — Public name and domain.** The repo/project is **zgbweb3** (D-016);
+the page currently calls itself "zgb". Public name? Domain? (Affects title,
+footer, storage origin.)
 
 **Q-002 — Language.** ~~English only, Slovak only, or both?~~ → **Answered
 2026-10-11: Slovak and English, localisable, texts later served by the server.**

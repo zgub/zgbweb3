@@ -4760,7 +4760,7 @@ dependencies = [
 ]
 
 [[package]]
-name = "zgbweb"
+name = "zgbweb3"
 version = "0.2.0"
 dependencies = [
  "eframe",
@@ -4778,7 +4778,7 @@ dependencies = [
 ]
 
 [[package]]
-name = "zgbweb-server"
+name = "zgbweb3-server"
 version = "0.2.0"
 dependencies = [
  "axum",

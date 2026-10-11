@@ -97,3 +97,10 @@ text says "puzzle cube" / "kocka-hlavolam" (Q-011). Not legal advice: the EU
 **D-015 — Deep links into topic state** (2026-10-11, accepted)
 `#/powers-of-ten/9` opens the topic at 10⁹ (`Topic::set_param`). Shareable
 ("look at a billion!") and used for screenshots during development.
+
+**D-016 — Project name zgbweb3; fresh repo** (2026-10-11, accepted)
+Third generation. zgbweb (1) was for learning Rust/wasm/axum and the infra.
+zgbweb (2) was hand-written with LLM help and stalled about a year ago on a
+file-import abstraction. zgbweb3 starts clean from this skeleton in a new
+GitHub repo; nothing is ported from 1 or 2 (gas-box code: Q-007).
+Crates: `zgbweb3` (app, lib + bin), `zgbweb3-server`, `sims`.

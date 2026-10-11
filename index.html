@@ -8,15 +8,15 @@
     <meta name="description"
         content="Interactive explainers for curious kids: powers of ten, the energy ladder from a molecule to the ISS, dice and the bell curve, and more." />
 
-    <link data-trunk rel="rust" href="crates/app/Cargo.toml" data-bin="zgbweb" data-wasm-opt="z" />
+    <link data-trunk rel="rust" href="crates/app/Cargo.toml" data-bin="zgbweb3" data-wasm-opt="z" />
 
     <style>
         html, body {
             margin: 0;
             height: 100%;
             overflow: hidden;
-            background: #1b1b1b; /* matches egui dark panel fill to avoid a white flash */
-            color: #ddd;
+            background: #161a30; /* = theme DARK.bg, avoids a flash before the app paints */
+            color: #eceef9;
             font-family: system-ui, sans-serif;
         }
         body { display: flex; flex-direction: column; }

@@ -1,5 +1,5 @@
 [package]
-name = "zgbweb"
+name = "zgbweb3"
 description = "Interactive science & maths explainers for curious kids — egui, runs in the browser via wasm."
 version.workspace = true
 edition.workspace = true
@@ -9,7 +9,7 @@ license.workspace = true
 crate-type = ["cdylib", "rlib"]
 
 [[bin]]
-name = "zgbweb"
+name = "zgbweb3"
 path = "src/main.rs"
 
 [dependencies]

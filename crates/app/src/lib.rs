@@ -1,4 +1,4 @@
-//! zgbweb — interactive science & maths explainers.
+//! zgbweb3 — interactive science & maths explainers.
 //!
 //! Layout of this crate:
 //! - [`app`]      the eframe `App`: owns settings, routing, topics, persistence
@@ -24,4 +24,4 @@ mod web;
 pub use app::ZgbApp;
 
 /// Used as the native window/storage id. Web storage is per-origin anyway.
-pub const APP_ID: &str = "zgbweb";
+pub const APP_ID: &str = "zgbweb3";

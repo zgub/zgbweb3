@@ -17,7 +17,7 @@ overlap the bars on narrow screens.
 
 **B-004 — eframe restores a saved native window size over `ZGB_SIZE`** (2026-10-11, open, dev-only)
 `persist_window: false` stops saving but eframe still loads the saved size.
-Workaround: delete `~/.local/share/zgbweb/app.ron` before exact-size screenshots.
+Workaround: delete `~/.local/share/zgbweb3/app.ron` before exact-size screenshots.
 
 **B-005 — "→" comes from the Hack fallback font** (2026-10-11, open, cosmetic)
 Nunito has no arrows; the hook links' → is drawn in Hack (slightly different

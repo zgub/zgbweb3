@@ -13,7 +13,7 @@ fn main() -> eframe::Result {
     let size = forced.unwrap_or([1200.0, 800.0]);
     let options = eframe::NativeOptions {
         // Stop saving the size when one is forced. (eframe still *restores* a saved
-        // size: delete ~/.local/share/zgbweb/app.ron for exact-size screenshots.)
+        // size: delete ~/.local/share/zgbweb3/app.ron for exact-size screenshots.)
         persist_window: forced.is_none(),
         viewport: egui::ViewportBuilder::default()
             .with_title("zgb")
@@ -22,9 +22,9 @@ fn main() -> eframe::Result {
         ..Default::default()
     };
     eframe::run_native(
-        zgbweb::APP_ID,
+        zgbweb3::APP_ID,
         options,
-        Box::new(|cc| Ok(Box::new(zgbweb::ZgbApp::new(cc)))),
+        Box::new(|cc| Ok(Box::new(zgbweb3::ZgbApp::new(cc)))),
     )
 }
 
@@ -51,7 +51,7 @@ fn main() {
             .start(
                 canvas,
                 web_options,
-                Box::new(|cc| Ok(Box::new(zgbweb::ZgbApp::new(cc)))),
+                Box::new(|cc| Ok(Box::new(zgbweb3::ZgbApp::new(cc)))),
             )
             .await;
 

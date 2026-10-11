@@ -1,4 +1,4 @@
-# zgbweb
+# zgbweb3
 
 Interactive science & maths explainers for curious kids — Rust, egui, WebAssembly.
 
@@ -22,7 +22,7 @@ Production build + local server:
 
 ```sh
 trunk build --release
-cargo run -p zgbweb-server -- dist 127.0.0.1:8090
+cargo run -p zgbweb3-server -- dist 127.0.0.1:8090
 ```
 
 Tests:

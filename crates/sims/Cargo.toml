@@ -1,6 +1,6 @@
 [package]
 name = "sims"
-description = "Pure simulation / maths logic for zgbweb topics. No UI, no rendering — unit-testable on any target."
+description = "Pure simulation / maths logic for zgbweb3 topics. No UI, no rendering — unit-testable on any target."
 version.workspace = true
 edition.workspace = true
 license.workspace = true

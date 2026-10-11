@@ -1,5 +1,5 @@
 [package]
-name = "zgbweb-server"
+name = "zgbweb3-server"
 description = "Placeholder axum backend. Today: serves the built static site. Later: sessions, accounts, saved state."
 version.workspace = true
 edition.workspace = true
