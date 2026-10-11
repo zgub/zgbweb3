@@ -19,6 +19,8 @@ egui.workspace = true
 serde.workspace = true
 log.workspace = true
 rand.workspace = true
+fluent-bundle = "0.16"
+unic-langid = "0.9"
 
 # native: windowing + logging
 [target.'cfg(not(target_arch = "wasm32"))'.dependencies]
@@ -29,6 +31,9 @@ env_logger = "0.11"
 [target.'cfg(target_arch = "wasm32")'.dependencies]
 wasm-bindgen-futures = "0.4"
 web-sys = { version = "0.3", features = [
-    "Window", "Document", "HtmlCanvasElement", "Element", "Location", "Storage",
+    "Window", "Document", "HtmlCanvasElement", "Element", "Location", "Storage", "Navigator",
 ] }
 # Note: no getrandom. rand is used with seeded SmallRng only (see DECISIONS D-009).
+
+[dev-dependencies]
+fluent-syntax = "0.12"

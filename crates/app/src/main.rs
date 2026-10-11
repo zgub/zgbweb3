@@ -5,10 +5,19 @@
 #[cfg(not(target_arch = "wasm32"))]
 fn main() -> eframe::Result {
     env_logger::init();
+    // ZGB_SIZE=1280x1400 for screenshots; default 1200×800.
+    let forced: Option<[f32; 2]> = std::env::var("ZGB_SIZE").ok().and_then(|s| {
+        let (w, h) = s.split_once('x')?;
+        Some([w.parse().ok()?, h.parse().ok()?])
+    });
+    let size = forced.unwrap_or([1200.0, 800.0]);
     let options = eframe::NativeOptions {
+        // Stop saving the size when one is forced. (eframe still *restores* a saved
+        // size: delete ~/.local/share/zgbweb/app.ron for exact-size screenshots.)
+        persist_window: forced.is_none(),
         viewport: egui::ViewportBuilder::default()
-            .with_title("zgbweb")
-            .with_inner_size([1200.0, 800.0])
+            .with_title("zgb")
+            .with_inner_size(size)
             .with_min_inner_size([360.0, 480.0]),
         ..Default::default()
     };

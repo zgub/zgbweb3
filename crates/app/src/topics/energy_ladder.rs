@@ -2,31 +2,41 @@
 //! counted in whatever unit you like — joules, electronvolts, sugar cubes,
 //! or flying mosquitoes.
 
-use egui::{Color32, RichText, Sense, Stroke, vec2};
+use egui::{CornerRadius, RichText, Sense, Stroke, vec2};
 use serde::{Deserialize, Serialize};
-use sims::energy::{EnergyExample, EnergyUnit, examples, kinetic, kmh};
-use sims::fmt::{sci, si, superscript};
+use sims::energy::{EnergyUnit, examples, kinetic, kmh};
+use sims::fmt::{engineering, sci, sci_count, sig_digits, superscript};
 
-use super::{Group, Maturity, Nav, Related, Topic, TopicMeta, storage_key, widgets};
+use super::{Cx, Group, Maturity, Related, Topic, TopicMeta, heading, storage_key};
+use crate::args;
+use crate::i18n::{I18n, lower_first};
+use crate::kit;
 
 static META: TopicMeta = TopicMeta {
     id: "energy-ladder",
-    title: "The energy ladder",
     icon: "⚡",
     group: Group::ScaleAndNumbers,
-    blurb: "How much energy is a flying mosquito? A car? The space station? Line them up and count them in sugar cubes.",
     maturity: Maturity::Draft,
     related: &[
         Related {
             id: "powers-of-ten",
-            hook: "What does 10⁹ actually mean?",
+            hook: "hook-what-is-1e9",
         },
         Related {
             id: "gas-box",
-            hook: "Where does heat come from? Molecules jiggling",
+            hook: "hook-heat-is-jiggling",
         },
     ],
 };
+
+const MY_ID: &str = "mine";
+
+/// One row of the ladder, with its text already looked up.
+struct Row {
+    id: &'static str,
+    name: String,
+    joules: f64,
+}
 
 #[derive(Serialize, Deserialize)]
 #[serde(default)]
@@ -36,8 +46,6 @@ pub struct EnergyLadder {
     compare_b: String,
     my_mass_kg: f64,
     my_speed_kmh: f64,
-    #[serde(skip)]
-    ladder: Vec<EnergyExample>,
 }
 
 impl Default for EnergyLadder {
@@ -48,43 +56,47 @@ impl Default for EnergyLadder {
             compare_b: "iss".into(),
             my_mass_kg: 30.0,
             my_speed_kmh: 15.0,
-            ladder: examples(),
         }
     }
 }
 
-const MY_ID: &str = "mine";
-
 impl EnergyLadder {
-    fn my_thing(&self) -> EnergyExample {
-        EnergyExample {
-            id: MY_ID,
-            name: "Your thing",
-            joules: kinetic(self.my_mass_kg, kmh(self.my_speed_kmh)),
-            note: "",
-        }
+    fn my_joules(&self) -> f64 {
+        kinetic(self.my_mass_kg, kmh(self.my_speed_kmh))
     }
 
-    fn rows(&self) -> Vec<EnergyExample> {
-        let mut rows = self.ladder.clone();
-        rows.push(self.my_thing());
+    fn rows(&self, tr: &I18n) -> Vec<Row> {
+        let mut rows: Vec<Row> = examples()
+            .into_iter()
+            .map(|e| Row {
+                id: e.id,
+                name: tr.t(&format!("energy-ex-{}", e.id)),
+                joules: e.joules,
+            })
+            .collect();
+        rows.push(Row {
+            id: MY_ID,
+            name: tr.t("energy-ex-mine"),
+            joules: self.my_joules(),
+        });
         rows.sort_by(|a, b| a.joules.total_cmp(&b.joules));
         rows
     }
+}
 
-    fn format(&self, joules: f64) -> String {
-        let v = self.unit.convert(joules);
-        if self.unit.takes_prefix() {
-            let s = si(v, self.unit.symbol(), 3);
-            // Prefixes run out at the extremes; scientific notation is clearer there.
-            if (1e-24..1e27).contains(&v.abs()) {
-                s
-            } else {
-                format!("{} {}", sci(v, 3), self.unit.symbol())
-            }
-        } else {
-            format!("{} {}", sci(v, 3), self.unit.symbol())
+/// "12.3 kJ", "4.1 × 10²¹ eV", "3,4 kocky cukru" — in the chosen unit and language.
+fn format_energy(tr: &I18n, unit: EnergyUnit, joules: f64) -> String {
+    let v = unit.convert(joules);
+    match unit.symbol() {
+        Some(sym) if unit.takes_prefix() && (1e-24..1e27).contains(&v.abs()) => {
+            let (m, p) = engineering(v);
+            tr.num(&format!("{} {}{sym}", sig_digits(m, 3), p.symbol))
         }
+        Some(sym) => tr.num(&format!("{} {sym}", sci(v, 3))),
+        None => tr.ta(
+            &format!("amount-{}", unit.key()),
+            &args!["shown" => tr.num(&sci(v, 3)), "count" => sci_count(v, 3)],
+        ),
     }
 }
 
@@ -98,29 +110,30 @@ impl Topic for EnergyLadder {
     }
 
     fn load(&mut self, storage: &dyn eframe::Storage) {
-        if let Some(mut s) = eframe::get_value::<Self>(storage, &storage_key(META.id)) {
-            s.ladder = examples();
+        if let Some(s) = eframe::get_value::<Self>(storage, &storage_key(META.id)) {
             *self = s;
         }
     }
 
-    fn ui(&mut self, ui: &mut egui::Ui, nav: &mut Nav) {
-        widgets::heading(ui, &META);
+    fn ui(&mut self, ui: &mut egui::Ui, cx: &mut Cx) {
+        let (tr, pal) = (cx.tr, cx.pal);
+        heading(ui, cx, &META);
 
         ui.horizontal_wrapped(|ui| {
-            ui.label("Count energy in:");
+            ui.label(RichText::new(tr.t("energy-count-in")).size(18.0));
             egui::ComboBox::from_id_salt("energy-unit")
-                .selected_text(self.unit.name())
+                .selected_text(tr.t(&format!("unit-{}", self.unit.key())))
+                .width(260.0)
+                .height(400.0)
                 .show_ui(ui, |ui| {
                     for u in EnergyUnit::ALL {
-                        ui.selectable_value(&mut self.unit, u, u.name());
+                        ui.selectable_value(&mut self.unit, u, tr.t(&format!("unit-{}", u.key())));
                     }
                 });
         });
 
-        ui.add_space(6.0);
-        ui.group(|ui| {
-            ui.label(RichText::new("Make your own moving thing").strong());
+        ui.add_space(8.0);
+        kit::panel(ui, pal, Some(&tr.t("energy-make-own")), |ui| {
             ui.horizontal_wrapped(|ui| {
                 ui.add(
                     egui::Slider::new(&mut self.my_mass_kg, 0.001..=500_000.0)
@@ -133,33 +146,42 @@ impl Topic for EnergyLadder {
                         .text("km/h"),
                 );
             });
-            ui.label(format!(
-                "Moving energy: {}",
-                self.format(self.my_thing().joules)
-            ));
+            ui.label(
+                RichText::new(tr.ta(
+                    "energy-own-energy",
+                    &args!["energy" => format_energy(tr, self.unit, self.my_joules())],
+                ))
+                .size(18.0)
+                .color(pal.maths),
+            );
         });
 
-        ui.add_space(8.0);
-        let rows = self.rows();
-        ladder_chart(ui, &rows, |j| self.format(j));
+        ui.add_space(10.0);
+        let rows = self.rows(tr);
+        ladder_chart(ui, cx, &rows, |j| format_energy(tr, self.unit, j));
         ui.horizontal_wrapped(|ui| {
-            ui.label(RichText::new("Each grid line is ×10.").weak());
-            nav.link(ui, "powers-of-ten", "What does 10⁹ mean?");
+            ui.label(RichText::new(tr.t("energy-grid")).color(pal.weak));
+            cx.link(ui, "powers-of-ten", "hook-what-is-1e9");
         });
 
-        ui.add_space(8.0);
-        self.comparison(ui, &rows);
+        ui.add_space(10.0);
+        self.comparison(ui, cx, &rows);
 
-        widgets::grown_ups(ui, "energy-notes", |ui| {
-            ui.label("Moving energy is ½·m·v². Doubling speed means four times the energy.");
+        ui.add_space(10.0);
+        kit::model_alert(ui, pal, tr, &tr.t("energy-model"));
+
+        ui.add_space(8.0);
+        kit::grown_ups(ui, pal, tr, "energy-notes", |ui| {
+            ui.label(tr.t("energy-notes-intro"));
             ui.add_space(4.0);
             egui::Grid::new("energy-notes-grid")
                 .striped(true)
                 .show(ui, |ui| {
-                    for ex in &self.ladder {
-                        ui.label(ex.name);
-                        ui.label(format!("{} J", sci(ex.joules, 3)));
-                        ui.label(RichText::new(ex.note).weak());
+                    for ex in examples() {
+                        let key = format!("energy-ex-{}", ex.id);
+                        ui.label(tr.t(&key));
+                        ui.label(tr.num(&format!("{} J", sci(ex.joules, 3))));
+                        ui.label(RichText::new(tr.attr(&key, "note")).color(pal.weak));
                         ui.end_row();
                     }
                 });
@@ -168,23 +190,26 @@ impl Topic for EnergyLadder {
 }
 
 impl EnergyLadder {
-    fn comparison(&mut self, ui: &mut egui::Ui, rows: &[EnergyExample]) {
+    fn comparison(&mut self, ui: &mut egui::Ui, cx: &Cx, rows: &[Row]) {
+        let (tr, pal) = (cx.tr, cx.pal);
         let name_of = |id: &str| {
             rows.iter()
                 .find(|r| r.id == id)
-                .map(|r| r.name)
-                .unwrap_or("?")
+                .map(|r| r.name.clone())
+                .unwrap_or_default()
         };
-        ui.group(|ui| {
-            ui.label(RichText::new("Compare two").strong());
+        kit::panel(ui, pal, Some(&tr.t("energy-compare")), |ui| {
             ui.horizontal_wrapped(|ui| {
-                for (salt, sel) in [("cmp-a", &mut self.compare_a), ("cmp-b", &mut self.compare_b)] {
+                for (salt, sel) in [
+                    ("cmp-a", &mut self.compare_a),
+                    ("cmp-b", &mut self.compare_b),
+                ] {
                     egui::ComboBox::from_id_salt(salt)
                         .selected_text(name_of(sel))
-                        .width(260.0)
+                        .width(280.0)
                         .show_ui(ui, |ui| {
                             for r in rows {
-                                ui.selectable_value(sel, r.id.to_string(), r.name);
+                                ui.selectable_value(sel, r.id.to_string(), &r.name);
                             }
                         });
                 }
@@ -194,18 +219,27 @@ impl EnergyLadder {
                 let (big, small) = if a.joules >= b.joules { (a, b) } else { (b, a) };
                 let ratio = big.joules / small.joules;
                 let orders = ratio.log10();
-                ui.label(format!(
-                    "{} has {}× the energy of {}.",
-                    big.name,
-                    sci(ratio, 3),
-                    small.name
-                ));
+                ui.label(
+                    RichText::new(tr.ta(
+                        "energy-ratio",
+                        &args![
+                            "big" => big.name.clone(),
+                            "small" => lower_first(&small.name),
+                            "ratio" => tr.num(&sci(ratio, 3)),
+                        ],
+                    ))
+                    .size(17.0),
+                );
                 if orders >= 1.0 {
-                    ui.label(format!(
-                        "That is {:.1} orders of magnitude: about 10{} — multiply by ten, {} times in a row.",
-                        orders,
-                        superscript(orders.round() as i32),
-                        orders.round() as i64
+                    let rounded = (orders * 10.0).round() / 10.0;
+                    ui.label(tr.ta(
+                        "energy-orders",
+                        &args![
+                            "orders" => tr.num(&format!("{rounded:.1}")),
+                            "n" => rounded,
+                            "pow" => format!("10{}", superscript(orders.round() as i32)),
+                            "times" => orders.round() as i64,
+                        ],
                     ));
                 }
             }
@@ -214,33 +248,43 @@ impl EnergyLadder {
 }
 
 /// Horizontal log-scale bars, one row per example.
-fn ladder_chart(ui: &mut egui::Ui, rows: &[EnergyExample], fmt: impl Fn(f64) -> String) {
+fn ladder_chart(ui: &mut egui::Ui, cx: &Cx, rows: &[Row], fmt: impl Fn(f64) -> String) {
+    let pal = cx.pal;
     let lo = rows
         .first()
         .map(|r| r.joules.log10().floor())
         .unwrap_or(-22.0);
     let hi = rows.last().map(|r| r.joules.log10().ceil()).unwrap_or(14.0);
-    let row_h = 26.0;
-    let label_w = (ui.available_width() * 0.32).clamp(140.0, 300.0);
-    let value_w = 130.0;
+    let row_h = 28.0;
+    let label_w = (ui.available_width() * 0.32).clamp(140.0, 320.0);
+    let font = egui::FontId::proportional(15.0);
+    let values: Vec<String> = rows.iter().map(|r| fmt(r.joules)).collect();
+    let value_w = values
+        .iter()
+        .map(|v| {
+            ui.painter()
+                .layout_no_wrap(v.clone(), font.clone(), pal.text)
+                .size()
+                .x
+        })
+        .fold(80.0, f32::max)
+        + 12.0;
     let (resp, painter) = ui.allocate_painter(
-        vec2(ui.available_width(), row_h * rows.len() as f32 + 22.0),
+        vec2(ui.available_width(), row_h * rows.len() as f32 + 24.0),
         Sense::hover(),
     );
     let r = resp.rect;
-    let bar_x0 = r.left() + label_w + 8.0;
+    let bar_x0 = r.left() + label_w + 10.0;
     let bar_x1 = (r.right() - value_w - 8.0).max(bar_x0 + 40.0);
     let x_of = |j: f64| bar_x0 + ((j.log10() - lo) / (hi - lo)) as f32 * (bar_x1 - bar_x0);
-    let vis = ui.visuals();
-    let font = egui::FontId::proportional(14.0);
 
-    // Decade grid: one line per ×10.
-    let grid = Stroke::new(1.0, vis.weak_text_color().gamma_multiply(0.25));
+    // Decade grid: one line per ×10, labelled every 10³.
+    let grid = Stroke::new(1.0, pal.line);
     let mut d = lo as i32;
     while d as f64 <= hi {
         let x = x_of(10f64.powi(d));
         painter.line_segment(
-            [egui::pos2(x, r.top()), egui::pos2(x, r.bottom() - 18.0)],
+            [egui::pos2(x, r.top()), egui::pos2(x, r.bottom() - 20.0)],
             grid,
         );
         if d % 3 == 0 {
@@ -248,8 +292,8 @@ fn ladder_chart(ui: &mut egui::Ui, rows: &[EnergyExample], fmt: impl Fn(f64) -> 
                 egui::pos2(x, r.bottom()),
                 egui::Align2::CENTER_BOTTOM,
                 format!("10{} J", superscript(d)),
-                egui::FontId::proportional(11.0),
-                vis.weak_text_color(),
+                egui::FontId::proportional(12.0),
+                pal.weak,
             );
         }
         d += 1;
@@ -259,29 +303,90 @@ fn ladder_chart(ui: &mut egui::Ui, rows: &[EnergyExample], fmt: impl Fn(f64) -> 
         let y = r.top() + i as f32 * row_h;
         let mid = y + row_h / 2.0;
         let mine = row.id == MY_ID;
-        let color = if mine {
-            Color32::from_rgb(0xe0, 0x8a, 0x3c)
-        } else {
-            vis.selection.bg_fill
-        };
+        let color = if mine { pal.maths } else { pal.scale };
         painter.text(
             egui::pos2(r.left() + label_w, mid),
             egui::Align2::RIGHT_CENTER,
-            row.name,
+            &row.name,
             font.clone(),
-            if mine { color } else { vis.text_color() },
+            if mine { color } else { pal.text },
         );
         let bar = egui::Rect::from_min_max(
             egui::pos2(bar_x0, y + 5.0),
-            egui::pos2(x_of(row.joules), y + row_h - 5.0),
+            egui::pos2(x_of(row.joules).max(bar_x0 + 6.0), y + row_h - 5.0),
         );
-        painter.rect_filled(bar, 3.0, color);
+        let fill = if mine {
+            color
+        } else {
+            // Bars get warmer as energy grows.
+            let t = ((row.joules.log10() - lo) / (hi - lo)) as f32;
+            crate::theme::lerp(pal.physics, pal.scale, t)
+        };
+        painter.rect_filled(bar, CornerRadius::same(9), fill);
         painter.text(
-            egui::pos2(bar_x1 + 8.0, mid),
+            egui::pos2(bar_x1 + 10.0, mid),
             egui::Align2::LEFT_CENTER,
-            fmt(row.joules),
+            &values[i],
             font.clone(),
-            vis.text_color(),
+            if mine { color } else { pal.text },
+        );
+    }
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+    use crate::i18n::Lang;
+
+    #[test]
+    fn every_example_and_unit_has_text() {
+        for lang in Lang::ALL {
+            let tr = I18n::new(lang);
+            for ex in examples() {
+                let key = format!("energy-ex-{}", ex.id);
+                assert!(tr.has(&key, None), "{}: {key}", lang.code());
+                assert!(tr.has(&key, Some("note")), "{}: {key}.note", lang.code());
+            }
+            for u in EnergyUnit::ALL {
+                assert!(
+                    tr.has(&format!("unit-{}", u.key()), None),
+                    "{}: unit-{}",
+                    lang.code(),
+                    u.key()
+                );
+                if u.symbol().is_none() {
+                    assert!(
+                        tr.has(&format!("amount-{}", u.key()), None),
+                        "{}: amount-{}",
+                        lang.code(),
+                        u.key()
+                    );
+                }
+            }
+        }
+    }
+
+    #[test]
+    fn energies_read_naturally() {
+        let sk = I18n::new(Lang::Sk);
+        let en = I18n::new(Lang::En);
+        assert_eq!(format_energy(&en, EnergyUnit::Joule, 66_000.0), "66 kJ");
+        assert_eq!(format_energy(&sk, EnergyUnit::Joule, 1.23e13), "12,3 TJ");
+        assert_eq!(
+            format_energy(&sk, EnergyUnit::SugarCube, 66_000.0),
+            "1 kocka cukru"
+        );
+        assert_eq!(
+            format_energy(&sk, EnergyUnit::SugarCube, 2.0 * 66_000.0),
+            "2 kocky cukru"
+        );
+        assert_eq!(
+            format_energy(&en, EnergyUnit::SugarCube, 3.4 * 66_000.0),
+            "3.4 sugar cubes"
+        );
+        assert_eq!(
+            format_energy(&sk, EnergyUnit::SugarCube, 4.12e-21),
+            "6,24 × 10⁻²⁶ kocky cukru"
         );
     }
 }

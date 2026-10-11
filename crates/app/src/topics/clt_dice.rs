@@ -1,21 +1,21 @@
 //! Roll more dice, get a bell: the central limit theorem with a histogram.
 
-use egui::{Color32, Sense, Shape, Stroke, pos2, vec2};
+use egui::{CornerRadius, RichText, Sense, Shape, Stroke, pos2, vec2};
 use serde::{Deserialize, Serialize};
 use sims::stats::{DiceSums, normal_pdf};
 
-use super::{Group, Maturity, Nav, Related, Topic, TopicMeta, storage_key, widgets};
+use super::{Cx, Group, Maturity, Related, Topic, TopicMeta, heading, storage_key};
+use crate::args;
+use crate::kit;
 
 static META: TopicMeta = TopicMeta {
     id: "dice-bell",
-    title: "Why dice make a bell",
     icon: "🎲",
     group: Group::Chance,
-    blurb: "One die is flat and fair. Add up two, five, twenty dice and a bell curve appears out of nowhere.",
     maturity: Maturity::Draft,
     related: &[Related {
         id: "gas-box",
-        hook: "Billions of molecules, one bell-shaped speed curve",
+        hook: "hook-molecules-make-a-bell",
     }],
 };
 
@@ -82,69 +82,79 @@ impl Topic for CltDice {
         }
     }
 
-    fn ui(&mut self, ui: &mut egui::Ui, _nav: &mut Nav) {
-        widgets::heading(ui, &META);
+    fn ui(&mut self, ui: &mut egui::Ui, cx: &mut Cx) {
+        let (tr, pal) = (cx.tr, cx.pal);
+        heading(ui, cx, &META);
 
         let before = (self.cfg.dice, self.cfg.sides);
-        ui.horizontal_wrapped(|ui| {
-            ui.add(egui::Slider::new(&mut self.cfg.dice, 1..=30).text("dice"));
-            ui.add(egui::Slider::new(&mut self.cfg.sides, 2..=20).text("sides each"));
+        kit::panel(ui, pal, None, |ui| {
+            ui.horizontal_wrapped(|ui| {
+                ui.add(egui::Slider::new(&mut self.cfg.dice, 1..=30).text(tr.t("dice-n")));
+                ui.add(egui::Slider::new(&mut self.cfg.sides, 2..=20).text(tr.t("dice-sides")));
+            });
+            ui.horizontal_wrapped(|ui| {
+                for n in [1u64, 10, 100, 10_000] {
+                    let label = tr.ta("dice-roll", &args!["n" => n as i64]);
+                    if kit::bright_button(ui, pal, egui::RichText::new(label), pal.chance).clicked()
+                    {
+                        self.sim.roll(n);
+                    }
+                }
+                ui.toggle_value(&mut self.auto, tr.t("dice-keep"));
+                if ui.button(tr.t("dice-restart")).clicked() {
+                    self.reset();
+                }
+                ui.checkbox(&mut self.cfg.show_curve, tr.t("dice-curve"));
+            });
         });
         if before != (self.cfg.dice, self.cfg.sides) {
             self.reset();
         }
-
-        ui.horizontal_wrapped(|ui| {
-            for n in [1u64, 10, 100, 10_000] {
-                if ui.button(format!("Roll ×{n}")).clicked() {
-                    self.sim.roll(n);
-                }
-            }
-            ui.toggle_value(&mut self.auto, "▶ Keep rolling");
-            if ui.button("⟲ Start over").clicked() {
-                self.reset();
-            }
-            ui.checkbox(&mut self.cfg.show_curve, "Show the bell (Gauss) curve");
-        });
         if self.auto {
             self.sim.roll(50);
             ui.ctx().request_repaint();
         }
 
-        ui.add_space(6.0);
-        let h = (ui.available_height() - 120.0).clamp(220.0, 480.0);
-        histogram(ui, &self.sim, self.cfg.show_curve, h);
+        ui.add_space(8.0);
+        let h = (ui.available_height() - 140.0).clamp(240.0, 480.0);
+        histogram(ui, cx, &self.sim, self.cfg.show_curve, h);
 
         ui.add_space(4.0);
         let observed = self
             .sim
             .observed_mean()
-            .map(|m| format!("{m:.2}"))
+            .map(|m| tr.num(&format!("{m:.2}")))
             .unwrap_or_else(|| "–".into());
-        ui.label(format!(
-            "{} rolls. Average sum: {} (theory says {:.2}).",
-            self.sim.rolls(),
-            observed,
-            self.sim.mean()
-        ));
+        ui.label(
+            RichText::new(tr.ta(
+                "dice-summary",
+                &args![
+                    "rolls" => self.sim.rolls() as i64,
+                    "mean" => observed,
+                    "theory" => tr.num(&format!("{:.2}", self.sim.mean())),
+                ],
+            ))
+            .size(17.0),
+        );
 
-        widgets::grown_ups(ui, "dice-notes", |ui| {
-            ui.label(format!(
-                "Sum of n fair s-sided dice: mean n(s+1)/2 = {:.2}, standard deviation √(n(s²−1)/12) = {:.2}. \
-                 The curve is the normal density with that mean and spread, scaled by the number of rolls. \
-                 The central limit theorem says the sum of many independent random things tends to this \
-                 shape, whatever the shape of each one.",
-                self.sim.mean(),
-                self.sim.std_dev()
+        ui.add_space(8.0);
+        kit::grown_ups(ui, pal, tr, "dice-notes", |ui| {
+            ui.label(tr.ta(
+                "dice-notes",
+                &args![
+                    "mean" => tr.num(&format!("{:.2}", self.sim.mean())),
+                    "sd" => tr.num(&format!("{:.2}", self.sim.std_dev())),
+                ],
             ));
         });
     }
 }
 
-fn histogram(ui: &mut egui::Ui, sim: &DiceSums, curve: bool, height: f32) {
+fn histogram(ui: &mut egui::Ui, cx: &Cx, sim: &DiceSums, curve: bool, height: f32) {
+    let pal = cx.pal;
     let (resp, painter) = ui.allocate_painter(vec2(ui.available_width(), height), Sense::hover());
-    let r = resp.rect.shrink2(vec2(8.0, 18.0));
-    let vis = ui.visuals();
+    painter.rect_filled(resp.rect, CornerRadius::same(16), pal.card);
+    let r = resp.rect.shrink2(vec2(14.0, 22.0));
     let counts = sim.counts();
     let n = counts.len();
     let expected_peak = sim.rolls() as f64 * normal_pdf(sim.mean(), sim.mean(), sim.std_dev());
@@ -155,24 +165,34 @@ fn histogram(ui: &mut egui::Ui, sim: &DiceSums, curve: bool, height: f32) {
 
     painter.line_segment(
         [r.left_bottom(), r.right_bottom()],
-        Stroke::new(1.0, vis.weak_text_color()),
+        Stroke::new(1.0, pal.line),
     );
     for (k, &c) in counts.iter().enumerate() {
         let x0 = r.left() + k as f32 * bw;
         let bar = egui::Rect::from_min_max(
-            pos2(x0 + bw * 0.1, y_of(c as f64)),
-            pos2(x0 + bw * 0.9, r.bottom()),
+            pos2(x0 + bw * 0.12, y_of(c as f64)),
+            pos2(x0 + bw * 0.88, r.bottom()),
         );
-        painter.rect_filled(bar, 2.0, vis.selection.bg_fill);
+        let radius = (bw * 0.25).min(8.0) as u8;
+        painter.rect_filled(
+            bar,
+            CornerRadius {
+                nw: radius,
+                ne: radius,
+                sw: 0,
+                se: 0,
+            },
+            pal.chance,
+        );
         // Label sums when there's room, else every few.
         let label_every = ((28.0 / bw).ceil() as usize).max(1);
         if k % label_every == 0 {
             painter.text(
-                pos2(x0 + bw / 2.0, r.bottom() + 2.0),
+                pos2(x0 + bw / 2.0, r.bottom() + 3.0),
                 egui::Align2::CENTER_TOP,
                 (sim.min_sum() as usize + k).to_string(),
-                egui::FontId::proportional(11.0),
-                vis.weak_text_color(),
+                egui::FontId::proportional(12.0),
+                pal.weak,
             );
         }
     }
@@ -191,19 +211,16 @@ fn histogram(ui: &mut egui::Ui, sim: &DiceSums, curve: bool, height: f32) {
                 )
             })
             .collect();
-        painter.add(Shape::line(
-            pts,
-            Stroke::new(2.0, Color32::from_rgb(0xe0, 0x8a, 0x3c)),
-        ));
+        painter.add(Shape::line(pts, Stroke::new(3.0, pal.scale)));
     }
 
     if sim.rolls() == 0 {
         painter.text(
             r.center(),
             egui::Align2::CENTER_CENTER,
-            "Roll some dice!",
-            egui::FontId::proportional(18.0),
-            vis.weak_text_color(),
+            format!("🎲  {}", cx.tr.t("dice-empty")),
+            crate::theme::heading_font(26.0),
+            pal.weak,
         );
     }
 }

@@ -36,10 +36,16 @@ cargo test               # everything (builds wgpu, slow the first time)
 
 ```
 crates/sims     pure maths/physics, no UI, unit tests
-crates/app      egui app: shell, pages, topics (one module per topic)
+crates/app      egui app: shell, pages, topics (one module per topic), theme, i18n
+crates/app/locales   en.ftl, sk.ftl — every visible text (Project Fluent)
+crates/app/assets    Nunito subset font (+ OFL licence)
 crates/server   axum placeholder serving dist/
 docs/           BRIEF · STATUS · CURRICULUM · DECISIONS · QUESTIONS · BUGS
 index.html      trunk entry; canvas + reserved ad slot
+tools/          build-font.sh (regenerates the font subset)
 ```
 
 Adding a topic: see the doc comment at the top of `crates/app/src/topics/mod.rs`.
+
+Dev shortcuts (native): `cargo run -- powers-of-ten/9` opens a topic (and state),
+`ZGB_LANG=sk` picks the language, `ZGB_SIZE=400x860` the window size.

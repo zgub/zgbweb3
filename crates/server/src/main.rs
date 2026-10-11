@@ -4,8 +4,11 @@
 //! It exists so the deployment shape is settled early: one binary behind a reverse
 //! proxy. Accounts, sessions and server-side saves come later (see docs/DECISIONS.md D-008).
 //!
-//! Usage: `cargo run -p zgbweb-server -- [dist-dir] [addr]`
-//! defaults: `dist`, `127.0.0.1:8090`
+//! It also serves the language catalogs at `/i18n/<lang>.ftl`, so the app can
+//! later fetch newer texts without a rebuild (see DECISIONS D-013).
+//!
+//! Usage: `cargo run -p zgbweb-server -- [dist-dir] [addr] [locales-dir]`
+//! defaults: `dist`, `127.0.0.1:8090`, `crates/app/locales`
 
 use axum::{Router, http::HeaderValue, routing::get};
 use tower_http::{
@@ -25,6 +28,7 @@ async fn main() -> std::io::Result<()> {
     let mut args = std::env::args().skip(1);
     let dist = args.next().unwrap_or_else(|| "dist".into());
     let addr = args.next().unwrap_or_else(|| "127.0.0.1:8090".into());
+    let locales = args.next().unwrap_or_else(|| "crates/app/locales".into());
 
     // Topic routing is in the URL hash (#/topic), so every path is either a real file
     // or the index page.
@@ -32,6 +36,7 @@ async fn main() -> std::io::Result<()> {
 
     let app = Router::new()
         .route("/healthz", get(|| async { "ok" }))
+        .nest_service("/i18n", ServeDir::new(&locales))
         .fallback_service(static_files)
         .layer(CompressionLayer::new())
         .layer(SetResponseHeaderLayer::overriding(

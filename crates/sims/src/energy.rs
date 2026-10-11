@@ -1,8 +1,8 @@
 //! Energy ladder: everyday and not-so-everyday energies, and units to count them in.
 //!
-//! Every example carries its assumptions in `note`, so a curious reader (or a
-//! teacher) can check the arithmetic. Numbers are order-of-magnitude honest, not
-//! lab-grade.
+//! Every example's assumptions are written next to it here (for developers) and
+//! in the language catalogs as `energy-ex-<id>.note` (for readers). Numbers are
+//! order-of-magnitude honest, not lab-grade.
 
 use serde::{Deserialize, Serialize};
 
@@ -74,25 +74,27 @@ impl EnergyUnit {
         }
     }
 
-    pub fn symbol(self) -> &'static str {
+    /// Stable id, used for catalog keys (`unit-<key>`, `amount-<key>`).
+    pub fn key(self) -> &'static str {
         match self {
-            EnergyUnit::Joule => "J",
-            EnergyUnit::Electronvolt => "eV",
-            EnergyUnit::Kilocalorie => "kcal",
-            EnergyUnit::KilowattHour => "kWh",
-            EnergyUnit::SugarCube => "sugar cubes",
-            EnergyUnit::Mosquito => "mosquitoes",
+            EnergyUnit::Joule => "joule",
+            EnergyUnit::Electronvolt => "electronvolt",
+            EnergyUnit::Kilocalorie => "kilocalorie",
+            EnergyUnit::KilowattHour => "kilowatt-hour",
+            EnergyUnit::SugarCube => "sugar-cube",
+            EnergyUnit::Mosquito => "mosquito",
         }
     }
 
-    pub fn name(self) -> &'static str {
+    /// International symbol, for units that have one. Counted things
+    /// (sugar cubes, mosquitoes) have none: their words need plural forms.
+    pub fn symbol(self) -> Option<&'static str> {
         match self {
-            EnergyUnit::Joule => "joules",
-            EnergyUnit::Electronvolt => "electronvolts",
-            EnergyUnit::Kilocalorie => "kilocalories (food calories)",
-            EnergyUnit::KilowattHour => "kilowatt-hours (electricity bill)",
-            EnergyUnit::SugarCube => "sugar cubes (eaten)",
-            EnergyUnit::Mosquito => "flying mosquitoes",
+            EnergyUnit::Joule => Some("J"),
+            EnergyUnit::Electronvolt => Some("eV"),
+            EnergyUnit::Kilocalorie => Some("kcal"),
+            EnergyUnit::KilowattHour => Some("kWh"),
+            EnergyUnit::SugarCube | EnergyUnit::Mosquito => None,
         }
     }
 
@@ -108,100 +110,42 @@ impl EnergyUnit {
 
 #[derive(Debug, Clone, PartialEq)]
 pub struct EnergyExample {
+    /// Stable id; text lives in catalogs as `energy-ex-<id>` (+ `.note`).
     pub id: &'static str,
-    pub name: &'static str,
     pub joules: f64,
-    /// The assumptions behind the number.
-    pub note: &'static str,
 }
 
 /// The built-in ladder, sorted from smallest to largest.
 pub fn examples() -> Vec<EnergyExample> {
+    let ex = |id, joules| EnergyExample { id, joules };
     let mut v = vec![
-        EnergyExample {
-            id: "thermal",
-            name: "Jiggle of one air molecule (kT, 25 °C)",
-            joules: BOLTZMANN_J_PER_K * 298.15,
-            note: "Boltzmann constant × room temperature: the typical thermal energy per degree of freedom scale.",
-        },
-        EnergyExample {
-            id: "photon",
-            name: "One photon of green light",
-            joules: photon(530e-9),
-            note: "Wavelength 530 nm, E = h·c/λ ≈ 2.3 eV.",
-        },
-        EnergyExample {
-            id: "mosquito",
-            name: "A flying mosquito",
-            joules: MOSQUITO_J,
-            note: "2 mg at 0.4 m/s (about 1.5 km/h). Roughly one tera-electronvolt.",
-        },
-        EnergyExample {
-            id: "lhc",
-            name: "One proton in the LHC",
-            joules: 6.8e12 * ELECTRONVOLT_J,
-            note: "6.8 TeV per proton (LHC Run 3 beam energy). A few mosquitoes' worth — in one particle.",
-        },
-        EnergyExample {
-            id: "apple",
-            name: "Lifting an apple by one metre",
-            joules: lift(0.102, 1.0),
-            note: "A 102 g apple raised 1 m: about one joule. Handy picture for '1 J'.",
-        },
-        EnergyExample {
-            id: "tennis",
-            name: "A fast tennis serve",
-            joules: kinetic(0.058, kmh(200.0)),
-            note: "58 g ball at 200 km/h.",
-        },
-        EnergyExample {
-            id: "aa",
-            name: "An AA battery",
-            joules: 1.2 * 2.5 * 3600.0,
-            note: "Alkaline AA: ~2.5 Ah at ~1.2 V average ≈ 3 Wh.",
-        },
-        EnergyExample {
-            id: "sugar",
-            name: "One sugar cube (eaten)",
-            joules: SUGAR_CUBE_J,
-            note: "4 g sucrose × ~16.5 kJ/g.",
-        },
-        EnergyExample {
-            id: "car50",
-            name: "Family car at 50 km/h",
-            joules: kinetic(1500.0, kmh(50.0)),
-            note: "1500 kg at town speed.",
-        },
-        EnergyExample {
-            id: "car130",
-            name: "Family car at 130 km/h",
-            joules: kinetic(1500.0, kmh(130.0)),
-            note: "Same car on the motorway: 2.6× the speed, 6.8× the energy (speed is squared).",
-        },
-        EnergyExample {
-            id: "food_day",
-            name: "A grown-up's food for one day",
-            joules: 2000.0 * 4184.0,
-            note: "2000 kcal.",
-        },
-        EnergyExample {
-            id: "lightning",
-            name: "A lightning bolt",
-            joules: 1.0e9,
-            note: "Very rough: a typical bolt is quoted around one gigajoule; real bolts vary a lot.",
-        },
-        EnergyExample {
-            id: "b747_fuel",
-            name: "Full fuel tanks of a Boeing 747-400",
-            joules: 216_840.0 * 0.80 * 43.0e6,
-            note: "216 840 L of jet fuel × 0.80 kg/L × 43 MJ/kg (chemical energy).",
-        },
-        EnergyExample {
-            id: "iss",
-            name: "The ISS flying in orbit (kinetic)",
-            joules: kinetic(420_000.0, 7_660.0),
-            note: "420 t at 7.66 km/s. More than a full jumbo jet's fuel.",
-        },
+        // Boltzmann constant × 25 °C: thermal energy scale per degree of freedom.
+        ex("thermal", BOLTZMANN_J_PER_K * 298.15),
+        // 530 nm green light, E = h·c/λ ≈ 2.3 eV.
+        ex("photon", photon(530e-9)),
+        // 2 mg at 0.4 m/s.
+        ex("mosquito", MOSQUITO_J),
+        // 6.8 TeV per proton, LHC Run 3 beam energy.
+        ex("lhc", 6.8e12 * ELECTRONVOLT_J),
+        // 102 g apple lifted 1 m ≈ 1 J.
+        ex("apple", lift(0.102, 1.0)),
+        // 58 g tennis ball at 200 km/h.
+        ex("tennis", kinetic(0.058, kmh(200.0))),
+        // Alkaline AA: ~2.5 Ah at ~1.2 V average.
+        ex("aa", 1.2 * 2.5 * 3600.0),
+        // 4 g sucrose × ~16.5 kJ/g.
+        ex("sugar", SUGAR_CUBE_J),
+        // 1500 kg car.
+        ex("car50", kinetic(1500.0, kmh(50.0))),
+        ex("car130", kinetic(1500.0, kmh(130.0))),
+        // 2000 kcal.
+        ex("food_day", 2000.0 * 4184.0),
+        // Commonly quoted order of magnitude for one bolt; real bolts vary a lot.
+        ex("lightning", 1.0e9),
+        // 747-400: 216 840 L jet fuel × 0.80 kg/L × 43 MJ/kg.
+        ex("b747_fuel", 216_840.0 * 0.80 * 43.0e6),
+        // ISS: 420 t at 7.66 km/s.
+        ex("iss", kinetic(420_000.0, 7_660.0)),
     ];
     v.sort_by(|a, b| a.joules.total_cmp(&b.joules));
     v

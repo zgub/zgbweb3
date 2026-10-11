@@ -1,5 +1,7 @@
 use serde::{Deserialize, Serialize};
 
+use crate::i18n::Lang;
+
 #[derive(Debug, Clone, Copy, PartialEq, Eq, Serialize, Deserialize, Default)]
 pub enum ThemeChoice {
     #[default]
@@ -11,11 +13,12 @@ pub enum ThemeChoice {
 impl ThemeChoice {
     pub const ALL: [ThemeChoice; 3] = [ThemeChoice::Dark, ThemeChoice::Light, ThemeChoice::System];
 
-    pub fn label(self) -> &'static str {
+    /// Catalog key for the label.
+    pub fn key(self) -> &'static str {
         match self {
-            ThemeChoice::Dark => "🌙 Dark",
-            ThemeChoice::Light => "☀ Light",
-            ThemeChoice::System => "💻 Follow system",
+            ThemeChoice::Dark => "theme-dark",
+            ThemeChoice::Light => "theme-light",
+            ThemeChoice::System => "theme-system",
         }
     }
 
@@ -51,6 +54,8 @@ impl StorageConsent {
 #[serde(default)]
 pub struct Settings {
     pub theme: ThemeChoice,
+    /// `None` = follow the browser's language.
+    pub language: Option<Lang>,
     /// Whole-UI zoom (egui zoom factor). 1.0 = default.
     pub zoom: f32,
     /// Is the right-hand topic menu open?
@@ -63,6 +68,7 @@ impl Default for Settings {
     fn default() -> Self {
         Self {
             theme: ThemeChoice::Dark,
+            language: None,
             zoom: 1.0,
             menu_open: true,
             calm_motion: false,

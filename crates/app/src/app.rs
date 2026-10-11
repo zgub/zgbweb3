@@ -1,9 +1,12 @@
+use egui::Margin;
 use serde::{Deserialize, Serialize};
 
+use crate::i18n::{I18n, Lang};
 use crate::pages::{self, Page};
 use crate::settings::{Settings, StorageConsent, ThemeChoice};
-use crate::shell::{self, Action};
-use crate::topics::{self, Nav, Topic};
+use crate::shell::{self, Action, Bar};
+use crate::theme;
+use crate::topics::{self, Cx, Topic};
 use crate::web;
 
 /// Storage key for the consent answer. Written once the visitor answers,
@@ -26,6 +29,7 @@ pub struct ZgbApp {
     consent: StorageConsent,
     page: Page,
     topics: Vec<Box<dyn Topic>>,
+    tr: I18n,
     /// Route we last wrote to / read from the URL, to detect back/forward.
     last_route: String,
     /// Look settings currently applied to the egui context.
@@ -33,9 +37,17 @@ pub struct ZgbApp {
     first_frame: bool,
 }
 
+/// The language to show: the visitor's choice, else the browser's, else English.
+fn effective_lang(settings: &Settings) -> Lang {
+    settings
+        .language
+        .or_else(|| web::preferred_language_tag().and_then(|t| Lang::from_tag(&t)))
+        .unwrap_or_default()
+}
+
 impl ZgbApp {
     pub fn new(cc: &eframe::CreationContext<'_>) -> Self {
-        install_fonts(&cc.egui_ctx);
+        theme::install(&cc.egui_ctx);
         let mut topics = topics::registry();
         let mut persisted = Persisted::default();
         let mut consent = StorageConsent::Undecided;
@@ -50,7 +62,10 @@ impl ZgbApp {
             }
         }
 
+        let lang = effective_lang(&persisted.settings);
+        web::set_document_lang(lang.code());
         let mut app = Self {
+            tr: I18n::new(lang),
             settings: persisted.settings,
             consent,
             page: persisted.page,
@@ -62,6 +77,7 @@ impl ZgbApp {
         // A link like …/#/energy-ladder wins over the remembered page.
         if let Some(route) = web::initial_route().filter(|r| !r.is_empty()) {
             app.page = app.page_for_route(&route);
+            app.apply_route_param(&route);
         }
         if !app.page_exists(&app.page) {
             app.page = Page::Home;
@@ -94,7 +110,16 @@ impl ZgbApp {
             && route != self.last_route
         {
             self.page = self.page_for_route(&route);
+            self.apply_route_param(&route);
             self.last_route = route;
+        }
+    }
+
+    fn apply_route_param(&mut self, route: &str) {
+        if let (Page::Topic(id), Some(param)) = (&self.page, pages::route_param(route))
+            && let Some(t) = self.topics.iter_mut().find(|t| t.meta().id == id)
+        {
+            t.set_param(param);
         }
     }
 
@@ -107,17 +132,18 @@ impl ZgbApp {
         }
     }
 
-    fn current_title(&self) -> Option<&'static str> {
+    fn apply_language(&mut self) {
+        let want = effective_lang(&self.settings);
+        if want != self.tr.lang() {
+            self.tr = I18n::new(want);
+            web::set_document_lang(want.code());
+        }
+    }
+
+    fn current_title(&self) -> Option<String> {
         match &self.page {
-            Page::Home => None,
-            Page::About => Some("About"),
-            Page::Privacy => Some("Privacy"),
-            Page::License => Some("License"),
-            Page::Topic(id) => self
-                .topics
-                .iter()
-                .find(|t| t.meta().id == id)
-                .map(|t| t.meta().title),
+            Page::Topic(id) => Some(self.tr.topic_title(id)),
+            p => p.title_key().map(|k| self.tr.t(k)),
         }
     }
 
@@ -148,21 +174,13 @@ impl ZgbApp {
     }
 }
 
-/// egui's proportional font lacks a few glyphs we use (→, ⁻ in 10⁻⁶);
-/// the bundled monospace Hack has them, so use it as the last fallback.
-fn install_fonts(ctx: &egui::Context) {
-    let mut fonts = egui::FontDefinitions::default();
-    if let Some(family) = fonts.families.get_mut(&egui::FontFamily::Proportional) {
-        family.push("Hack".to_owned());
-    }
-    ctx.set_fonts(fonts);
-}
-
 impl eframe::App for ZgbApp {
     fn ui(&mut self, ui: &mut egui::Ui, _frame: &mut eframe::Frame) {
         let ctx = ui.ctx().clone();
         self.apply_look(&ctx);
+        self.apply_language();
         self.follow_url();
+        let pal = theme::palette(ui.visuals().dark_mode);
 
         let narrow = ui.max_rect().width() < NARROW;
         if self.first_frame {
@@ -174,52 +192,87 @@ impl eframe::App for ZgbApp {
 
         let mut actions = Vec::new();
         let mut consent = self.consent;
-        let title = self.current_title();
+        // The breadcrumb title only fits beside the buttons on wider screens.
+        let title = (ui.max_rect().width() >= 640.0)
+            .then(|| self.current_title())
+            .flatten();
+        let tr = &self.tr;
 
-        egui::Panel::top("top-bar").show(ui, |ui| {
-            shell::top_bar(ui, &mut self.settings, &mut consent, title, &mut actions);
-        });
-        egui::Panel::bottom("footer").show(ui, |ui| shell::footer(ui, &mut actions));
+        egui::Panel::top("top-bar")
+            .frame(shell::chrome_frame(pal, Margin::symmetric(14, 8)))
+            .show(ui, |ui| {
+                shell::top_bar(
+                    ui,
+                    Bar {
+                        tr,
+                        pal,
+                        settings: &mut self.settings,
+                        consent: &mut consent,
+                        title,
+                        actions: &mut actions,
+                    },
+                );
+            });
+        egui::Panel::bottom("footer")
+            .frame(shell::chrome_frame(pal, Margin::symmetric(14, 6)))
+            .show(ui, |ui| shell::footer(ui, tr, pal, &mut actions));
         egui::Panel::right("topic-menu")
-            .default_size(250.0)
-            .size_range(180.0..=380.0)
+            .frame(shell::chrome_frame(pal, Margin::symmetric(12, 8)))
+            .default_size(270.0)
+            .size_range(200.0..=380.0)
             .show_collapsible(ui, &mut self.settings.menu_open, |ui| {
-                shell::topic_menu(ui, &self.topics, &self.page, &mut actions);
+                shell::topic_menu(ui, tr, pal, &self.topics, &self.page, &mut actions);
             });
 
         let page = self.page.clone();
-        egui::CentralPanel::default().show(ui, |ui| {
-            egui::ScrollArea::vertical()
-                .auto_shrink(false)
-                .show(ui, |ui| {
-                    // Readable line length on wide screens, never wider than what's visible.
-                    ui.set_max_width(ui.available_width().min(1100.0));
-                    if consent == StorageConsent::Undecided {
-                        shell::consent_banner(ui, &mut consent, &mut actions);
-                    }
-                    match &page {
-                        Page::Home => {
-                            if let Some(p) = pages::home(ui, &self.topics) {
-                                actions.push(Action::Go(p));
+        let calm = self.settings.calm_motion;
+        egui::CentralPanel::default()
+            .frame(
+                egui::Frame::new()
+                    .fill(pal.bg)
+                    .inner_margin(Margin::symmetric(22, 14)),
+            )
+            .show(ui, |ui| {
+                egui::ScrollArea::vertical()
+                    .auto_shrink(false)
+                    .show(ui, |ui| {
+                        // Readable line length on wide screens, never wider than what's visible.
+                        ui.set_max_width(ui.available_width().min(1100.0));
+                        if consent == StorageConsent::Undecided {
+                            shell::consent_banner(ui, tr, pal, &mut consent, &mut actions);
+                        }
+                        match &page {
+                            Page::Home => {
+                                if let Some(p) = pages::home(ui, tr, pal, &self.topics) {
+                                    actions.push(Action::Go(p));
+                                }
+                            }
+                            Page::About => pages::about(ui, tr, pal),
+                            Page::Privacy => pages::privacy(ui, tr, pal),
+                            Page::License => pages::license(ui, tr, pal),
+                            Page::Topic(id) => {
+                                let mut cx = Cx::new(tr, pal, calm);
+                                if let Some(t) = self.topics.iter_mut().find(|t| t.meta().id == id)
+                                {
+                                    t.ui(ui, &mut cx);
+                                    let meta = t.meta();
+                                    shell::where_next(
+                                        ui,
+                                        tr,
+                                        pal,
+                                        meta,
+                                        &self.topics,
+                                        &mut actions,
+                                    );
+                                }
+                                if let Some(go) = cx.navigation() {
+                                    actions.push(Action::Go(Page::Topic(go.to_string())));
+                                }
                             }
                         }
-                        Page::About => pages::about(ui),
-                        Page::Privacy => pages::privacy(ui),
-                        Page::License => pages::license(ui),
-                        Page::Topic(id) => {
-                            let mut nav = Nav::default();
-                            if let Some(t) = self.topics.iter_mut().find(|t| t.meta().id == id) {
-                                t.ui(ui, &mut nav);
-                                let meta = t.meta();
-                                shell::where_next(ui, meta, &self.topics, &mut actions);
-                            }
-                            if let Some(go) = nav.go {
-                                actions.push(Action::Go(Page::Topic(go.to_string())));
-                            }
-                        }
-                    }
-                });
-        });
+                        ui.add_space(24.0);
+                    });
+            });
 
         if consent != self.consent {
             self.set_consent(consent);

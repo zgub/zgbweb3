@@ -1,140 +1,46 @@
-//! Number formatting for humans: SI prefixes and scientific notation.
+//! Number formatting for humans: SI prefixes, scientific notation, lengths, masses.
+//!
+//! Output always uses `.` as the decimal point; the app localises it
+//! (`I18n::num`). Prefix *names* (kilo, mili, …) live in the language catalogs.
 
 /// One SI prefix, e.g. kilo = 10³.
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
 pub struct Prefix {
     pub exponent: i32,
     pub symbol: &'static str,
-    pub name: &'static str,
 }
 
-/// All SI prefixes, quecto (10⁻³⁰) to quetta (10³⁰), ascending.
+const fn p(exponent: i32, symbol: &'static str) -> Prefix {
+    Prefix { exponent, symbol }
+}
+
+/// All SI prefixes, quecto (10⁻³⁰) to quetta (10³⁰), ascending. Exponent 0 = no prefix.
 pub const SI_PREFIXES: [Prefix; 25] = [
-    Prefix {
-        exponent: -30,
-        symbol: "q",
-        name: "quecto",
-    },
-    Prefix {
-        exponent: -27,
-        symbol: "r",
-        name: "ronto",
-    },
-    Prefix {
-        exponent: -24,
-        symbol: "y",
-        name: "yocto",
-    },
-    Prefix {
-        exponent: -21,
-        symbol: "z",
-        name: "zepto",
-    },
-    Prefix {
-        exponent: -18,
-        symbol: "a",
-        name: "atto",
-    },
-    Prefix {
-        exponent: -15,
-        symbol: "f",
-        name: "femto",
-    },
-    Prefix {
-        exponent: -12,
-        symbol: "p",
-        name: "pico",
-    },
-    Prefix {
-        exponent: -9,
-        symbol: "n",
-        name: "nano",
-    },
-    Prefix {
-        exponent: -6,
-        symbol: "µ",
-        name: "micro",
-    },
-    Prefix {
-        exponent: -3,
-        symbol: "m",
-        name: "milli",
-    },
-    Prefix {
-        exponent: -2,
-        symbol: "c",
-        name: "centi",
-    },
-    Prefix {
-        exponent: -1,
-        symbol: "d",
-        name: "deci",
-    },
-    Prefix {
-        exponent: 0,
-        symbol: "",
-        name: "",
-    },
-    Prefix {
-        exponent: 1,
-        symbol: "da",
-        name: "deca",
-    },
-    Prefix {
-        exponent: 2,
-        symbol: "h",
-        name: "hecto",
-    },
-    Prefix {
-        exponent: 3,
-        symbol: "k",
-        name: "kilo",
-    },
-    Prefix {
-        exponent: 6,
-        symbol: "M",
-        name: "mega",
-    },
-    Prefix {
-        exponent: 9,
-        symbol: "G",
-        name: "giga",
-    },
-    Prefix {
-        exponent: 12,
-        symbol: "T",
-        name: "tera",
-    },
-    Prefix {
-        exponent: 15,
-        symbol: "P",
-        name: "peta",
-    },
-    Prefix {
-        exponent: 18,
-        symbol: "E",
-        name: "exa",
-    },
-    Prefix {
-        exponent: 21,
-        symbol: "Z",
-        name: "zetta",
-    },
-    Prefix {
-        exponent: 24,
-        symbol: "Y",
-        name: "yotta",
-    },
-    Prefix {
-        exponent: 27,
-        symbol: "R",
-        name: "ronna",
-    },
-    Prefix {
-        exponent: 30,
-        symbol: "Q",
-        name: "quetta",
-    },
+    p(-30, "q"),
+    p(-27, "r"),
+    p(-24, "y"),
+    p(-21, "z"),
+    p(-18, "a"),
+    p(-15, "f"),
+    p(-12, "p"),
+    p(-9, "n"),
+    p(-6, "µ"),
+    p(-3, "m"),
+    p(-2, "c"),
+    p(-1, "d"),
+    p(0, ""),
+    p(1, "da"),
+    p(2, "h"),
+    p(3, "k"),
+    p(6, "M"),
+    p(9, "G"),
+    p(12, "T"),
+    p(15, "P"),
+    p(18, "E"),
+    p(21, "Z"),
+    p(24, "Y"),
+    p(27, "R"),
+    p(30, "Q"),
 ];
 
 /// Prefix for an exact power of ten, if SI has one.
@@ -177,6 +83,44 @@ pub fn length(meters: f64, sig: usize) -> String {
     format!("{} {}", sig_digits(meters / unit.0, sig), unit.1)
 }
 
+/// Masses the way people say them: "80 g", "8 kg", "80 t", "80 000 t", "8 × 10⁷ t".
+pub fn mass(kg: f64, sig: usize) -> String {
+    if kg < 1.0 {
+        format!("{} g", sig_digits(kg * 1000.0, sig))
+    } else if kg < 1000.0 {
+        format!("{} kg", sig_digits(kg, sig))
+    } else {
+        let t = kg / 1000.0;
+        if t < 1e6 {
+            format!("{} t", group_thousands(&sig_digits(t, sig)))
+        } else {
+            format!("{} t", sci(t, sig))
+        }
+    }
+}
+
+/// "1000000" → "1 000 000", using a thin space (U+2009) between groups.
+/// Only the integer part is grouped.
+pub fn group_thousands(s: &str) -> String {
+    let (int, rest) = match s.find('.') {
+        Some(i) => s.split_at(i),
+        None => (s, ""),
+    };
+    let (sign, digits) = int.strip_prefix('-').map_or(("", int), |d| ("-", d));
+    if digits.len() <= 4 {
+        // "1000" stays compact, like most style guides.
+        return s.to_string();
+    }
+    let mut out = String::from(sign);
+    for (i, c) in digits.chars().enumerate() {
+        if i > 0 && (digits.len() - i).is_multiple_of(3) {
+            out.push('\u{2009}');
+        }
+        out.push(c);
+    }
+    out + rest
+}
+
 /// "1.23 × 10¹³" style. Values in [0.01, 10000) are written plainly.
 pub fn sci(value: f64, sig: usize) -> String {
     if value == 0.0 || !value.is_finite() {
@@ -188,6 +132,22 @@ pub fn sci(value: f64, sig: usize) -> String {
     }
     let mantissa = value / 10f64.powi(exp);
     format!("{} × 10{}", sig_digits(mantissa, sig), superscript(exp))
+}
+
+/// A number that picks the right plural form for the text [`sci`] shows:
+/// "1 cube", "3.4 cubes", "2 × 10⁻⁵ of a cube" (a fraction), "1.2 × 10⁷ cubes" (whole).
+pub fn sci_count(value: f64, sig: usize) -> f64 {
+    if value == 0.0 || !value.is_finite() {
+        return value;
+    }
+    let exp = value.abs().log10().floor() as i32;
+    if (-2..4).contains(&exp) {
+        sig_digits(value, sig).parse().unwrap_or(value)
+    } else if exp < 0 {
+        0.5 // tiny: grammatically a fraction
+    } else {
+        value.round()
+    }
 }
 
 /// Round to `sig` significant digits and drop trailing zeros.
@@ -260,5 +220,29 @@ mod tests {
         assert_eq!(length(0.1, 3), "10 cm");
         assert_eq!(length(10_000.0, 3), "10 km");
         assert_eq!(length(1e-6, 3), "1 µm");
+    }
+
+    #[test]
+    fn masses() {
+        assert_eq!(mass(0.08, 2), "80 g");
+        assert_eq!(mass(80.0, 2), "80 kg");
+        assert_eq!(mass(80_000.0, 2), "80 t");
+        assert_eq!(mass(8.0e7, 2), "80\u{2009}000 t");
+        assert_eq!(mass(8.0e10, 2), "8 × 10⁷ t");
+    }
+
+    #[test]
+    fn grouping() {
+        assert_eq!(group_thousands("1000"), "1000");
+        assert_eq!(group_thousands("1000000"), "1\u{2009}000\u{2009}000");
+        assert_eq!(group_thousands("12345.6"), "12\u{2009}345.6");
+    }
+
+    #[test]
+    fn counts_for_plurals() {
+        assert_eq!(sci_count(1.0000001, 3), 1.0);
+        assert_eq!(sci_count(3.4, 2), 3.4);
+        assert_eq!(sci_count(1.23e13, 3), 1.23e13);
+        assert_eq!(sci_count(6.24e-26, 3), 0.5);
     }
 }

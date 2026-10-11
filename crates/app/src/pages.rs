@@ -3,6 +3,9 @@
 use egui::RichText;
 use serde::{Deserialize, Serialize};
 
+use crate::i18n::I18n;
+use crate::kit;
+use crate::theme::{Palette, bold_font, heading_font};
 use crate::topics::{Group, Topic};
 
 #[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize, Default)]
@@ -31,9 +34,12 @@ impl Page {
         }
     }
 
-    /// Unknown routes fall back to Home.
+    /// Unknown routes fall back to Home. `topic-id/param` routes to the topic
+    /// (the param is handed to it separately, see [`route_param`]).
     pub fn from_route(route: &str, is_topic: impl Fn(&str) -> bool) -> Page {
-        match route.trim_matches('/') {
+        let route = route.trim_matches('/');
+        let head = route.split('/').next().unwrap_or("");
+        match head {
             "" => Page::Home,
             "about" => Page::About,
             "privacy" => Page::Privacy,
@@ -42,116 +48,139 @@ impl Page {
             _ => Page::Home,
         }
     }
+
+    /// Catalog key of the page title (topics have their own).
+    pub fn title_key(&self) -> Option<&'static str> {
+        match self {
+            Page::Home | Page::Topic(_) => None,
+            Page::About => Some("footer-about"),
+            Page::Privacy => Some("footer-privacy"),
+            Page::License => Some("footer-license"),
+        }
+    }
 }
 
-pub fn home(ui: &mut egui::Ui, topics: &[Box<dyn Topic>]) -> Option<Page> {
+/// `"powers-of-ten/9"` → `Some("9")`.
+pub fn route_param(route: &str) -> Option<&str> {
+    route
+        .trim_matches('/')
+        .split_once('/')
+        .map(|(_, p)| p)
+        .filter(|p| !p.is_empty())
+}
+
+pub fn home(
+    ui: &mut egui::Ui,
+    tr: &I18n,
+    pal: &Palette,
+    topics: &[Box<dyn Topic>],
+) -> Option<Page> {
     let mut go = None;
-    ui.heading("Big numbers, small numbers, and how the world adds up");
-    ui.label(
-        "Little experiments you can poke at. Move the sliders, roll the dice, break things. \
-         Made for curious kids — grown-ups welcome.",
-    );
-    ui.add_space(12.0);
+    ui.add_space(6.0);
+    ui.label(RichText::new(tr.t("home-title")).font(heading_font(40.0)));
+    ui.label(RichText::new(tr.t("home-intro")).size(19.0).color(pal.weak));
+    ui.add_space(18.0);
 
     for group in Group::ALL {
-        let in_group: Vec<_> = topics.iter().filter(|t| t.meta().group == group).collect();
-        if in_group.is_empty() {
+        let metas: Vec<_> = topics
+            .iter()
+            .map(|t| t.meta())
+            .filter(|m| m.group == group)
+            .collect();
+        if metas.is_empty() {
             continue;
         }
-        ui.label(RichText::new(group.label()).strong().size(16.0));
-        ui.add_space(4.0);
+        let color = pal.group(group);
+        ui.horizontal(|ui| {
+            let (r, _) = ui.allocate_exact_size(egui::vec2(6.0, 22.0), egui::Sense::hover());
+            ui.painter().rect_filled(r, 3, color);
+            ui.label(
+                RichText::new(tr.t(group.key()))
+                    .font(bold_font(20.0))
+                    .color(color),
+            );
+        });
+        ui.add_space(6.0);
+        // As many ~270 pt columns as fit, sharing the width evenly.
+        let gap = 14.0;
+        let frame_extra = 2.0 * 14.0 + 2.0; // card margins + stroke
+        let avail = ui.available_width();
+        let cols = ((avail + gap) / (250.0 + frame_extra + gap))
+            .floor()
+            .max(1.0);
+        let inner_w = ((avail - gap * (cols - 1.0)) / cols - frame_extra).floor();
         ui.horizontal_wrapped(|ui| {
-            for t in in_group {
-                let m = t.meta();
-                let card = egui::Frame::group(ui.style())
-                    .inner_margin(10.0)
-                    .show(ui, |ui| {
-                        ui.set_width(260.0);
-                        ui.vertical(|ui| {
-                            ui.horizontal(|ui| {
-                                ui.label(RichText::new(format!("{} {}", m.icon, m.title)).strong());
-                                ui.label(m.maturity.badge());
+            ui.spacing_mut().item_spacing = egui::vec2(gap, gap);
+            for m in metas {
+                let card = kit::card(pal).show(ui, |ui| {
+                    ui.set_width(inner_w);
+                    ui.set_min_height(118.0);
+                    ui.vertical(|ui| {
+                        ui.horizontal(|ui| {
+                            kit::icon_badge(ui, pal, m.icon, color, 38.0);
+                            ui.vertical(|ui| {
+                                ui.label(RichText::new(tr.topic_title(m.id)).font(bold_font(18.0)));
+                                m.maturity.badge(ui, pal, tr);
                             });
-                            ui.label(RichText::new(m.blurb).weak());
                         });
+                        ui.add_space(4.0);
+                        ui.label(RichText::new(tr.topic_blurb(m.id)).color(pal.weak));
                     });
-                let resp =
-                    ui.interact(card.response.rect, ui.id().with(m.id), egui::Sense::click());
-                if resp
-                    .on_hover_cursor(egui::CursorIcon::PointingHand)
-                    .clicked()
-                {
+                });
+                if kit::clickable(ui, card.response.rect, ui.id().with(m.id), color).clicked() {
                     go = Some(Page::Topic(m.id.to_string()));
                 }
             }
         });
-        ui.add_space(12.0);
+        ui.add_space(20.0);
     }
     go
 }
 
-pub fn about(ui: &mut egui::Ui) {
-    ui.heading("About");
-    ui.label(
-        "zgbweb is a small collection of interactive explainers about scale, chance, physics and maths. \
-         Everything runs in your browser; nothing you do here is sent anywhere.",
-    );
+fn page_title(ui: &mut egui::Ui, text: String) {
     ui.add_space(6.0);
-    ui.label("Built with Rust, egui and WebAssembly.");
-    ui.label(RichText::new("Source code link: TBD").weak());
+    ui.label(RichText::new(text).font(heading_font(34.0)));
+    ui.add_space(8.0);
 }
 
-pub fn privacy(ui: &mut egui::Ui) {
-    ui.heading("Privacy");
-    ui.label(
-        RichText::new("Draft — to be finalised before the site goes public.")
-            .weak()
-            .italics(),
-    );
+/// A titled section from a catalog message: value = body, `.title` = heading.
+fn section(ui: &mut egui::Ui, tr: &I18n, key: &str) {
+    ui.add_space(8.0);
+    ui.label(RichText::new(tr.attr(key, "title")).font(bold_font(18.0)));
+    ui.label(tr.t(key));
+}
+
+pub fn about(ui: &mut egui::Ui, tr: &I18n, pal: &Palette) {
+    page_title(ui, tr.t("footer-about"));
+    ui.label(tr.t("about-body"));
     ui.add_space(6.0);
-    for (title, body) in [
-        (
-            "No tracking",
-            "No accounts, no analytics, no advertising and no cookies.",
-        ),
-        (
-            "What stays on your device",
-            "If you choose \"Yes, remember\", your settings and the state of the experiments are saved \
-             in your browser's local storage on this device. They are never sent to us. Your answer \
-             to that question is itself remembered so we don't ask every time. \
-             Use ⚙ → \"Forget everything\" to delete it all.",
-        ),
-        (
-            "Server logs",
-            "The web server that delivers this page may record standard technical data (IP address, \
-             time, requested address, browser type) to keep the service running and secure. \
-             Retention period: TBD.",
-        ),
-        (
-            "If this changes",
-            "If advertising or accounts are ever added, this page will be updated and you will be \
-             asked before anything new is stored or shared.",
-        ),
-        ("Who runs this site", "Operator and contact: TBD."),
+    ui.label(tr.t("about-tech"));
+    ui.label(RichText::new(tr.t("about-source")).color(pal.weak));
+}
+
+pub fn privacy(ui: &mut egui::Ui, tr: &I18n, pal: &Palette) {
+    page_title(ui, tr.t("footer-privacy"));
+    ui.label(RichText::new(tr.t("draft-note")).color(pal.weak).italics());
+    for key in [
+        "privacy-tracking",
+        "privacy-device",
+        "privacy-logs",
+        "privacy-changes",
+        "privacy-operator",
     ] {
-        ui.add_space(6.0);
-        ui.label(RichText::new(title).strong());
-        ui.label(body);
+        section(ui, tr, key);
     }
 }
 
-pub fn license(ui: &mut egui::Ui) {
-    ui.heading("License");
-    ui.label(
-        RichText::new("Draft — final choice pending (see QUESTIONS.md).")
-            .weak()
-            .italics(),
-    );
+pub fn license(ui: &mut egui::Ui, tr: &I18n, pal: &Palette) {
+    page_title(ui, tr.t("footer-license"));
+    ui.label(RichText::new(tr.t("draft-note")).color(pal.weak).italics());
     ui.add_space(6.0);
-    ui.label("Program code: GNU AGPL v3.0 or later.");
-    ui.label("Texts and pictures: Creative Commons BY-SA 4.0.");
-    ui.add_space(6.0);
-    ui.label(RichText::new("Third-party parts").strong());
-    ui.label("egui / eframe — MIT or Apache-2.0.");
-    ui.label("Fonts bundled with egui: Ubuntu Light (Ubuntu Font Licence), Hack (MIT), Noto Emoji (OFL), Emoji Icon Font (MIT/OFL).");
+    ui.label(tr.t("license-code"));
+    ui.label(tr.t("license-content"));
+    section(ui, tr, "license-third");
+    ui.label("egui / eframe — MIT OR Apache-2.0");
+    ui.label("Nunito — SIL Open Font License 1.1 (The Nunito Project Authors)");
+    ui.label("Hack — MIT; Noto Emoji — OFL 1.1; Emoji Icon Font — MIT / OFL");
+    ui.label("Project Fluent (fluent-bundle) — MIT OR Apache-2.0");
 }
