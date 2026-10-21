@@ -7,27 +7,12 @@ use serde::{Deserialize, Serialize};
 use sims::energy::{EnergyUnit, examples, kinetic, kmh};
 use sims::fmt::{engineering, sci, sci_count, sig_digits, superscript};
 
-use super::{Cx, Group, Maturity, Related, Topic, TopicMeta, heading, storage_key};
+use super::{Cx, Topic, heading, storage_key};
 use crate::args;
 use crate::i18n::{I18n, lower_first};
 use crate::kit;
 
-static META: TopicMeta = TopicMeta {
-    id: "energy-ladder",
-    icon: "⚡",
-    group: Group::ScaleAndNumbers,
-    maturity: Maturity::Draft,
-    related: &[
-        Related {
-            id: "powers-of-ten",
-            hook: "hook-what-is-1e9",
-        },
-        Related {
-            id: "gas-box",
-            hook: "hook-heat-is-jiggling",
-        },
-    ],
-};
+const ID: &str = "energy-ladder";
 
 const MY_ID: &str = "mine";
 
@@ -101,23 +86,28 @@ fn format_energy(tr: &I18n, unit: EnergyUnit, joules: f64) -> String {
 }
 
 impl Topic for EnergyLadder {
-    fn meta(&self) -> &'static TopicMeta {
-        &META
+    fn id(&self) -> &'static str {
+        ID
     }
 
     fn save(&self, storage: &mut dyn eframe::Storage) {
-        eframe::set_value(storage, &storage_key(META.id), self);
+        eframe::set_value(storage, &storage_key(ID), self);
     }
 
     fn load(&mut self, storage: &dyn eframe::Storage) {
-        if let Some(s) = eframe::get_value::<Self>(storage, &storage_key(META.id)) {
+        if let Some(s) = eframe::get_value::<Self>(storage, &storage_key(ID)) {
             *self = s;
         }
     }
 
     fn ui(&mut self, ui: &mut egui::Ui, cx: &mut Cx) {
         let (tr, pal) = (cx.tr, cx.pal);
-        heading(ui, cx, &META);
+        heading(
+            ui,
+            cx.tr,
+            cx.pal,
+            content::page(ID).expect("on the site map"),
+        );
 
         ui.horizontal_wrapped(|ui| {
             ui.label(RichText::new(tr.t("energy-count-in")).size(18.0));

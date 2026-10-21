@@ -1,90 +1,23 @@
-//! Topics: each explainer/simulation is one `Topic`.
+//! Pages that have their own code. Each one is a [`Topic`].
+//!
+//! Where a page sits, its glyph, status and cross-links live in the site map
+//! (`content::PAGES`); this module only adds behaviour. A page in the map with no
+//! [`Topic`] here is drawn as a planned page by `pages::planned`.
 //!
 //! Adding a topic:
 //! 1. put its maths/physics in the `sims` crate (with tests),
-//! 2. add a module here implementing [`Topic`],
-//! 3. add `topic-<id> = Title` with `.blurb` (and its other texts) to every
-//!    catalog in `crates/app/locales/`,
-//! 4. register it in [`registry`].
-//!
-//! The `id` is permanent: it appears in URLs (`#/<id>`), storage keys and catalog keys.
+//! 2. give it an entry in `content::PAGES` and its texts in both catalogs,
+//! 3. add a module here implementing [`Topic`] and register it in [`registry`].
 
 mod clt_dice;
 mod energy_ladder;
-mod planned;
 mod powers_of_ten;
 
+use content::PageMeta;
 use egui::RichText;
 
 use crate::i18n::I18n;
-use crate::kit;
-use crate::theme::{Palette, heading_font};
-
-#[derive(Debug, Clone, Copy, PartialEq, Eq, PartialOrd, Ord)]
-pub enum Group {
-    ScaleAndNumbers,
-    Chance,
-    Physics,
-    Maths,
-}
-
-impl Group {
-    pub const ALL: [Group; 4] = [
-        Group::ScaleAndNumbers,
-        Group::Chance,
-        Group::Physics,
-        Group::Maths,
-    ];
-
-    pub fn key(self) -> &'static str {
-        match self {
-            Group::ScaleAndNumbers => "group-scale",
-            Group::Chance => "group-chance",
-            Group::Physics => "group-physics",
-            Group::Maths => "group-maths",
-        }
-    }
-}
-
-/// How finished a topic is. Shown as a badge so visitors know what to expect.
-#[derive(Debug, Clone, Copy, PartialEq, Eq)]
-pub enum Maturity {
-    /// Only a description and a plan.
-    Planned,
-    /// Works, still rough.
-    Draft,
-    /// Reviewed and polished.
-    #[allow(dead_code)] // nothing is polished yet
-    Ready,
-}
-
-impl Maturity {
-    pub fn badge(self, ui: &mut egui::Ui, pal: &Palette, tr: &I18n) {
-        let (key, color) = match self {
-            Maturity::Planned => ("maturity-planned", pal.weak),
-            Maturity::Draft => ("maturity-draft", pal.scale),
-            Maturity::Ready => ("maturity-ready", pal.physics),
-        };
-        kit::pill(ui, pal, tr.t(key), color);
-    }
-}
-
-/// A pointer to another topic, phrased as the question a kid might ask.
-pub struct Related {
-    pub id: &'static str,
-    /// Catalog key of the question, e.g. `hook-what-is-a-billion`.
-    pub hook: &'static str,
-}
-
-/// Language-independent facts about a topic. Texts come from the catalogs.
-pub struct TopicMeta {
-    pub id: &'static str,
-    pub icon: &'static str,
-    pub group: Group,
-    pub maturity: Maturity,
-    /// Shown as "Where next?" under the topic. Every id must be registered (tested).
-    pub related: &'static [Related],
-}
+use crate::theme::Palette;
 
 /// What a topic gets while drawing: translations, colours, and a way to navigate.
 pub struct Cx<'a> {
@@ -106,7 +39,7 @@ impl<'a> Cx<'a> {
         }
     }
 
-    /// An inline "question →" link to topic `id`; `hook` is a catalog key.
+    /// An inline "question →" link to page `id`; `hook` is a catalog key.
     pub fn link(&mut self, ui: &mut egui::Ui, id: &'static str, hook: &str) {
         let r = ui.link(RichText::new(format!("{} →", self.tr.t(hook))).italics());
         if r.on_hover_cursor(egui::CursorIcon::PointingHand).clicked() {
@@ -120,7 +53,8 @@ impl<'a> Cx<'a> {
 }
 
 pub trait Topic {
-    fn meta(&self) -> &'static TopicMeta;
+    /// The page id in `content::PAGES`.
+    fn id(&self) -> &'static str;
 
     /// Draw the topic into the central area. Called every frame while visible.
     fn ui(&mut self, ui: &mut egui::Ui, cx: &mut Cx);
@@ -140,98 +74,114 @@ pub fn storage_key(id: &str) -> String {
     format!("topic/{id}")
 }
 
-/// All topics, in menu order within each group.
+/// All pages that have code.
 pub fn registry() -> Vec<Box<dyn Topic>> {
     vec![
-        Box::new(planned::Planned::new(&planned::NUMBERS)),
         Box::new(powers_of_ten::PowersOfTen::default()),
         Box::new(energy_ladder::EnergyLadder::default()),
         Box::new(clt_dice::CltDice::default()),
-        Box::new(planned::Planned::new(&planned::GAS_BOX)),
-        Box::new(planned::Planned::new(&planned::LINEAR_MAPS)),
     ]
 }
 
-/// Topic title block: icon badge, big title, group + maturity pills, blurb.
-pub fn heading(ui: &mut egui::Ui, cx: &Cx, meta: &TopicMeta) {
-    let color = cx.pal.group(meta.group);
-    ui.add_space(4.0);
+/// Page title block: glyph and title as a heading, status marker, blurb.
+/// Used by topics and by planned pages alike.
+pub fn heading(ui: &mut egui::Ui, tr: &I18n, pal: &Palette, meta: &PageMeta) {
     ui.horizontal(|ui| {
-        kit::icon_badge(ui, cx.pal, meta.icon, color, 52.0);
-        ui.vertical(|ui| {
-            ui.label(RichText::new(cx.tr.topic_title(meta.id)).font(heading_font(32.0)));
-            ui.horizontal(|ui| {
-                kit::pill(ui, cx.pal, cx.tr.t(meta.group.key()), color);
-                meta.maturity.badge(ui, cx.pal, cx.tr);
-            });
-        });
+        ui.heading(format!("{} {}", meta.glyph, tr.page_title(meta.id)));
+        if let Some(key) = meta.status.key() {
+            ui.label(RichText::new(tr.t(key)).small().color(pal.weak));
+        }
     });
-    ui.add_space(6.0);
-    ui.label(
-        RichText::new(cx.tr.topic_blurb(meta.id))
-            .size(18.0)
-            .color(cx.pal.weak),
-    );
-    ui.add_space(10.0);
+    ui.separator();
+    if let Some(blurb) = tr.page_blurb(meta.id) {
+        ui.label(RichText::new(blurb).color(pal.weak));
+        ui.add_space(6.0);
+    }
 }
 
 #[cfg(test)]
 mod tests {
     use crate::i18n::{I18n, Lang};
+    use content::{PAGES, Section, Status};
 
     #[test]
-    fn topic_ids_are_unique_and_url_safe() {
-        let topics = super::registry();
-        let mut ids: Vec<&str> = topics.iter().map(|t| t.meta().id).collect();
-        for id in &ids {
-            assert!(
-                id.chars()
-                    .all(|c| c.is_ascii_lowercase() || c.is_ascii_digit() || c == '-'),
-                "bad id {id}"
+    fn every_topic_is_on_the_site_map_and_not_planned() {
+        for t in super::registry() {
+            let m = content::page(t.id()).unwrap_or_else(|| panic!("{} not in PAGES", t.id()));
+            assert_ne!(
+                m.status,
+                Status::Planned,
+                "{} has code but is marked planned",
+                m.id
             );
-            assert!(
-                !crate::pages::RESERVED_ROUTES.contains(id),
-                "id {id} clashes with a page route"
-            );
-        }
-        ids.sort();
-        ids.dedup();
-        assert_eq!(ids.len(), topics.len());
-    }
-
-    #[test]
-    fn related_links_point_at_registered_topics() {
-        let topics = super::registry();
-        let known: Vec<&str> = topics.iter().map(|t| t.meta().id).collect();
-        for t in &topics {
-            for r in t.meta().related {
-                assert!(
-                    known.contains(&r.id),
-                    "{} links to unknown topic {}",
-                    t.meta().id,
-                    r.id
-                );
-                assert_ne!(r.id, t.meta().id, "{} links to itself", r.id);
-            }
         }
     }
 
     #[test]
-    fn every_topic_has_its_texts_in_every_language() {
+    fn every_page_has_its_texts_in_every_language() {
         for lang in Lang::ALL {
             let tr = I18n::new(lang);
-            for t in super::registry() {
-                let m = t.meta();
-                let key = format!("topic-{}", m.id);
-                assert!(tr.has(&key, None), "{}: {key}", lang.code());
-                assert!(tr.has(&key, Some("blurb")), "{}: {key}.blurb", lang.code());
-                for r in m.related {
-                    assert!(tr.has(r.hook, None), "{}: {}", lang.code(), r.hook);
+            for p in PAGES {
+                assert!(
+                    tr.has(&p.title_key(), None),
+                    "{}: {}",
+                    lang.code(),
+                    p.title_key()
+                );
+                for l in p.links {
+                    assert!(tr.has(l.hook, None), "{}: {}", lang.code(), l.hook);
+                }
+                if let Some(k) = p.status.key() {
+                    assert!(tr.has(k, None), "{}: {k}", lang.code());
                 }
             }
-            for g in super::Group::ALL {
-                assert!(tr.has(g.key(), None), "{}: {}", lang.code(), g.key());
+            for s in Section::ALL {
+                assert!(tr.has(s.key(), None), "{}: {}", lang.code(), s.key());
+                assert!(
+                    tr.has(s.key(), Some("intro")),
+                    "{}: {}.intro",
+                    lang.code(),
+                    s.key()
+                );
             }
         }
+    }
+
+    /// Glyphs and letters must exist in the fonts, or they render as boxes (Q-013).
+    /// Reads the character maps of the proportional font family directly.
+    #[test]
+    fn glyphs_and_slovak_letters_exist_in_the_fonts() {
+        use skrifa::MetadataProvider as _;
+        let defs = crate::theme::fonts();
+        let family = &defs.families[&egui::FontFamily::Proportional];
+        let faces: Vec<skrifa::FontRef> = family
+            .iter()
+            .map(|name| {
+                let data = &defs.font_data[name];
+                skrifa::FontRef::from_index(&data.font, data.index).expect("font parses")
+            })
+            .collect();
+        let has = |c: char| faces.iter().any(|f| f.charmap().map(c).is_some());
+
+        let mut needed: Vec<String> = PAGES.iter().map(|p| p.glyph.to_owned()).collect();
+        needed.extend(Section::ALL.iter().map(|s| s.glyph().to_owned()));
+        // chrome glyphs used in shell.rs and kit.rs
+        needed.extend(
+            [
+                "🖱", "☰", "⚙", "🗑", "🔍", "🐄", "→", "🌙", "☀", "💻", "💾", "·",
+            ]
+            .map(String::from),
+        );
+        // Slovak letters, both cases, and the symbols the sims print
+        needed.extend(
+            "áäčďéíĺľňóôŕšťúýžÁÄČĎÉÍĹĽŇÓÔŔŠŤÚÝŽ⁻⁰¹²³⁴⁵⁶⁷⁸⁹×·√"
+                .chars()
+                .map(String::from),
+        );
+        let missing: Vec<String> = needed
+            .into_iter()
+            .filter(|s| !s.chars().filter(|c| *c != '\u{fe0f}').all(has))
+            .collect();
+        assert!(missing.is_empty(), "missing in fonts: {missing:?}");
     }
 }

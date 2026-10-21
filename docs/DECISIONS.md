@@ -24,7 +24,9 @@ v0 topics draw with the egui painter only.
 id, title, icon, group, blurb, maturity, related links. The id is permanent:
 it is the URL route and the storage key. Tests enforce unique, URL-safe ids
 and that every related link targets a registered topic. Since D-029/D-030 this
-covers pages in all five sections, not only Explore topics.
+covers pages in all five sections, not only Explore topics. Since D-032 the
+metadata (`PageMeta`: id, section, glyph, status, links) lives in the `content`
+crate's site map; the app's `Topic` trait only adds behaviour.
 
 **D-005 — Hash routing (`#/topic-id`)** (2026-10-11, accepted)
 Shareable links and working back button without server routing; any static
@@ -48,6 +50,7 @@ this slot.
 axum serving `dist/` with compression and basic headers. Accounts, sessions
 (AAA), server-side saves are later; when they come, state already serialises
 via serde per topic, so a server store can sit behind the same `save/load`.
+Refined by D-032.
 
 **D-009 — No OS randomness; seeded `SmallRng`** (2026-10-11, accepted)
 Avoids getrandom's wasm configuration and makes runs reproducible
@@ -88,6 +91,9 @@ same keys; every literal key used in code exists; every topic, example, unit,
 exponent and SI prefix has its text in every language.
 Slovak style: tykanie; number names in the long scale (miliarda, bilión).
 Reaffirmed 2026-10-21: the whole site is available in English and Slovak.
+The "server-swappable later" half is superseded by D-032: catalogs are only
+compiled in, the server no longer serves `/i18n/*.ftl`, `replace_catalog` is gone.
+Catalogs moved to `crates/content/locales/`.
 
 **D-014 — Powers of ten use a generic 3×3 puzzle cube in a 10 cm box** (2026-10-11, accepted)
 Every cube (57 mm, 80 g) sits centred in its own invisible 10 cm box, so 10 in
@@ -162,6 +168,8 @@ page in configuration: the Explore index or the Playground index. Proposed
 mechanism (not built): a config value `landing = "explore" | "playground"`
 compiled in by default, overridable by a small config file from the axum
 server, the same seam as the i18n catalogs. An empty hash (`#/`) opens it.
+Built 2026-10-21 as the compiled-in constant `content::LANDING` (Explore);
+the server override is not built (D-032 keeps the server thin).
 
 **D-023 — No names of private people on the site, ever** (2026-10-21, accepted)
 Peter's own decision, not a GDPR precaution. Family, friends, pupils,
@@ -229,3 +237,20 @@ Knowledge is the defence against ignorance and against manipulation by
 those in power. When a choice is unclear, the option that serves this goal
 wins. A possible video channel, far in the future, would show the kids'
 hands only, never faces or names (D-023); open points in Q-025.
+
+**D-032 — Static-first: everything compiled in, thin axum, Postgres later** (2026-10-21, accepted)
+Site map, texts in both languages and (later) data such as the energy ladder
+are compiled into the wasm. A backend does not protect public content; it
+protects data, and there is none yet. Reasons: content is reviewed in git and
+checked by tests; no plain-text files on the server for crawlers (D-021); the
+same bundle runs on any host and offline. Supersedes the served-catalogs part of
+D-013. New crate `crates/content` holds the site map (`Section`, `PageMeta`,
+`PAGES`, `LANDING`) and the catalogs. axum stays, thin: serves `dist/`; sends
+`X-Robots-Tag: noindex, nofollow, noarchive, noimageindex` and
+`tdm-reservation: 1`; serves a disallow-all `robots.txt`; refuses named AI
+crawlers by user agent with 403; `/api` is reserved and answers 404 JSON.
+Not built yet: per-IP rate limiting (with hosting, Q-006). Postgres arrives with
+the first feature that stores data (ideas inbox, comments, saved progress,
+accounts), together with its moderation, retention and privacy decisions
+(Q-020). Pages already save through `save()`/`load()` (D-004, D-008), so that
+store can move to the server without touching the pages.

@@ -13,8 +13,12 @@ use crate::web;
 /// regardless of the answer (see DECISIONS D-006).
 const CONSENT_KEY: &str = "consent";
 
-/// Below this width (in points) the topic menu starts closed and closes after navigation.
+/// Below this width (in points) the menu is hidden behind a toggle and closes
+/// after navigation. Wider screens always show it, as zgbweb2 did.
 const NARROW: f32 = 720.0;
+
+/// Readable line length for text pages.
+const MAX_TEXT_WIDTH: f32 = 1100.0;
 
 /// Everything app-level that is persisted (with consent) under `eframe::APP_KEY`.
 #[derive(Serialize, Deserialize, Default)]
@@ -34,7 +38,6 @@ pub struct ZgbApp {
     last_route: String,
     /// Look settings currently applied to the egui context.
     applied_look: Option<(ThemeChoice, f32)>,
-    first_frame: bool,
 }
 
 /// The language to show: the visitor's choice, else the browser's, else English.
@@ -72,30 +75,18 @@ impl ZgbApp {
             topics,
             last_route: String::new(),
             applied_look: None,
-            first_frame: true,
         };
         // A link like …/#/energy-ladder wins over the remembered page.
         if let Some(route) = web::initial_route().filter(|r| !r.is_empty()) {
-            app.page = app.page_for_route(&route);
+            app.page = Page::from_route(&route);
             app.apply_route_param(&route);
         }
-        if !app.page_exists(&app.page) {
-            app.page = Page::Home;
+        if !app.page.exists() {
+            app.page = Page::Landing;
         }
         app.last_route = app.page.route();
         web::set_route(&app.last_route);
         app
-    }
-
-    fn page_exists(&self, page: &Page) -> bool {
-        match page {
-            Page::Topic(id) => self.topics.iter().any(|t| t.meta().id == id),
-            _ => true,
-        }
-    }
-
-    fn page_for_route(&self, route: &str) -> Page {
-        Page::from_route(route, |id| self.topics.iter().any(|t| t.meta().id == id))
     }
 
     fn go(&mut self, page: Page) {
@@ -109,15 +100,15 @@ impl ZgbApp {
         if let Some(route) = web::current_route()
             && route != self.last_route
         {
-            self.page = self.page_for_route(&route);
+            self.page = Page::from_route(&route);
             self.apply_route_param(&route);
             self.last_route = route;
         }
     }
 
     fn apply_route_param(&mut self, route: &str) {
-        if let (Page::Topic(id), Some(param)) = (&self.page, pages::route_param(route))
-            && let Some(t) = self.topics.iter_mut().find(|t| t.meta().id == id)
+        if let (Page::Item(id), Some(param)) = (&self.page, pages::route_param(route))
+            && let Some(t) = self.topics.iter_mut().find(|t| t.id() == id)
         {
             t.set_param(param);
         }
@@ -137,13 +128,6 @@ impl ZgbApp {
         if want != self.tr.lang() {
             self.tr = I18n::new(want);
             web::set_document_lang(want.code());
-        }
-    }
-
-    fn current_title(&self) -> Option<String> {
-        match &self.page {
-            Page::Topic(id) => Some(self.tr.topic_title(id)),
-            p => p.title_key().map(|k| self.tr.t(k)),
         }
     }
 
@@ -172,6 +156,51 @@ impl ZgbApp {
             }
         }
     }
+
+    /// The central area: consent banner, then the current page.
+    fn page_ui(
+        &mut self,
+        ui: &mut egui::Ui,
+        consent: &mut StorageConsent,
+        actions: &mut Vec<Action>,
+    ) {
+        let tr = &self.tr;
+        let pal = theme::palette(ui.visuals().dark_mode);
+        if *consent == StorageConsent::Undecided {
+            shell::consent_banner(ui, tr, pal, consent, actions);
+        }
+        match &self.page {
+            Page::Landing => {
+                if let Some(p) = pages::section(ui, tr, pal, content::LANDING) {
+                    actions.push(Action::Go(p));
+                }
+            }
+            Page::Section(s) => {
+                if let Some(p) = pages::section(ui, tr, pal, *s) {
+                    actions.push(Action::Go(p));
+                }
+            }
+            Page::About => pages::about(ui, tr, pal),
+            Page::Privacy => pages::privacy(ui, tr, pal),
+            Page::License => pages::license(ui, tr, pal),
+            Page::Item(id) => {
+                let Some(meta) = content::page(id) else {
+                    return;
+                };
+                match self.topics.iter_mut().find(|t| t.id() == meta.id) {
+                    Some(t) => {
+                        let mut cx = Cx::new(tr, pal, self.settings.calm_motion);
+                        t.ui(ui, &mut cx);
+                        if let Some(go) = cx.navigation() {
+                            actions.push(Action::Go(Page::Item(go.to_string())));
+                        }
+                    }
+                    None => pages::planned(ui, tr, pal, meta),
+                }
+                shell::where_next(ui, tr, pal, meta, actions);
+            }
+        }
+    }
 }
 
 impl eframe::App for ZgbApp {
@@ -183,93 +212,39 @@ impl eframe::App for ZgbApp {
         let pal = theme::palette(ui.visuals().dark_mode);
 
         let narrow = ui.max_rect().width() < NARROW;
-        if self.first_frame {
-            if narrow {
-                self.settings.menu_open = false;
-            }
-            self.first_frame = false;
-        }
-
         let mut actions = Vec::new();
         let mut consent = self.consent;
-        // The breadcrumb title only fits beside the buttons on wider screens.
-        let title = (ui.max_rect().width() >= 640.0)
-            .then(|| self.current_title())
-            .flatten();
-        let tr = &self.tr;
 
-        egui::Panel::top("top-bar")
-            .frame(shell::chrome_frame(pal, Margin::symmetric(14, 8)))
-            .show(ui, |ui| {
-                shell::top_bar(
-                    ui,
-                    Bar {
-                        tr,
-                        pal,
-                        settings: &mut self.settings,
-                        consent: &mut consent,
-                        title,
-                        actions: &mut actions,
-                    },
-                );
-            });
-        egui::Panel::bottom("footer")
-            .frame(shell::chrome_frame(pal, Margin::symmetric(14, 6)))
-            .show(ui, |ui| shell::footer(ui, tr, pal, &mut actions));
-        egui::Panel::right("topic-menu")
-            .frame(shell::chrome_frame(pal, Margin::symmetric(12, 8)))
-            .default_size(270.0)
-            .size_range(200.0..=380.0)
-            .show_collapsible(ui, &mut self.settings.menu_open, |ui| {
-                shell::topic_menu(ui, tr, pal, &self.topics, &self.page, &mut actions);
+        egui::Panel::top("top-bar").show(ui, |ui| {
+            shell::top_bar(
+                ui,
+                Bar {
+                    tr: &self.tr,
+                    settings: &mut self.settings,
+                    consent: &mut consent,
+                    narrow,
+                    actions: &mut actions,
+                },
+            );
+        });
+        egui::Panel::bottom("footer").show(ui, |ui| shell::footer(ui, &self.tr, &mut actions));
+
+        let mut show_menu = !narrow || self.settings.menu_open;
+        egui::Panel::right("menu")
+            .resizable(false)
+            .exact_size(shell::MENU_WIDTH)
+            .show_collapsible(ui, &mut show_menu, |ui| {
+                shell::menu(ui, &self.tr, pal, &self.page, &mut actions);
             });
 
-        let page = self.page.clone();
-        let calm = self.settings.calm_motion;
         egui::CentralPanel::default()
-            .frame(
-                egui::Frame::new()
-                    .fill(pal.bg)
-                    .inner_margin(Margin::symmetric(22, 14)),
-            )
+            .frame(egui::Frame::central_panel(ui.style()).inner_margin(Margin::symmetric(16, 10)))
             .show(ui, |ui| {
                 egui::ScrollArea::vertical()
                     .auto_shrink(false)
                     .show(ui, |ui| {
-                        // Readable line length on wide screens, never wider than what's visible.
-                        ui.set_max_width(ui.available_width().min(1100.0));
-                        if consent == StorageConsent::Undecided {
-                            shell::consent_banner(ui, tr, pal, &mut consent, &mut actions);
-                        }
-                        match &page {
-                            Page::Home => {
-                                if let Some(p) = pages::home(ui, tr, pal, &self.topics) {
-                                    actions.push(Action::Go(p));
-                                }
-                            }
-                            Page::About => pages::about(ui, tr, pal),
-                            Page::Privacy => pages::privacy(ui, tr, pal),
-                            Page::License => pages::license(ui, tr, pal),
-                            Page::Topic(id) => {
-                                let mut cx = Cx::new(tr, pal, calm);
-                                if let Some(t) = self.topics.iter_mut().find(|t| t.meta().id == id)
-                                {
-                                    t.ui(ui, &mut cx);
-                                    let meta = t.meta();
-                                    shell::where_next(
-                                        ui,
-                                        tr,
-                                        pal,
-                                        meta,
-                                        &self.topics,
-                                        &mut actions,
-                                    );
-                                }
-                                if let Some(go) = cx.navigation() {
-                                    actions.push(Action::Go(Page::Topic(go.to_string())));
-                                }
-                            }
-                        }
+                        ui.set_max_width(ui.available_width().min(MAX_TEXT_WIDTH));
+                        self.page_ui(ui, &mut consent, &mut actions);
                         ui.add_space(24.0);
                     });
             });

@@ -52,10 +52,12 @@ name descriptively in the text, or keep it generic?
 **Q-012 — Tykanie.** Keep "ty" everywhere, or use "vy" on some pages
 (privacy, Projects, Workbench)?
 
-**Q-013 — Fonts and glyphs.** *Deferred, by Peter's choice.* When it comes
-up: do egui's default fonts cover all Slovak letters (ľ, ĺ, ŕ, ô, ä, č, š, ž
-and capitals), every menu glyph, and the superscript-minus for 10⁻³? Check by
-screenshot. Constraint from D-018: appealing, not flashy.
+**Q-013 — Fonts and glyphs.** *Deferred, by Peter's choice.* Partly answered
+2026-10-21 by a test that reads the fonts' character maps: egui's default fonts
+(Ubuntu-Light, Noto Emoji, emoji-icon-font, plus Hack as fallback) cover all
+Slovak letters in both cases, the superscript digits and minus, and every page,
+section and chrome glyph in use. Still open: whether the look of Ubuntu-Light is
+what you want. Constraint from D-018: appealing, not flashy.
 
 **Q-014 — Learning section name.** → **Answered: Workbench.** Slovak proposal:
 **Dielňa** (workshop), shorter than *Pracovný stôl*. OK?
@@ -72,9 +74,9 @@ sources are marked "link to check"; they get checked before the topic ships.
 (c) New rung from D-029: the sweater jolt, about 5 mJ if a body charged to
 10 kV at 100 pF (½CV²); to be sourced.
 
-**Q-017 — Menu order.** Default for now: Projects, Playground, Workbench,
-Explore, History. Alternative: the configured landing section first, History
-last.
+**Q-017 — Menu order.** Built with the default: Projects, Playground,
+Workbench, Explore, History (`Section::ALL`). Alternative: the configured landing
+section first, History last.
 
 **Q-018 — Child appeal.** → **Answered: one look for any curious mind** (D-018, D-020).
 

@@ -4,15 +4,14 @@ use crate::i18n::Lang;
 
 #[derive(Debug, Clone, Copy, PartialEq, Eq, Serialize, Deserialize, Default)]
 pub enum ThemeChoice {
-    #[default]
     Dark,
     Light,
+    /// Follow the device (default, D-018).
+    #[default]
     System,
 }
 
 impl ThemeChoice {
-    pub const ALL: [ThemeChoice; 3] = [ThemeChoice::Dark, ThemeChoice::Light, ThemeChoice::System];
-
     /// Catalog key for the label.
     pub fn key(self) -> &'static str {
         match self {
@@ -58,7 +57,7 @@ pub struct Settings {
     pub language: Option<Lang>,
     /// Whole-UI zoom (egui zoom factor). 1.0 = default.
     pub zoom: f32,
-    /// Is the right-hand topic menu open?
+    /// Is the menu open on narrow screens? (Wide screens always show it.)
     pub menu_open: bool,
     /// Reduce animation (auto-play sims start paused, etc.).
     pub calm_motion: bool,
@@ -67,10 +66,10 @@ pub struct Settings {
 impl Default for Settings {
     fn default() -> Self {
         Self {
-            theme: ThemeChoice::Dark,
+            theme: ThemeChoice::System,
             language: None,
             zoom: 1.0,
-            menu_open: true,
+            menu_open: false,
             calm_motion: false,
         }
     }

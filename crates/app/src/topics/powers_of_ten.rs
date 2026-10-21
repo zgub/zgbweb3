@@ -16,28 +16,13 @@ use serde::{Deserialize, Serialize};
 use sims::fmt::{SI_PREFIXES, group_thousands, length, mass, prefix_for_exponent, superscript};
 use sims::scale::{Arrangement, CUBE_EDGE_M, GAP_M, KID_HEIGHT_M, PITCH_M, Shape as Layout};
 
-use super::{Cx, Group, Maturity, Related, Topic, TopicMeta, heading, storage_key};
+use super::{Cx, Topic, heading, storage_key};
 use crate::args;
 use crate::i18n::I18n;
 use crate::kit;
 use crate::theme::{Palette, bold_font, heading_font, lerp};
 
-static META: TopicMeta = TopicMeta {
-    id: "powers-of-ten",
-    icon: "🔟",
-    group: Group::ScaleAndNumbers,
-    maturity: Maturity::Draft,
-    related: &[
-        Related {
-            id: "energy-ladder",
-            hook: "hook-what-is-1e13-joules",
-        },
-        Related {
-            id: "numbers",
-            hook: "hook-what-kind-of-number",
-        },
-    ],
-};
+const ID: &str = "powers-of-ten";
 
 const MIN_EXP: i32 = -18;
 const MAX_EXP: i32 = 18;
@@ -49,16 +34,16 @@ pub struct PowersOfTen {
 }
 
 impl Topic for PowersOfTen {
-    fn meta(&self) -> &'static TopicMeta {
-        &META
+    fn id(&self) -> &'static str {
+        ID
     }
 
     fn save(&self, storage: &mut dyn eframe::Storage) {
-        eframe::set_value(storage, &storage_key(META.id), self);
+        eframe::set_value(storage, &storage_key(ID), self);
     }
 
     fn load(&mut self, storage: &dyn eframe::Storage) {
-        if let Some(s) = eframe::get_value(storage, &storage_key(META.id)) {
+        if let Some(s) = eframe::get_value(storage, &storage_key(ID)) {
             *self = s;
         }
     }
@@ -72,7 +57,12 @@ impl Topic for PowersOfTen {
 
     fn ui(&mut self, ui: &mut egui::Ui, cx: &mut Cx) {
         let (tr, pal) = (cx.tr, cx.pal);
-        heading(ui, cx, &META);
+        heading(
+            ui,
+            cx.tr,
+            cx.pal,
+            content::page(ID).expect("on the site map"),
+        );
 
         // Controls
         ui.horizontal(|ui| {
@@ -125,7 +115,7 @@ impl Topic for PowersOfTen {
         ui.add_space(8.0);
         ui.label(RichText::new(story(tr, e)).size(17.5));
         if e < 0 {
-            cx.link(ui, "numbers", "hook-what-kind-of-number");
+            cx.link(ui, "number-bases", "hook-what-kind-of-number");
         } else {
             ui.add_space(6.0);
             kit::model_alert(ui, pal, tr, &tr.t("pot-model"));

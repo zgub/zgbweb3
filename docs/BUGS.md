@@ -6,6 +6,7 @@ Format: **B-nnn — title** (date, status: open / fixed in <commit>). Steps, exp
 The skeleton was type-checked and tested natively only; the build sandbox
 could not download the `wasm32-unknown-unknown` std. First `trunk serve`
 on a real machine may surface wasm-only compile errors (web.rs, main.rs wasm branch).
+2026-10-21: still unverified after the v0.3 restructure (same sandbox limit).
 
 **B-002 — "Forget everything" on native doesn't delete the file** (2026-10-11, open, low)
 Native eframe keeps storage in its own dir and in memory; we only clear
@@ -19,6 +20,6 @@ overlap the bars on narrow screens.
 `persist_window: false` stops saving but eframe still loads the saved size.
 Workaround: delete `~/.local/share/zgbweb3/app.ron` before exact-size screenshots.
 
-**B-005 — "→" comes from the Hack fallback font** (2026-10-11, open, cosmetic)
+**B-005 — "→" comes from the Hack fallback font** (2026-10-11, obsolete 2026-10-21: Nunito removed by D-018; → still comes from Hack, which suits the stock egui look)
 Nunito has no arrows; the hook links' → is drawn in Hack (slightly different
 weight). Could add an arrow glyph the same way as superscript minus.

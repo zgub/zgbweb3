@@ -1,19 +1,20 @@
-## zgb — English catalog
+## zgub.net — English catalog
 ## Every key here must also exist in sk.ftl (a test checks both ways).
-## Style: short, concrete, for curious 9–14-year-olds. Things that can't want
-## don't "want", "try" or "seek".
+## Style: plain and concrete, for any curious mind (6 or 60). Things that can't
+## want don't "want", "try" or "seek". No names of private people (D-023).
 
 ## --- Chrome ---------------------------------------------------------------
 
+site-name = zgub.net
 nav-home = Home
-nav-topics = Topics
-nav-topics-hover = Show or hide the list of topics
+nav-menu = ☰ Menu
+nav-menu-hover = Show or hide the menu
 nav-settings = Settings
+menu-title = Menu
 
-settings-look = Look
-theme-dark = 🌙 Dark
-theme-light = ☀ Light
-theme-system = 💻 Follow my device
+theme-dark = Dark
+theme-light = Light
+theme-system = Follow my device
 settings-size = Size
 settings-size-reset = reset
 settings-calm = Calm motion (fewer animations)
@@ -31,99 +32,92 @@ consent-no = No thanks
 footer-privacy = Privacy
 footer-license = License
 footer-about = About
+footer-powered = Powered by
+footer-and = and
 
 where-next = Where next?
 grown-ups = For the grown-ups: where the numbers come from
 model-alert = Model alert!
-planned-intro = This one is still on the drawing board. The plan:
 draft-note = Draft — to be finished before the site goes public.
+planned-body = Nothing here yet. This page is on the map and will be built.
+section-empty = Nothing here yet.
 
-maturity-planned = coming soon
-maturity-draft = draft
-maturity-ready = ready
+status-planned = planned
+status-draft = draft
 
-group-scale = Scale & numbers
-group-chance = Chance & statistics
-group-physics = Physics
-group-maths = Maths
+## --- Sections -------------------------------------------------------------
 
-## --- Home -----------------------------------------------------------------
-
-home-title = Big numbers, small numbers, and how the world adds up
-home-intro = Little experiments to poke at. Move the sliders, roll the dice, see what breaks. Made for curious kids — grown-ups welcome.
+section-projects = Projects
+    .intro = Things I build as a hobby: electronics, radio, small computers, software.
+section-playground = Playground
+    .intro = Games that play with an idea. Each one links to the topic behind it.
+section-workbench = Workbench
+    .intro = Things I am still learning, written as I learn them. Unfinished, and sometimes wrong.
+section-explore = Explore
+    .intro = Things I understand and want to explain. Poke them, change the numbers, see what happens.
+section-history = History
+    .intro = Short pieces about the people behind the ideas.
 
 ## --- About, privacy, license ----------------------------------------------
 
-about-body = zgb is a small collection of interactive explainers about scale, chance, physics and maths. Everything runs in your browser; nothing you do here is sent anywhere.
+about-body = zgub.net is my personal site: hobby projects, games, things I am learning and things I can explain. Everything runs in your browser.
 about-tech = Built with Rust, egui and WebAssembly.
 about-source = Source code link: coming later.
 
-privacy-tracking = No accounts, no analytics, no advertising and no cookies.
+privacy-tracking = No tracking, no analytics, no targeted ads and no cookies. Not because a law says so: I don't like being tracked, so I don't track you.
     .title = No tracking
 privacy-device = If you choose “Yes, remember”, your settings and the state of the experiments are saved in your browser's local storage on this device. They are never sent to us. Your answer to that question is remembered too, so we don't ask every time. Settings ⚙ → “Forget everything” deletes it all.
     .title = What stays on your device
 privacy-logs = The web server that delivers this page may record standard technical data (IP address, time, requested address, browser type) to keep the service running and secure. How long they are kept: to be decided.
     .title = Server logs
-privacy-changes = If advertising or accounts are ever added, this page will be updated and you will be asked before anything new is stored or shared.
+privacy-changes = If accounts or comments are ever added, this page will be updated and you will be asked before anything new is stored.
     .title = If this changes
 privacy-operator = Operator and contact: to be decided.
     .title = Who runs this site
 
-license-code = Program code: GNU AGPL v3.0 or later.
-license-content = Texts and pictures: Creative Commons BY-SA 4.0.
+license-code = Program code: GNU AGPL v3.0 or later (to be confirmed).
+license-content = Texts and pictures by zgub: Creative Commons BY 4.0. Reuse them freely with a link or credit. Work by others is credited where it is used, under its own licence.
 license-third = Parts made by others:
     .title = Third-party parts
 
-## --- Topics: titles, blurbs, plans -----------------------------------------
+## --- Pages: titles, and a blurb once a page exists -------------------------
 
-topic-numbers = What is a number?
-    .blurb = Counting, then zero, then minus, then halves, then √2 — and finally a number that turns things by 90°.
-    .plan =
-        One number line that grows with each idea: counting numbers → zero → negatives (thermometer, lift floors)
-        Fractions and decimals: cut a bar into pieces; 0.1 is one slab of the powers-of-ten cube
-        √2: the diagonal of a square is not any fraction (the classic proof, told as a story)
-        π and friends: the line has no gaps — the real numbers
-        i: multiplying by −1 turns around (180°); is there a number that turns only 90°? The line becomes a plane
-        Each new kind of number answers a question the old kind could not (take away more than you have, share one cake between three, …)
+page-lora-mesh = Radio and LoRa mesh
+page-home-lab = Raspberry Pi and home lab
+page-sensors = UV and air sensors
+page-flysch = Flysch notebook
+page-space-settlers = Space settlers game
 
-topic-powers-of-ten = Powers of ten
-    .blurb = One puzzle cube, ten in a row, a hundred in a slab, a thousand in a big cube. Then do it again — and again.
-
-topic-energy-ladder = The energy ladder
-    .blurb = How much energy has a flying mosquito? A car? The space station? Line them up and count them in sugar cubes.
-
-topic-dice-bell = Why dice make a bell
+page-dice-bell = Why dice make a bell
     .blurb = One die is flat and fair. Add up two, five, twenty dice and a bell curve appears out of nowhere.
-
-topic-gas-box = Gas in a box
+page-gas-box = Gas in a box
     .blurb = Hundreds of bouncing balls make pressure and temperature — and slowly forget where they started.
-    .plan =
-        2D gas of hard discs, elastic collisions, adjustable number of particles and box size
-        Speed histogram that settles into the Maxwell–Boltzmann distribution (in 2D: Rayleigh)
-        Pressure from hits on the walls; push a piston and watch the gas warm up
-        Two gases behind a wall: remove it, watch them mix (and never un-mix)
-        Physics in sims::gas, drawn with the egui painter first, wgpu if we need many particles
 
-topic-linear-maps = Matrices move the plane
-    .blurb = A 2×2 matrix is just where the two arrows î and ĵ end up. Drag them and watch the whole grid follow.
-    .plan =
-        Draggable basis arrows î, ĵ; the grid and a picture (a house, a smiley) change live
-        Determinant as the area of the unit square; negative = the picture flips over
-        Composition: first A, then B — compare with B·A
-        Eigenvectors: the arrows that only stretch, highlighted
+page-statistics = Statistics and probability
+page-music-theory = Music theory
+page-linear-algebra = Linear algebra
+page-tensor-calculus = Tensor calculus
 
-## --- "Where next?" hooks ----------------------------------------------------
+page-exponential = Exponential growth and orders of magnitude
+page-powers-of-ten = Powers of ten
+    .blurb = One puzzle cube, ten in a row, a hundred in a slab, a thousand in a big cube. Then do it again — and again.
+page-number-bases = Number bases
+page-logic-gates = Logic and gates
+page-electricity = Electricity
+page-energy-ladder = The energy ladder
+    .blurb = How much energy has a flying mosquito? A car? The space station? Line them up and count them in sugar cubes.
+page-thermodynamics = Basic thermodynamics
 
-hook-how-big-is-a-billion = How big is a billion, really?
-hook-turning-with-a-matrix = Turning by 90° with a matrix
+## --- "Where next?" questions ------------------------------------------------
+
 hook-why-random-makes-a-bell = Why do random things make a bell?
-hook-energy-of-one-molecule = How much energy has one jiggling molecule?
-hook-numbers-that-turn = Numbers that turn things: i
 hook-what-is-1e9 = What does 10⁹ actually mean?
 hook-heat-is-jiggling = Where does heat come from? Jiggling molecules
 hook-molecules-make-a-bell = Billions of molecules, one bell-shaped speed curve
 hook-what-is-1e13-joules = What is 10¹³ joules? Meet the energy ladder
 hook-what-kind-of-number = 0.001 — what kind of number is that?
+hook-why-doubling-surprises = Why does doubling surprise everyone?
+hook-what-is-a-volt = What is a volt, and why does a sweater spark?
 
 ## --- Energy ladder ----------------------------------------------------------
 

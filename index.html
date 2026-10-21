@@ -4,9 +4,12 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no" />
     <meta name="color-scheme" content="dark light" />
-    <title>zgb — big numbers, small numbers</title>
+    <title>zgub.net</title>
+    <!-- Kept for link previews when someone shares a link (D-021). -->
     <meta name="description"
-        content="Interactive explainers for curious kids: powers of ten, the energy ladder from a molecule to the ISS, dice and the bell curve, and more." />
+        content="zgub's site: hobby projects, games, things I am learning and things I can explain. Interactive, in your browser." />
+    <!-- Shared by word and links, not by crawlers (D-021). The server sends the same as X-Robots-Tag. -->
+    <meta name="robots" content="noindex, nofollow, noarchive, noimageindex" />
 
     <link data-trunk rel="rust" href="crates/app/Cargo.toml" data-bin="zgbweb3" data-wasm-opt="z" />
 
@@ -15,8 +18,8 @@
             margin: 0;
             height: 100%;
             overflow: hidden;
-            background: #161a30; /* = theme DARK.bg, avoids a flash before the app paints */
-            color: #eceef9;
+            background: #1b1b1b; /* egui's dark panel fill, avoids a flash before the app paints */
+            color: #d2d2d2;
             font-family: system-ui, sans-serif;
         }
         body { display: flex; flex-direction: column; }
@@ -39,7 +42,7 @@
     <canvas id="zgb_canvas"></canvas>
     <div id="loading">Loading…</div>
     <noscript>
-        This site is a set of interactive science and maths experiments and needs JavaScript and WebAssembly.
+        zgub.net is an interactive site and needs JavaScript and WebAssembly.
     </noscript>
 </body>
 </html>

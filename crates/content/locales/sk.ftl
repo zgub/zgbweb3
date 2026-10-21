@@ -1,19 +1,21 @@
-## zgb — slovenský katalóg
+## zgub.net — slovenský katalóg
 ## Každý kľúč musí byť aj v en.ftl (test to kontroluje oboma smermi).
-## Štýl: tykáme, krátko a konkrétne, pre zvedavé deti 9–14 rokov. Veci, ktoré
-## nemôžu nič chcieť, nič „nechcú“, „neskúšajú“ ani „nehľadajú“.
+## Štýl: tykáme, jednoducho a konkrétne, pre každú zvedavú hlavu (6 aj 60).
+## Veci, ktoré nemôžu nič chcieť, nič „nechcú“, „neskúšajú“ ani „nehľadajú“.
+## Žiadne mená súkromných osôb (D-023).
 
 ## --- Rám stránky -------------------------------------------------------------
 
+site-name = zgub.net
 nav-home = Domov
-nav-topics = Témy
-nav-topics-hover = Zobraziť alebo skryť zoznam tém
+nav-menu = ☰ Menu
+nav-menu-hover = Zobraziť alebo skryť menu
 nav-settings = Nastavenia
+menu-title = Menu
 
-settings-look = Vzhľad
-theme-dark = 🌙 Tmavý
-theme-light = ☀ Svetlý
-theme-system = 💻 Podľa zariadenia
+theme-dark = Tmavý
+theme-light = Svetlý
+theme-system = Podľa zariadenia
 settings-size = Veľkosť
 settings-size-reset = pôvodná
 settings-calm = Pokojný pohyb (menej animácií)
@@ -31,99 +33,92 @@ consent-no = Nie, ďakujem
 footer-privacy = Súkromie
 footer-license = Licencia
 footer-about = O stránke
+footer-powered = Beží na
+footer-and = a
 
 where-next = Kam ďalej?
 grown-ups = Pre dospelých: odkiaľ sú tie čísla
 model-alert = Pozor, model!
-planned-intro = Táto téma je zatiaľ len na rysovacej doske. Plán:
 draft-note = Návrh — pred zverejnením stránky ho ešte dokončíme.
+planned-body = Zatiaľ tu nič nie je. Stránka je na mape a príde na rad.
+section-empty = Zatiaľ tu nič nie je.
 
-maturity-planned = čoskoro
-maturity-draft = rozpracované
-maturity-ready = hotové
+status-planned = v pláne
+status-draft = návrh
 
-group-scale = Veľkosti a čísla
-group-chance = Náhoda a štatistika
-group-physics = Fyzika
-group-maths = Matematika
+## --- Sekcie -------------------------------------------------------------------
 
-## --- Domov -------------------------------------------------------------------
-
-home-title = Veľké čísla, malé čísla a ako to celé do seba zapadá
-home-intro = Malé pokusy, do ktorých môžeš šťuchať. Hýb posuvníkmi, hádž kockami, skúšaj, čo sa pokazí. Pre zvedavé deti — dospelí sú tiež vítaní.
+section-projects = Projekty
+    .intro = Veci, ktoré staviam ako koníček: elektronika, rádio, malé počítače, softvér.
+section-playground = Ihrisko
+    .intro = Hry, ktoré sa hrajú s nejakou myšlienkou. Každá odkazuje na tému, z ktorej vychádza.
+section-workbench = Dielňa
+    .intro = Veci, ktoré sa ešte učím, zapisované počas učenia. Nedokončené a niekedy aj chybné.
+section-explore = Objavuj
+    .intro = Veci, ktorým rozumiem a chcem ich vysvetliť. Šťuchni do nich, zmeň čísla, pozri, čo sa stane.
+section-history = História
+    .intro = Krátke príbehy o ľuďoch, ktorí stoja za myšlienkami.
 
 ## --- O stránke, súkromie, licencia ----------------------------------------------
 
-about-body = zgb je malá zbierka interaktívnych vysvetlení o veľkostiach, náhode, fyzike a matematike. Všetko beží v tvojom prehliadači; nič z toho, čo tu robíš, sa nikam neposiela.
+about-body = zgub.net je moja osobná stránka: koníčkové projekty, hry, veci, ktoré sa učím, a veci, ktoré viem vysvetliť. Všetko beží v tvojom prehliadači.
 about-tech = Vyrobené v jazyku Rust s knižnicou egui a technológiou WebAssembly.
 about-source = Odkaz na zdrojový kód: neskôr.
 
-privacy-tracking = Žiadne účty, žiadna analytika, žiadne reklamy a žiadne cookies.
+privacy-tracking = Žiadne sledovanie, žiadna analytika, žiadne cielené reklamy a žiadne cookies. Nie preto, že to káže zákon: nemám rád, keď ma niekto sleduje, tak nesledujem ani teba.
     .title = Žiadne sledovanie
 privacy-device = Ak zvolíš „Áno, pamätaj si“, tvoje nastavenia a stav pokusov sa uložia do lokálneho úložiska prehliadača na tomto zariadení. Nikdy sa neposielajú nám. Zapamätá sa aj tvoja odpoveď na túto otázku, aby sme sa nepýtali zakaždým. Nastavenia ⚙ → „Zabudni všetko“ to celé vymaže.
     .title = Čo zostáva v tvojom zariadení
 privacy-logs = Webový server, ktorý túto stránku doručuje, môže zaznamenávať bežné technické údaje (IP adresu, čas, požadovanú adresu, typ prehliadača), aby služba fungovala a bola bezpečná. Ako dlho sa uchovávajú: zatiaľ nerozhodnuté.
     .title = Záznamy servera
-privacy-changes = Ak by sa niekedy pridali reklamy alebo účty, táto stránka sa aktualizuje a pred uložením alebo zdieľaním čohokoľvek nového sa ťa opýtame.
+privacy-changes = Ak by sa niekedy pridali účty alebo komentáre, táto stránka sa aktualizuje a pred uložením čohokoľvek nového sa ťa opýtame.
     .title = Ak sa niečo zmení
 privacy-operator = Prevádzkovateľ a kontakt: zatiaľ nerozhodnuté.
     .title = Kto prevádzkuje túto stránku
 
-license-code = Programový kód: GNU AGPL v3.0 alebo novšia.
-license-content = Texty a obrázky: Creative Commons BY-SA 4.0.
+license-code = Programový kód: GNU AGPL v3.0 alebo novšia (ešte sa potvrdí).
+license-content = Texty a obrázky od zgub: Creative Commons BY 4.0. Môžeš ich voľne použiť s odkazom alebo uvedením autora. Práce iných sú uvedené tam, kde sú použité, pod ich vlastnou licenciou.
 license-third = Časti, ktoré vyrobili iní:
     .title = Časti tretích strán
 
-## --- Témy: názvy, popisy, plány -----------------------------------------------
+## --- Stránky: názvy a krátky popis, keď stránka existuje -------------------
 
-topic-numbers = Čo je to číslo?
-    .blurb = Počítanie, potom nula, potom mínus, potom polovice, potom √2 — a nakoniec číslo, ktoré otáča veci o 90°.
-    .plan =
-        Jedna číselná os, ktorá rastie s každým nápadom: prirodzené čísla → nula → záporné čísla (teplomer, poschodia vo výťahu)
-        Zlomky a desatinné čísla: rozkrájaj tyčku na kúsky; 0,1 je jeden plát kocky z mocnín desiatky
-        √2: uhlopriečka štvorca sa nedá zapísať ako zlomok (klasický dôkaz, vyrozprávaný ako príbeh)
-        π a spol.: na osi nie sú žiadne diery — reálne čísla
-        i: násobenie −1 otáča o 180°; existuje číslo, ktoré otočí len o 90°? Z osi sa stane rovina
-        Každý nový druh čísel odpovedá na otázku, na ktorú starý druh nestačil (zober viac, ako máš; rozdeľ jednu tortu medzi troch; …)
+page-lora-mesh = Rádio a LoRa sieť
+page-home-lab = Raspberry Pi a domáce laboratórium
+page-sensors = Senzory UV a ovzdušia
+page-flysch = Zápisník Flysch
+page-space-settlers = Hra o vesmírnych osadníkoch
 
-topic-powers-of-ten = Mocniny desiatky
-    .blurb = Jedna kocka-hlavolam, desať v rade, sto v pláte, tisíc vo veľkej kocke. A potom znova — a znova.
-
-topic-energy-ladder = Energetický rebrík
-    .blurb = Koľko energie má letiaci komár? Auto? Vesmírna stanica? Zoraď ich vedľa seba a počítaj v kockách cukru.
-
-topic-dice-bell = Prečo kocky robia zvon
+page-dice-bell = Prečo kocky robia zvon
     .blurb = Jedna kocka je plochá a férová. Sčítaj dve, päť, dvadsať kociek a zrazu sa objaví zvonová krivka.
-
-topic-gas-box = Plyn v krabici
+page-gas-box = Plyn v krabici
     .blurb = Stovky poskakujúcich guličiek vytvoria tlak a teplotu — a postupne zabudnú, kde začínali.
-    .plan =
-        2D plyn z tvrdých diskov, pružné zrážky, nastaviteľný počet častíc a veľkosť krabice
-        Histogram rýchlostí, ktorý sa ustáli na Maxwellovom–Boltzmannovom rozdelení (v 2D: Rayleighovom)
-        Tlak z nárazov na steny; zatlač piest a sleduj, ako sa plyn zohreje
-        Dva plyny oddelené stenou: odstráň ju a sleduj, ako sa zmiešajú (a už nikdy neodmiešajú)
-        Fyzika v sims::gas, kreslenie najprv cez egui painter, wgpu ak bude treba veľa častíc
 
-topic-linear-maps = Matice hýbu rovinou
-    .blurb = Matica 2×2 je len to, kam doletia dve šípky î a ĵ. Ťahaj ich a sleduj, ako sa s nimi pohne celá mriežka.
-    .plan =
-        Šípky î, ĵ, ktoré sa dajú ťahať; mriežka a obrázok (domček, smajlík) sa menia naživo
-        Determinant ako plocha jednotkového štvorca; záporný = obrázok sa preklopí
-        Skladanie: najprv A, potom B — porovnaj s B·A
-        Vlastné vektory: zvýraznené šípky, ktoré sa iba natiahnu
+page-statistics = Štatistika a pravdepodobnosť
+page-music-theory = Hudobná teória
+page-linear-algebra = Lineárna algebra
+page-tensor-calculus = Tenzorový počet
+
+page-exponential = Exponenciálny rast a rády veľkosti
+page-powers-of-ten = Mocniny desiatky
+    .blurb = Jedna kocka-hlavolam, desať v rade, sto v pláte, tisíc vo veľkej kocke. A potom znova — a znova.
+page-number-bases = Číselné sústavy
+page-logic-gates = Logika a hradlá
+page-electricity = Elektrina
+page-energy-ladder = Energetický rebrík
+    .blurb = Koľko energie má letiaci komár? Auto? Vesmírna stanica? Zoraď ich vedľa seba a počítaj v kockách cukru.
+page-thermodynamics = Základy termodynamiky
 
 ## --- „Kam ďalej?“ otázky ------------------------------------------------------
 
-hook-how-big-is-a-billion = Aká veľká je vlastne miliarda?
-hook-turning-with-a-matrix = Otáčanie o 90° maticou
 hook-why-random-makes-a-bell = Prečo náhoda robí zvon?
-hook-energy-of-one-molecule = Koľko energie má jedna roztrasená molekula?
-hook-numbers-that-turn = Čísla, ktoré otáčajú: i
 hook-what-is-1e9 = Čo vlastne znamená 10⁹?
 hook-heat-is-jiggling = Odkiaľ sa berie teplo? Z trasúcich sa molekúl
 hook-molecules-make-a-bell = Miliardy molekúl, jedna zvonová krivka rýchlostí
 hook-what-is-1e13-joules = Čo je 10¹³ joulov? Pozri energetický rebrík
 hook-what-kind-of-number = 0,001 — aké je to vlastne číslo?
+hook-why-doubling-surprises = Prečo zdvojnásobovanie každého prekvapí?
+hook-what-is-a-volt = Čo je volt a prečo iskrí sveter?
 
 ## --- Energetický rebrík --------------------------------------------------------
 

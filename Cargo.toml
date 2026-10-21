@@ -1,17 +1,18 @@
 [workspace]
 resolver = "3"
-members = ["crates/app", "crates/sims", "crates/server"]
+members = ["crates/app", "crates/content", "crates/sims", "crates/server"]
 # `cargo run` / `cargo check` at the root targets the app by default.
-default-members = ["crates/app", "crates/sims"]
+default-members = ["crates/app", "crates/content", "crates/sims"]
 
 [workspace.package]
-version = "0.2.0"
+version = "0.3.0"
 edition = "2024"
 license = "AGPL-3.0-or-later"
 rust-version = "1.95"
 
 [workspace.dependencies]
 sims = { path = "crates/sims" }
+content = { path = "crates/content" }
 eframe = { version = "0.36", default-features = false, features = [
     "default_fonts",
     "wgpu",

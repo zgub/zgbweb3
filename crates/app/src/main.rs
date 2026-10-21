@@ -16,7 +16,7 @@ fn main() -> eframe::Result {
         // size: delete ~/.local/share/zgbweb3/app.ron for exact-size screenshots.)
         persist_window: forced.is_none(),
         viewport: egui::ViewportBuilder::default()
-            .with_title("zgb")
+            .with_title("zgub.net")
             .with_inner_size(size)
             .with_min_inner_size([360.0, 480.0]),
         ..Default::default()

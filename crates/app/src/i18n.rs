@@ -1,10 +1,9 @@
 //! Localisation with Project Fluent (`.ftl` catalogs).
 //!
-//! Catalogs live in `crates/app/locales/<lang>.ftl`. Today they are compiled in,
-//! so the page works offline and never shows raw keys. The seam for later is
-//! [`I18n::replace_catalog`]: fetch a newer `.ftl` from the server (it already
-//! serves `/i18n/<lang>.ftl`) and swap it in at runtime. English is always kept
-//! as the fallback for keys a catalog lacks.
+//! Catalogs live in `crates/content/locales/<lang>.ftl` and are compiled in
+//! (DECISIONS D-013, D-032): the page works offline, never shows raw keys, and
+//! there are no text files on the server for crawlers to read. English is the
+//! fallback for keys a catalog lacks.
 //!
 //! Why Fluent: Slovak has four plural forms (1 kocka, 2 kocky, 1,5 kocky,
 //! 5 kociek); Fluent selects them by CLDR rules inside the translation, so code
@@ -65,8 +64,8 @@ impl Lang {
 
     pub fn builtin_catalog(self) -> &'static str {
         match self {
-            Lang::En => include_str!("../locales/en.ftl"),
-            Lang::Sk => include_str!("../locales/sk.ftl"),
+            Lang::En => content::locales::EN,
+            Lang::Sk => content::locales::SK,
         }
     }
 }
@@ -122,14 +121,6 @@ impl I18n {
         self.lang
     }
 
-    /// Swap in a catalog for the current language (e.g. fetched from the server).
-    /// On error the current catalog stays.
-    #[allow(dead_code)] // used once catalogs are served (DECISIONS D-013)
-    pub fn replace_catalog(&mut self, source: String) -> Result<(), Vec<String>> {
-        self.bundle = make_bundle(self.lang, source)?;
-        Ok(())
-    }
-
     fn format(&self, key: &str, attr: Option<&str>, args: Option<&FluentArgs>) -> Option<String> {
         for bundle in std::iter::once(&self.bundle).chain(self.fallback.as_ref()) {
             let Some(msg) = bundle.get_message(key) else {
@@ -183,13 +174,14 @@ impl I18n {
         localize_decimal(s, self.lang.decimal_sep())
     }
 
-    /// Topic title and blurb, from `topic-<id>` and its `.blurb`.
-    pub fn topic_title(&self, id: &str) -> String {
-        self.t(&format!("topic-{id}"))
+    /// Page title, from `page-<id>`.
+    pub fn page_title(&self, id: &str) -> String {
+        self.t(&format!("page-{id}"))
     }
 
-    pub fn topic_blurb(&self, id: &str) -> String {
-        self.attr(&format!("topic-{id}"), "blurb")
+    /// Optional one-line description, from `page-<id>.blurb`.
+    pub fn page_blurb(&self, id: &str) -> Option<String> {
+        self.format(&format!("page-{id}"), Some("blurb"), None)
     }
 }
 

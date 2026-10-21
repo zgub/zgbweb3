@@ -1,3 +1,8 @@
+> **Outdated (2026-10-21).** Written for the kids-only site. The site is now five
+> sections for any curious mind (BRIEF.md, D-017, D-020); the live page list is
+> `crates/content/src/lib.rs` (`PAGES`). The question-linked graph idea below still
+> holds and extends across sections (D-029). To be rewritten.
+
 # Curriculum — proposal v0 (2026-10-11)
 
 Audience: curious kids ~9–14, and the grown-up next to them. Every topic must

@@ -1,0 +1,9 @@
+[package]
+name = "content"
+description = "Site map and texts of zgub.net: the five sections, every page's id, glyph, status and cross-links, and the English/Slovak catalogs. Compiled into the app (DECISIONS D-032)."
+version.workspace = true
+edition.workspace = true
+license.workspace = true
+
+[dependencies]
+serde.workspace = true

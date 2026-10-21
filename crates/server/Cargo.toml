@@ -1,6 +1,6 @@
 [package]
 name = "zgbweb3-server"
-description = "Placeholder axum backend. Today: serves the built static site. Later: sessions, accounts, saved state."
+description = "Thin axum server for zgub.net: serves the built site with crawler-refusing headers; /api reserved for later (DECISIONS D-032)."
 version.workspace = true
 edition.workspace = true
 license.workspace = true

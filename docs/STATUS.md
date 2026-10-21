@@ -1,5 +1,52 @@
 # Status
 
+## 2026-10-21 — v0.3.0: five-section shell in the old zgbweb look, static-first
+
+**Done**
+- New crate `crates/content` (D-032): the site map — five sections (Projects,
+  Playground, Workbench, Explore, History; D-017, D-027, D-030), every page with a
+  permanent id, glyph, status and cross-links — and the EN/SK catalogs, compiled in.
+- Pages on the map: 5 projects, 2 playground, 4 workbench, 7 explore (all planned
+  except the three that already had code). History is empty until Q-024.
+- Kept the three working topics under their ids: `powers-of-ten` and
+  `energy-ladder` (Explore), `dice-bell` (Playground). Dropped the old planned
+  stubs `numbers`, `linear-maps`; `gas-box` moved to Playground as planned.
+- Look (D-018): stock egui visuals and fonts; Nunito, the indigo/paper theme,
+  per-subject menu colours, rounded cards and coloured buttons removed (D-012
+  superseded). Top bar: site name, theme buttons 🌙 ☀ 💻, EN | SK, ⚙. Right menu:
+  200 pt fixed, "🖱 Menu", section headings, glyph rows; planned pages dimmed,
+  drafts marked. Centre: heading, separator, page, "Where next?" links. One-line
+  footer. Default theme now follows the device.
+- Routing: `#/` = landing section (`content::LANDING` = Explore, D-022),
+  `#/<section>`, `#/<page>[/<param>]`, about/privacy/license.
+- Server (D-032): `/i18n` removed; `robots.txt` disallow-all; `X-Robots-Tag`,
+  `tdm-reservation: 1`; named AI crawlers refused with 403; `/api` reserved (404 JSON).
+  `index.html`: robots meta, neutral description, egui background colour.
+- Texts: privacy page states the no-tracking stance in Peter's voice (D-024);
+  content licence text CC BY 4.0 (D-010, D-025).
+- Docs: D-032, notes on D-004/D-008/D-013/D-022, BRIEF tech section, Q-013
+  partly answered, Q-017 built with the default, CURRICULUM marked outdated,
+  README and CLAUDE.md updated.
+
+**Verified**
+- `cargo clippy --workspace --all-targets` clean; `cargo test --workspace`:
+  5 content + 18 sims + 13 app + 1 server tests pass. New tests: site map (ids,
+  reserved routes, links, ready pages link across sections), texts for every page
+  and section in both languages, routes round-trip, every glyph and Slovak letter
+  exists in the fonts (reads the font files; checked that it catches a missing 🧊),
+  crawler user agents.
+- Server probed with curl: headers on every response, robots.txt, /api 404 JSON,
+  GPTBot user agent gets 403.
+- Screenshots (native, software GL): landing EN 1280×800, powers of ten SK at 10³,
+  planned page EN at 400×860 with the menu folded.
+- Not verified: wasm build (B-001).
+
+**Next**
+1. `trunk serve` on a real machine (B-001).
+2. Answer Q-021/Q-014 (keep Objavuj / Dielňa?), Q-022, Q-023, Q-024.
+3. First new Explore page; then the energy ladder topic rebuilt on ENERGY-LADDER.md data.
+4. Rewrite CURRICULUM.md for the five sections.
+
 ## 2026-10-11 (evening) — renamed to zgbweb3, handed over for a new GitHub repo
 
 Packages renamed (`zgbweb3`, `zgbweb3-server`), native storage id `zgbweb3`, D-016.

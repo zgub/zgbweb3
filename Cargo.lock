@@ -775,6 +775,13 @@ dependencies = [
 ]
 
 [[package]]
+name = "content"
+version = "0.3.0"
+dependencies = [
+ "serde",
+]
+
+[[package]]
 name = "core-foundation"
 version = "0.9.4"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -3195,7 +3202,7 @@ checksum = "e3a9fe34e3e7a50316060351f37187a3f546bce95496156754b601a5fa71b76e"
 
 [[package]]
 name = "sims"
-version = "0.2.0"
+version = "0.3.0"
 dependencies = [
  "rand",
  "serde",
@@ -4761,8 +4768,9 @@ dependencies = [
 
 [[package]]
 name = "zgbweb3"
-version = "0.2.0"
+version = "0.3.0"
 dependencies = [
+ "content",
  "eframe",
  "egui",
  "env_logger",
@@ -4772,6 +4780,7 @@ dependencies = [
  "rand",
  "serde",
  "sims",
+ "skrifa",
  "unic-langid",
  "wasm-bindgen-futures",
  "web-sys",
@@ -4779,7 +4788,7 @@ dependencies = [
 
 [[package]]
 name = "zgbweb3-server"
-version = "0.2.0"
+version = "0.3.0"
 dependencies = [
  "axum",
  "tokio",

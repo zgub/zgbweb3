@@ -4,20 +4,11 @@ use egui::{CornerRadius, RichText, Sense, Shape, Stroke, pos2, vec2};
 use serde::{Deserialize, Serialize};
 use sims::stats::{DiceSums, normal_pdf};
 
-use super::{Cx, Group, Maturity, Related, Topic, TopicMeta, heading, storage_key};
+use super::{Cx, Topic, heading, storage_key};
 use crate::args;
 use crate::kit;
 
-static META: TopicMeta = TopicMeta {
-    id: "dice-bell",
-    icon: "🎲",
-    group: Group::Chance,
-    maturity: Maturity::Draft,
-    related: &[Related {
-        id: "gas-box",
-        hook: "hook-molecules-make-a-bell",
-    }],
-};
+const ID: &str = "dice-bell";
 
 #[derive(Serialize, Deserialize)]
 #[serde(default)]
@@ -67,16 +58,16 @@ impl CltDice {
 }
 
 impl Topic for CltDice {
-    fn meta(&self) -> &'static TopicMeta {
-        &META
+    fn id(&self) -> &'static str {
+        ID
     }
 
     fn save(&self, storage: &mut dyn eframe::Storage) {
-        eframe::set_value(storage, &storage_key(META.id), &self.cfg);
+        eframe::set_value(storage, &storage_key(ID), &self.cfg);
     }
 
     fn load(&mut self, storage: &dyn eframe::Storage) {
-        if let Some(cfg) = eframe::get_value::<Saved>(storage, &storage_key(META.id)) {
+        if let Some(cfg) = eframe::get_value::<Saved>(storage, &storage_key(ID)) {
             self.cfg = cfg;
             self.sim = DiceSums::new(self.cfg.dice, self.cfg.sides, self.seed);
         }
@@ -84,7 +75,12 @@ impl Topic for CltDice {
 
     fn ui(&mut self, ui: &mut egui::Ui, cx: &mut Cx) {
         let (tr, pal) = (cx.tr, cx.pal);
-        heading(ui, cx, &META);
+        heading(
+            ui,
+            cx.tr,
+            cx.pal,
+            content::page(ID).expect("on the site map"),
+        );
 
         let before = (self.cfg.dice, self.cfg.sides);
         kit::panel(ui, pal, None, |ui| {

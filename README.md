@@ -1,6 +1,7 @@
 # zgbweb3
 
-Interactive science & maths explainers for curious kids — Rust, egui, WebAssembly.
+zgub.net — a personal site: hobby projects, games, things I am learning and
+things I can explain. Rust, egui, WebAssembly. English and Slovak.
 
 ## Run
 
@@ -28,24 +29,25 @@ cargo run -p zgbweb3-server -- dist 127.0.0.1:8090
 Tests:
 
 ```sh
-cargo test -p sims       # quick: pure logic
-cargo test               # everything (builds wgpu, slow the first time)
+cargo test -p sims -p content   # quick: pure logic and the site map
+cargo test                      # everything (builds wgpu, slow the first time)
 ```
 
 ## Layout
 
 ```
-crates/sims     pure maths/physics, no UI, unit tests
-crates/app      egui app: shell, pages, topics (one module per topic), theme, i18n
-crates/app/locales   en.ftl, sk.ftl — every visible text (Project Fluent)
-crates/app/assets    Nunito subset font (+ OFL licence)
-crates/server   axum placeholder serving dist/
-docs/           BRIEF · STATUS · CURRICULUM · DECISIONS · QUESTIONS · BUGS
-index.html      trunk entry; canvas + reserved ad slot
-tools/          build-font.sh (regenerates the font subset)
+crates/content         site map: 5 sections, every page (id, glyph, status, cross-links)
+crates/content/locales en.ftl, sk.ftl — every visible text (Project Fluent), compiled in
+crates/sims            pure maths/physics, no UI, unit tests
+crates/app             egui app: shell (top bar, menu, footer), pages, topics, theme, i18n
+crates/server          thin axum server: dist/ + crawler-refusing headers; /api reserved
+docs/                  BRIEF · STATUS · DECISIONS · QUESTIONS · BUGS · CURRICULUM · ENERGY-LADDER
+index.html             trunk entry; canvas + reserved ad slot
 ```
 
-Adding a topic: see the doc comment at the top of `crates/app/src/topics/mod.rs`.
+Adding a page: see the doc comment at the top of `crates/content/src/lib.rs`;
+a page with its own code also needs a module in `crates/app/src/topics/`.
 
-Dev shortcuts (native): `cargo run -- powers-of-ten/9` opens a topic (and state),
-`ZGB_LANG=sk` picks the language, `ZGB_SIZE=400x860` the window size.
+Dev shortcuts (native): `cargo run -- powers-of-ten/9` opens a page (and state),
+`cargo run -- explore` a section, `ZGB_LANG=sk` picks the language,
+`ZGB_SIZE=400x860` the window size.

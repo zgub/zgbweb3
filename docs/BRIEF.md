@@ -162,14 +162,16 @@ names (D-023). Open points in Q-025. Nothing in the site depends on it.
 Peter may add a simple comment section later. Whether, where, and with what
 moderation and access is open (Q-020). Nothing in the first version depends on it.
 
-## Tech
+## Tech (static-first, D-032)
+- `crates/content` — the site map (five sections; every page's id, glyph,
+  status and cross-links) and the English/Slovak Fluent catalogs, compiled in.
 - `crates/sims` — pure logic, no UI, unit-tested.
 - `crates/app` — eframe/egui app; native window for dev, wasm for web (trunk).
   wgpu renderer for the simulations and the 3D cube scenes.
-- `crates/server` — axum; today serves `dist/`, later accounts/sessions.
-- English and Slovak via Fluent catalogs, tests checking both have the same keys (D-013).
-- Page metadata (D-004) covers all five sections, so every page, not only
-  topics, has an id, a section and cross-links that tests can check.
+- `crates/server` — thin axum: serves `dist/` with the crawler measures below;
+  `/api` reserved. Postgres arrives with the first feature that stores data.
+- Tests check the map (ids, links, cross-section links for finished pages),
+  that both catalogs have the same keys, and that every glyph exists in the fonts.
 - Fonts: egui's default fonts unless Slovak letters or the menu glyphs need
   more; to be settled later (Q-013).
 - The domain must not be hard-coded anywhere: it may move to hunci.sk (D-019).
@@ -178,8 +180,8 @@ moderation and access is open (Q-020). Nothing in the first version depends on i
 Peter wants the site shared by word and links, not harvested by search
 engines or AI crawlers. What helps, from strongest to weakest:
 1. **Canvas-only UI** (D-001): a crawler fetching the page sees almost no text.
-   But the text is embedded in the wasm and also served as plain
-   `/i18n/<lang>.ftl` files (D-013), so it is readable by anyone who looks.
+   The texts exist only inside the wasm (D-032), readable by someone who
+   unpacks it, but not lying around as plain files.
 2. **Polite signals:** `robots.txt` disallowing everything, with named AI
    crawlers listed from a maintained list (the ai.robots.txt project); a
    `noindex, nofollow, noarchive` robots meta tag and an `X-Robots-Tag` header
