@@ -5,8 +5,10 @@ version.workspace = true
 edition.workspace = true
 license.workspace = true
 
+# Plain library + binary, as in the eframe template. Trunk builds the binary
+# for the web (index.html: data-bin="zgbweb3"); a cdylib here would be a second
+# wasm artifact with the same name and trunk refuses to pick one.
 [lib]
-crate-type = ["cdylib", "rlib"]
 
 [[bin]]
 name = "zgbweb3"

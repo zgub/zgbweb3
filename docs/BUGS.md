@@ -7,6 +7,9 @@ The skeleton was type-checked and tested natively only; the build sandbox
 could not download the `wasm32-unknown-unknown` std. First `trunk serve`
 on a real machine may surface wasm-only compile errors (web.rs, main.rs wasm branch).
 2026-10-21: still unverified after the v0.3 restructure (same sandbox limit).
+First `trunk serve` (2026-10-21): "found more than one target artifact" — the app
+crate built both a cdylib and a bin named `zgbweb3`. Fixed by dropping the cdylib
+crate type. Further wasm-only errors may still show up.
 
 **B-002 — "Forget everything" on native doesn't delete the file** (2026-10-11, open, low)
 Native eframe keeps storage in its own dir and in memory; we only clear
