@@ -7,7 +7,8 @@ Status: *accepted*, *tentative* (revisit before launch), *superseded by D-x*.
 One language for sims and UI; same code runs natively for fast debugging.
 Cost: canvas UI is not indexable by search engines and not a normal web page
 (no text selection, ctrl-F, browser translate). Mitigated a little by the
-`<meta description>` and `<noscript>` text.
+`<meta description>` and `<noscript>` text. Since D-021 the poor indexability
+is wanted rather than a cost.
 
 **D-002 — Workspace split: `sims` (pure) / `app` (egui) / `server` (axum)** (2026-10-11, accepted)
 Physics and maths live in `sims` with tests and no UI dependency, so they can
@@ -22,7 +23,8 @@ v0 topics draw with the egui painter only.
 `Topic { meta(), ui(ui, nav), save(), load() }`; `TopicMeta` is a static with
 id, title, icon, group, blurb, maturity, related links. The id is permanent:
 it is the URL route and the storage key. Tests enforce unique, URL-safe ids
-and that every related link targets a registered topic.
+and that every related link targets a registered topic. Since D-029/D-030 this
+covers pages in all five sections, not only Explore topics.
 
 **D-005 — Hash routing (`#/topic-id`)** (2026-10-11, accepted)
 Shareable links and working back button without server routing; any static
@@ -39,6 +41,8 @@ No CMP (CookieYes etc.) needed while there are no ads/analytics — see Q-004.
 Ad networks insert DOM elements/iframes; they cannot draw into our canvas.
 `index.html` has a hidden `<aside id="ad-top">` above the canvas. Turning ads
 on will also require a consent platform (TCF) and an updated privacy page.
+Since D-024, targeted ads are ruled out; only non-tracking ads could ever use
+this slot.
 
 **D-008 — Server is a placeholder** (2026-10-11, accepted)
 axum serving `dist/` with compression and basic headers. Accounts, sessions
@@ -49,23 +53,26 @@ via serde per topic, so a server store can sit behind the same `save/load`.
 Avoids getrandom's wasm configuration and makes runs reproducible
 ("show me that again"). Seeds change on "Start over".
 
-**D-010 — Code AGPL-3.0-or-later, content CC BY-SA 4.0** (2026-10-11, tentative)
-Mirrors the Flysch choice. Open: Q-003.
+**D-010 — Code AGPL-3.0-or-later, content CC BY 4.0** (2026-10-11, tentative; content part revised 2026-10-21)
+Content: Peter's rule is "reuse with a link or credit" (D-025), which is what
+CC BY 4.0 says, so CC BY 4.0 replaces CC BY-SA. Code licence still open
+(Q-003).
 
 **D-011 — Topic graph with question-phrased links** (2026-10-11, accepted)
 `TopicMeta.related` renders a "Where next?" strip; `Nav::link` lets a topic
-link inline from its text. Curriculum lives in CURRICULUM.md.
+link inline from its text. Curriculum lives in CURRICULUM.md. Extended across
+sections by D-029.
 
-**D-012 — Playful look: indigo night / warm paper, colour per subject, Nunito** (2026-10-11, accepted)
+**D-012 — Playful look: indigo night / warm paper, colour per subject, Nunito** (2026-10-11, superseded by D-018)
 "Not a Wikipedia page, not a textbook, not childish." Dark default is deep
 indigo (`#161a30`), light is warm paper (`#fbf6ec`). Each subject area has one
 bright accent (scale = sunflower, chance = violet, physics = teal, maths =
 coral) used for its pills, menu entry, icon badge and charts. Solid fills with
-dark text for action buttons, because tinted warm colours over navy turn
-muddy brown. Rounded everything (10–16 pt radii). Typeface: Nunito variable
-(OFL, no reserved name), subsetted to Latin + Latin Ext + symbols (175 KB),
-weights 520 body / 760 bold / 880 headings, with a superscript-minus glyph
-added (tools/build-font.sh). egui's emoji fonts and Hack are fallbacks.
+dark text for action buttons. Rounded everything (10–16 pt radii). Typeface:
+Nunito variable (OFL), subsetted to Latin + Latin Ext + symbols (175 KB), with
+a superscript-minus glyph added (tools/build-font.sh). egui's emoji fonts and
+Hack are fallbacks. Kept here as a record; any code or assets already built to
+this style are affected by D-018.
 
 **D-013 — Localisation with Fluent; catalogs embedded now, server-swappable later** (2026-10-11, accepted)
 Answers Q-002. All visible text lives in `crates/app/locales/{en,sk}.ftl`
@@ -80,6 +87,7 @@ always the fallback for missing keys. Tests: both catalogs parse and have the
 same keys; every literal key used in code exists; every topic, example, unit,
 exponent and SI prefix has its text in every language.
 Slovak style: tykanie; number names in the long scale (miliarda, bilión).
+Reaffirmed 2026-10-21: the whole site is available in English and Slovak.
 
 **D-014 — Powers of ten use a generic 3×3 puzzle cube in a 10 cm box** (2026-10-11, accepted)
 Every cube (57 mm, 80 g) sits centred in its own invisible 10 cm box, so 10 in
@@ -102,5 +110,122 @@ text says "puzzle cube" / "kocka-hlavolam" (Q-011). Not legal advice: the EU
 Third generation. zgbweb (1) was for learning Rust/wasm/axum and the infra.
 zgbweb (2) was hand-written with LLM help and stalled about a year ago on a
 file-import abstraction. zgbweb3 starts clean from this skeleton in a new
-GitHub repo; nothing is ported from 1 or 2 (gas-box code: Q-007).
+GitHub repo; nothing is ported from 1 or 2 (gas-box code: Q-007; zgbweb2
+code: Q-019, deferred).
 Crates: `zgbweb3` (app, lib + bin), `zgbweb3-server`, `sims`.
+
+**D-017 — The site is Peter's portfolio; education is one part of it** (2026-10-21, accepted)
+Sections: Projects, Playground, Workbench, Explore, and since D-030 History.
+The kids' explainer no longer defines the site. Everything is public,
+including the Workbench. The right-hand menu is grouped by section instead of
+by strand. A mock of the shell with alternative menu structures was reviewed
+2026-10-19; the by-kind grouping was the starting point.
+
+**D-018 — One look for the whole site: the old zgbweb (zgbweb2) style** (2026-10-21, accepted)
+Supersedes D-012. The site uses egui styling as in zgbweb2: top bar with theme
+buttons (plus the EN | SK switch), fixed 200 px right menu with a glyph
+heading, section headings with glyphs, separators and full-width selectable
+rows with glyphs, a centre panel with heading, separator and content, and a
+one-line footer. Simulation controls sit in a row above the canvas, as on the
+old Game of Life page. The same look for every section and every audience.
+Visually appealing but not overly colourful: content first, and colour,
+effects and fanciness only where they underline the topic. Fonts later (Q-013).
+
+**D-019 — Domain zgub.net; identities kept loosely apart** (2026-10-21, accepted)
+Peter owns zgub.net and the site lives there. It may move to hunci.sk later;
+not decided. "zgub" is his internet identity, known to many people who have
+never met him; "hunci" is the grammar-school nickname everyone who knows him in
+person uses. He wants to keep them apart, but not strictly. Consequences: the
+site speaks as zgub; no hard-coded domain anywhere; a move would change the
+browser origin, so local saves and consent (D-006) would reset and old links
+would need a whole-site redirect. The operator identity on the privacy page
+(Q-005) is where the two identities may meet.
+
+**D-020 — Audience: any curious mind, of any age** (2026-10-21, accepted)
+Replaces "curious kids 9–14". Anyone curious, whether 6, 16, 26, 40 or 60.
+Pages start plain and simple with depth and assumptions one click away.
+No childish framing anywhere.
+
+**D-021 — Shared by word and links, not by crawlers** (2026-10-21, tentative)
+Peter does not want search engines or AI crawlers harvesting the site.
+Measures (details in BRIEF.md): canvas-only UI; robots.txt disallowing
+everything with named AI crawlers; robots meta tag and `X-Robots-Tag: noindex,
+nofollow, noarchive`; a TDM opt-out header; axum middleware refusing known
+crawler user agents and rate-limiting; static title/description kept for link
+previews. Limits: only well-behaved bots obey; text in `/i18n/*.ftl` and in
+the wasm is readable; nothing stops a determined scraper. Tentative until
+hosting (Q-006) is settled.
+
+**D-022 — Landing page chosen in configuration** (2026-10-21, accepted)
+The About page is short and not the landing page. Peter picks the landing
+page in configuration: the Explore index or the Playground index. Proposed
+mechanism (not built): a config value `landing = "explore" | "playground"`
+compiled in by default, overridable by a small config file from the axum
+server, the same seam as the i18n catalogs. An empty hash (`#/`) opens it.
+
+**D-023 — No names of private people on the site, ever** (2026-10-21, accepted)
+Peter's own decision, not a GDPR precaution. Family, friends, pupils,
+colleagues and the school are never named, in any section, in either
+language, including captions and photo file names. Named on purpose:
+historical figures (History, D-030) and authors credited for their work
+(D-025). Scope of "private people" to confirm: Q-023.
+
+**D-024 — No tracking, no targeted ads, stated as a conviction** (2026-10-21, accepted)
+Peter does not like tracking and targeted advertising. The privacy page says
+so in his voice, and says it is his choice rather than a legal minimum.
+No analytics, no tracking pixels, no third-party scripts that track, no
+targeted ads. Non-tracking ads are not ruled out here (Q-004).
+
+**D-025 — Copyright and credit** (2026-10-21, accepted)
+Everything on the site is under copyright, as the law gives it. Peter's own
+work may be reused with a link or credit (hence CC BY 4.0, D-010). Other
+people's work (images, quotes, data) is used only with proper credit and
+within its licence; each use records author, source and licence next to it.
+Correct attribution is the default for every page, not an extra step.
+
+**D-026 — Energy ladder: 1 eV to 1 foe, one sourced reference list** (2026-10-21, accepted)
+The main ladder runs from 1 eV to 1 foe (10⁴⁴ J, a supernova blast ≈ the
+Sun's lifetime output), about 63 orders of magnitude. An "edge of the map"
+annex goes on to the rest energy of the observable universe (~10⁷⁰ J) and
+explains why there is no number for the Big Bang. All rungs, values,
+assumptions and sources live in ENERGY-LADDER.md; every comparison on the
+site uses only those rungs. Any rung can be the unit of measurement. The
+ladder is also browsable on its own. Peter adds rungs over time; each is
+recorded in the doc first, then in the app. Answers Q-016 except the
+household figure.
+
+**D-027 — Section names** (2026-10-21, accepted; Explore tentative)
+Playground / Ihrisko (was "Fun & Games"). Workbench / Dielňa (Slovak name
+proposed). Explore / Objavuj for the section of things Peter explains
+(working name; meant to draw a curious mind in). History / História.
+Projects / Projekty.
+
+**D-028 — Where first topics live** (2026-10-21, accepted)
+Explore: exponential growth and orders of magnitude, numbers and scales,
+number bases, logic and gates, electricity, energy scales, basic
+thermodynamics. Workbench: statistics and probability (Peter wants to revisit
+them himself), music theory, linear algebra, tensor calculus.
+
+**D-029 — Extensive cross-linking: put back together what school splits** (2026-10-21, accepted)
+The core idea of the site. Every page links across sections: games ↔ topics
+↔ History ↔ projects ↔ Workbench. Example: the jolt when you take off a
+sweater links to a game, to Electricity (voltage, current, resistance,
+capacitance), to a rung on the energy ladder, to History and to projects with
+electronics in them. Cross-links are written with the page, in both
+languages, phrased as the next question (D-011). Proposed check: a test that
+warns when a page links only inside its own section.
+
+**D-030 — History section** (2026-10-21, accepted)
+Not extensive. Short, interesting pieces about past minds and their ideas,
+for example Faraday, Galileo, Descartes, with some philosophy. Each piece
+links to the topics, games and projects where its ideas live, and those link
+back ("who figured this out?"). Shape and depth: Q-024.
+
+**D-031 — Purpose: learning together, in public** (2026-10-21, accepted)
+The ultimate goal of the site: Peter and his kids gaining knowledge the fun
+way, learning on the go together, and publishing it so others benefit.
+The kids shape what gets explored by asking, suggesting and steering.
+Knowledge is the defence against ignorance and against manipulation by
+those in power. When a choice is unclear, the option that serves this goal
+wins. A possible video channel, far in the future, would show the kids'
+hands only, never faces or names (D-023); open points in Q-025.
