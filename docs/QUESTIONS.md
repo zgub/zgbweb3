@@ -141,3 +141,10 @@ keep it stock, or drop the light theme?
 (D-036): which picture helped whom first (pieces, rulers, line, squares)?
 Which picture should be the default? Did the guess box help or annoy? Any
 sentence of theirs worth putting on the page?
+
+**Q-029 — Slovak name for Conway's Game of Life.** Peter (2026-10-28): the
+Slovak title "Conwayova hra života" should change, to be decided when rested.
+Ideas to start from: "Hra života" (shorter, the usual Slovak name without the
+author), "Život v mriežke", "Bunky, čo žijú a umierajú", "Živé bunky".
+The page id `game-of-life` stays; only the title changes. English stays
+"Conway's Game of Life"?

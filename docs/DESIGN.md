@@ -87,6 +87,10 @@ after it, never a word that has to change with the number:
 | Počet maliarov: [4]  Počet dní: [6] | [4] maliari [6] dní |
 | Ak je počet maliarov [3], koľko to potrvá? | Ako dlho pre [3] maliarov |
 | Distance [100] km → Petrol [6.5] l | [100] km take [6.5] l |
+| Tip 8 % of 50 € → swap: 50 % of 8 = 4 € | x % of y = y % of x |
+
+No letters for numbers in the main text (x, y, p): use a real example with
+real numbers. Letters belong only in the grown-ups fold-out.
 
 Symbols after a field: only units that never change (%, km, l, ml, €, J).
 Sentences the page generates *from* the numbers ("3 maliari potrebujú 8 dní")
@@ -146,7 +150,10 @@ when they cross lines. Arrows → mean "goes with / corresponds to".
 - *double number line* ("two rulers"): two scales, partner values linked,
   the same ÷ and × arrows above and below;
 - *line through zero* with a step triangle;
-- *unit grid*: 10 × 10 squares for percent;
+- *unit grid* ("hundred squares", `draw::hundred_squares`): 10 × 10 squares
+  for percent, **each square showing what it is worth** (2,4 when 1 % of 240),
+  dark text on filled squares, soft text on empty ones; skipped only when the
+  number cannot fit;
 - *area grid*: rectangles of squares for "the product stays the same";
 - *line chart* with a dashed model and a solid reality;
 - *before/after bars*: bars for each step, the start level dashed across,

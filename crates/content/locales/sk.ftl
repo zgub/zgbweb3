@@ -98,7 +98,7 @@ page-tensor-calculus = Tenzorový počet
 
 page-rule-of-three = Trojčlenka
     .blurb = Ak 30 % je 180, koľko je 100 %? Jedna otázka, štyri obrázky a dva prípady, keď trojčlenka klame.
-page-percent = Percentové triky
+page-percent = Triky s percentami
     .blurb = Skratky na percentá spamäti a pasce schované vo výpredajoch, cenách a titulkoch.
 page-linear = Rovnaký krok
 page-quadratic = Dvakrát rýchlejšie
@@ -262,7 +262,6 @@ hook-percent-every-year = Prečo +7 % ročne zdvojnásobí peniaze asi za 10 rok
 pc-try = Vyskúšaj
 pc-number = Číslo:
 pc-percent = Percentá:
-pc-of-number = z čísla:
 pc-start = Cena:
 pc-first = Prvá zmena:
 pc-second = Druhá zmena:
@@ -285,14 +284,13 @@ pc-school-words = V škole je { $x } základ, { $p } počet percent a { $part } 
 pc-school-formula = percentová časť = základ × počet percent ÷ 100
 
 pc-swap-title = Vymeň čísla
-pc-swap-intro = x % z y je vždy to isté ako y % z x. Keď je jedna cesta ťažká, otoč to.
-pc-swap-preset = { $p } % z { $x }
-pc-swap-hard = { $p } % z { $x } je to isté ako
-pc-swap-easy = { $p } % z { $x } = { $v }
-pc-swap-why = Prečo: v oboch prípadoch sa tie dve čísla vynásobia a vydelia sto, a na poradí pri násobení nezáleží.
+pc-swap-intro = Jeden z najlepších trikov: čísla môžeš vymeniť. 8 % z 50 € sa spamäti ráta ťažko, ale 50 % z 8 je ľahké: polovica z 8 sú 4. A výsledok je rovnaký, 4 €.
+pc-swap-hard = { $p } % z { $x }: spamäti ťažké
+pc-swap-easy = vymeň ich: { $xn } % z { $pn } = { $v }
+pc-swap-why = Prečo to funguje: oboje je { $pn } × { $xn } ÷ 100 a { $pn } × { $xn } je to isté ako { $xn } × { $pn }.
 
-pc-updown-title = Hore a dole nie je späť
-pc-updown-intro = Cena stúpne o 20 % a potom klesne o 20 %. Je tam, kde bola?
+pc-updown-title = Zdražie o 20 % a potom zlacnie o 20 %: cena sa nevráti na pôvodnú hodnotu!
+pc-updown-intro = Je cena tam, kde bola? Vyskúšaj to a potom aj iné poradia.
 pc-bar-start = na začiatku
 pc-bar-after1 = po prvej
 pc-bar-after2 = po druhej
@@ -366,3 +364,8 @@ pc-grown-sources = DPH: základná sadzba na Slovensku je 23 % od 1. januára 20
 marker-new = Nové vo verzii { $v }
 marker-planned = V pláne: zatiaľ tu nič nie je. Je to na ceste.
 marker-draft = Návrh: funguje, ale ešte nie je dotiahnutý.
+pc-amount = Suma:
+pc-swap-tip = Prepitné { $p } % z { $x }
+pc-swap-interest = Úrok { $p } % z { $x }
+pc-swap-sale = Zľava { $p } % z { $x }
+pc-swap-fee = Poplatok { $p } % z { $x }

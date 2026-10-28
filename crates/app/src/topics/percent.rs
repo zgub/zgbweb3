@@ -322,17 +322,19 @@ impl Percent {
         // the hundred squares: p of them, each worth 1 % of the number
         // grid on the left, words on the right; on a phone, words below the grid
         let narrow = ui.available_width() < 520.0;
-        let (r, p) = canvas(ui, pal, if narrow { 350.0 } else { 230.0 });
+        let (r, p) = canvas(ui, pal, if narrow { 470.0 } else { 364.0 });
         let inner = r.shrink(12.0);
-        let grid_area = Rect::from_min_size(inner.min, vec2(inner.width(), 206.0));
+        let grid_area = Rect::from_min_size(inner.min, vec2(inner.width(), 340.0));
         let n = q.percent() as usize;
-        let grid = draw::unit_grid(&p, grid_area, 10, 10, 1.5, |i| {
-            if i < n {
-                pal.accent
-            } else {
-                draw::empty_cell(pal)
-            }
-        });
+        let empty = draw::empty_cell(pal);
+        let one = num(tr, x / 100.0);
+        let grid = draw::hundred_squares(
+            &p,
+            pal,
+            grid_area,
+            |i| if i < n { pal.accent } else { empty },
+            Some(&one),
+        );
         draw::outline_cell(&p, pal, grid, 10, 0);
         let (tx, top) = if narrow {
             (inner.left() + 2.0, grid.bottom() + 14.0)
@@ -376,56 +378,60 @@ impl Percent {
             });
     }
 
-    /// x % of y = y % of x.
+    /// 8 % of 50 € is the same as 50 % of 8 €: swap when one way is hard.
     fn swap(&mut self, ui: &mut egui::Ui, tr: &I18n, pal: &Palette) {
         ui.label(tr.t("pc-swap-intro"));
         ui.add_space(4.0);
-        let presets = [(8.0, 50.0), (4.0, 75.0), (18.0, 50.0), (12.0, 25.0)];
+        // real situations; the keys name the situation ("a tip of 8 % on 50 €")
+        let presets = [
+            ("pc-swap-tip", 8.0, 50.0),
+            ("pc-swap-interest", 4.0, 75.0),
+            ("pc-swap-sale", 18.0, 50.0),
+            ("pc-swap-fee", 16.0, 25.0),
+        ];
         let choices: Vec<kit::Choice<usize>> = presets
             .iter()
             .enumerate()
-            .map(|(i, (a, b))| kit::Choice {
+            .map(|(i, (k, a, b))| kit::Choice {
                 value: i,
-                label: tr.ta(
-                    "pc-swap-preset",
-                    &args(&[("p", num(tr, *a)), ("x", num(tr, *b))]),
-                ),
+                label: tr.ta(k, &args(&[("p", num(tr, *a)), ("x", eur(tr, *b))])),
                 disabled: None,
             })
             .collect();
         let mut sel = presets
             .iter()
-            .position(|(a, b)| *a == self.s.swap_p && *b == self.s.swap_x)
+            .position(|(_, a, b)| *a == self.s.swap_p && *b == self.s.swap_x)
             .unwrap_or(usize::MAX);
         if kit::choice_bar(ui, pal, &tr.t("pc-try"), &choices, &mut sel) {
-            (self.s.swap_p, self.s.swap_x) = presets[sel];
+            (_, self.s.swap_p, self.s.swap_x) = presets[sel];
         }
         ui.add_space(4.0);
         ui.horizontal_wrapped(|ui| {
             field(ui, tr, "pc-percent", &mut self.s.swap_p, 0.0..=100.0, "%");
-            field(ui, tr, "pc-of-number", &mut self.s.swap_x, 0.0..=1000.0, "");
+            field(ui, tr, "pc-amount", &mut self.s.swap_x, 0.0..=1000.0, "€");
         });
         let (a, b) = (self.s.swap_p, self.s.swap_x);
         let v = pc::of(a, b);
+        let nums = args(&[
+            ("p", num(tr, a)),
+            ("x", eur(tr, b)),
+            ("xn", num(tr, b)),
+            ("pn", num(tr, a)),
+            ("v", eur(tr, v)),
+        ]);
         kit::inset(pal).show(ui, |ui| {
             ui.set_width(ui.available_width());
             ui.label(
-                RichText::new(tr.ta(
-                    "pc-swap-hard",
-                    &args(&[("p", num(tr, a)), ("x", num(tr, b)), ("v", num(tr, v))]),
-                ))
-                .size(18.0)
-                .color(pal.accent),
+                RichText::new(tr.ta("pc-swap-hard", &nums))
+                    .size(18.0)
+                    .color(pal.accent),
             );
             ui.label(
-                RichText::new(tr.ta(
-                    "pc-swap-easy",
-                    &args(&[("p", num(tr, b)), ("x", num(tr, a)), ("v", num(tr, v))]),
-                ))
-                .size(18.0)
-                .color(pal.series[1]),
+                RichText::new(tr.ta("pc-swap-easy", &nums))
+                    .size(18.0)
+                    .color(pal.series[1]),
             );
-            ui.label(RichText::new(tr.t("pc-swap-why")).color(pal.weak));
+            ui.label(RichText::new(tr.ta("pc-swap-why", &nums)).color(pal.weak));
         });
     }
 
@@ -615,7 +621,7 @@ impl Percent {
         let grid_area = Rect::from_min_size(inner.min, vec2(inner.width(), 206.0));
         let off1 = lerp(pal.deep, pal.series[2], 0.55);
         let off2 = lerp(pal.deep, pal.series[2], 0.30);
-        let grid = draw::unit_grid(&p, grid_area, 10, 10, 1.5, |i| {
+        let grid = draw::unit_grid(&p, grid_area, 10, 10, 1.5, &|i| {
             if i < first {
                 off1
             } else if i < first + second {
@@ -851,7 +857,7 @@ impl Percent {
         let grid_r =
             Rect::from_min_size(r.min + vec2(12.0, 12.0), vec2(side * 100.0, side * 100.0));
         let dot = lerp(pal.deep, pal.text, 0.22);
-        let grid = draw::unit_grid(&p, grid_r, 100, 100, (side * 0.18).min(0.6), |_| dot);
+        let grid = draw::unit_grid(&p, grid_r, 100, 100, (side * 0.18).min(0.6), &|_| dot);
         let cell = |i: usize| {
             // spread the cases over the grid so they don't sit in one corner
             let k = (i * 3779 + 1234) % 10_000;

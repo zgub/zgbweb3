@@ -252,7 +252,6 @@ hook-percent-every-year = Why does +7 % a year double your money in about 10 yea
 pc-try = Try one
 pc-number = Number:
 pc-percent = Percent:
-pc-of-number = of the number:
 pc-start = Price:
 pc-first = First change:
 pc-second = Second change:
@@ -275,14 +274,13 @@ pc-school-words = In school, { $x } is the base, { $p } is the rate (how many pe
 pc-school-formula = percentage = base × rate ÷ 100
 
 pc-swap-title = Swap the numbers
-pc-swap-intro = x % of y is always the same as y % of x. When one way is hard, turn it round.
-pc-swap-preset = { $p } % of { $x }
-pc-swap-hard = { $p } % of { $x } is the same as
-pc-swap-easy = { $p } % of { $x } = { $v }
-pc-swap-why = Why: both are the two numbers multiplied together and divided by 100, and the order of multiplying doesn't matter.
+pc-swap-intro = One of the best tricks: you may swap the two numbers. 8 % of 50 € is hard in your head, but 50 % of 8 is easy: half of 8 is 4. And the answer is the same, 4 €.
+pc-swap-hard = { $p } % of { $x }: hard in your head
+pc-swap-easy = swap them: { $xn } % of { $pn } = { $v }
+pc-swap-why = Why it works: both are { $pn } × { $xn } ÷ 100, and { $pn } × { $xn } is the same as { $xn } × { $pn }.
 
-pc-updown-title = Up and down is not back
-pc-updown-intro = A price goes up by 20 % and then down by 20 %. Is it back where it started?
+pc-updown-title = Up 20 %, then down 20 %: the price does not come back!
+pc-updown-intro = Is the price back where it started? Try it, then try the other orders.
 pc-bar-start = start
 pc-bar-after1 = after the first
 pc-bar-after2 = after the second
@@ -352,3 +350,8 @@ pc-grown-sources = VAT: the Slovak standard rate has been 23 % since 1 January 2
 marker-new = New in version { $v }
 marker-planned = Planned: nothing here yet. It's on the way.
 marker-draft = Draft: it works, but it is still rough.
+pc-amount = Amount:
+pc-swap-tip = Tip { $p } % on { $x }
+pc-swap-interest = Interest { $p } % on { $x }
+pc-swap-sale = { $p } % off { $x }
+pc-swap-fee = Fee { $p } % of { $x }
