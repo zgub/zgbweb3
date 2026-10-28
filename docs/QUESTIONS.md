@@ -148,3 +148,28 @@ Ideas to start from: "Hra života" (shorter, the usual Slovak name without the
 author), "Život v mriežke", "Bunky, čo žijú a umierajú", "Živé bunky".
 The page id `game-of-life` stays; only the title changes. English stays
 "Conway's Game of Life"?
+
+**Q-030 — Feedback, without a forum.** Peter (2026-10-28): a way to send
+feedback is worth having, visible, probably in the top bar. Not a forum or
+comments (that is Q-020). Options:
+(a) **✉ mailto link** in the top bar. No server work, but it shows an e-mail
+address (spam; ties zgub to a mailbox, D-019), needs a mail app, and is awkward
+on phones and for kids.
+(b) **💬 button in the top bar → a small in-app form** → axum `POST
+/api/feedback`. The form takes text only (plus, automatically, the page it was
+sent from and the language), an optional "how can I reply" field, nothing
+else: no name field (D-023), no tracking (D-024), no cookies. Stored
+server-side (first real data: Postgres per D-032, or an append-only file to
+start), rate-limited per IP, size-capped, not shown publicly. Privacy page
+gets a paragraph: what is kept, for how long, and that it is read only by
+Peter. Children: no personal data is asked for, so no parental consent flow
+is needed as long as the reply field stays optional and is described as such
+(check before launch; not legal advice).
+(c) A third-party form (Google Forms etc.): rejected, it tracks (D-024).
+**Proposal:** (b), with the 💬 button at the right end of the top bar next to ⚙,
+labelled "Feedback / Napíš mi" on hover, opening a small window over the page
+so the visitor stays where they are. Until the server side exists (Q-006
+hosting), the button can open the form and say "not connected yet".
+Open: storage (file vs Postgres), retention period, whether Peter wants a
+notification (e-mail to himself, or a page he checks).
+

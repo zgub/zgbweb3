@@ -19,7 +19,7 @@ On branch `menu-markers` (after v0.5.1).
 - fmt, clippy, tests. Screenshots SK 1280 and 400.
 
 **Next**
-1. Q-029 when rested; Q-026 names.
+1. Q-029 when rested; Q-026 names; Q-030 feedback button (proposal: in-app form).
 2. Merge chain into `develop`: rule-of-three → percent → menu-markers.
 
 ## 2026-10-28 (night) — v0.5.1: menu markers
