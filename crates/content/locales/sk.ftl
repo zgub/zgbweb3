@@ -119,7 +119,7 @@ hook-more-hands = Prečo viac rúk znamená menej času?
 
 ## --- Trojčlenka (rule-of-three) -------------------------------------------
 
-r3-examples = Príklady:
+r3-examples = Vyber si príklad
 r3-ex-percent = Percentá
     .story = Klasika zo školy aj z obchodu: poznáš časť a vieš, koľko percent to je.
 r3-ex-pancakes = Palacinky
@@ -149,7 +149,6 @@ r3-unit-sale-a = { $num } %
 r3-unit-sale-b = { $num } €
 
 r3-we-know = Vieme:
-r3-is = →
 r3-we-ask = Pýtame sa:
 r3-no-answer = Začni od niečoho, čo nie je nula.
 r3-your-guess = Tvoj tip:
@@ -162,7 +161,7 @@ r3-verdict-high = Priveľa. Pozri sa na obrázok: koľko je jeden diel?
 r3-answer = { $c } → { $answer }
 r3-sale-trap = Obvyklá chyba: 42 € + 30 % = 54,60 €. Lenže 30 % sa odrátalo z pôvodnej ceny, nie zo 42 €.
 
-r3-picture = Obrázok:
+r3-picture = Vyber si obrázok
 r3-pic-pieces = Diely
     .hint = Rozdeľ obe množstvá na rovnaké diely. Zisti, koľko je jeden diel, a potom diely spočítaj.
 r3-pic-rulers = Dve pravítka
@@ -200,18 +199,6 @@ r3-school-words = Ešte dve slová, ktoré budeš počuť: definičný obor sú 
 
 r3-inverse-title = Viac rúk, menej času
 r3-inverse-story = 4 maliari vymaľujú dom za 6 dní. Ako dlho to potrvá trom? Menej rúk, teda viac dní: tu trojčlenka funguje naopak.
-r3-painters = { $n ->
-        [one] maliar
-        [few] maliari
-       *[other] maliarov
-    }
-r3-days = { $n ->
-        [one] deň
-        [few] dni
-        [many] dňa
-       *[other] dní
-    }
-r3-how-long-for = Ako dlho pre
 r3-inverse-answer = Práca je { $work } maliarodní: plocha obdĺžnika. { $p } { $pn ->
         [one] maliar potrebuje
         [few] maliari potrebujú
@@ -243,3 +230,25 @@ r3-grown-formula = Priama: ak a je b, potom c je b × c ÷ a. Cez jednotku: b ÷
 r3-grown-inverse = Nepriama: a × b zostáva rovnaké, takže pre c je výsledok a × b ÷ c.
 r3-grown-numbers = Obrázky idú cez najväčší krok, ktorý sa zmestí do oboch čísel (pre 30 % a 100 % je to 10 %), takže každý krok je celé číslo.
 r3-grown-sources = Na tejto stránke nie sú žiadne cudzie údaje. Krivka nabíjania je typický priebeh, nie meranie.
+
+r3-direct-title = Viac jedného, viac druhého
+r3-qty-percent-a = Percentá
+r3-qty-percent-b = Hodnota
+r3-qty-pancakes-a = Počet osôb
+r3-qty-pancakes-b = Mlieko
+r3-qty-fuel-a = Vzdialenosť
+r3-qty-fuel-b = Benzín
+r3-qty-sale-a = Časť ceny
+r3-qty-sale-b = Cena
+r3-sym-percent-a = %
+r3-sym-percent-b = { "" }
+r3-sym-pancakes-a = { "" }
+r3-sym-pancakes-b = ml
+r3-sym-fuel-a = km
+r3-sym-fuel-b = l
+r3-sym-sale-a = %
+r3-sym-sale-b = €
+r3-inv-painters = Počet maliarov:
+r3-inv-days = Počet dní:
+r3-inv-ask = Ak je počet maliarov
+r3-inv-ask-end = , koľko to potrvá?

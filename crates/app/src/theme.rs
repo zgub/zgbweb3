@@ -217,7 +217,7 @@ pub fn install(ctx: &egui::Context) {
         ctx.style_mut_of(theme, |style| {
             use TextStyle::*;
             style.text_styles = [
-                (Small, FontId::proportional(11.5)),
+                (Small, FontId::proportional(12.5)),
                 (Body, FontId::proportional(14.5)),
                 (Button, FontId::proportional(14.5)),
                 (Monospace, FontId::monospace(13.0)),

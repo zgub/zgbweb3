@@ -9,7 +9,20 @@ Versions are git tags `vX.Y.Z` (D-036); the version shows in the site footer.
 - Branch flow: `main` = released, `develop` = development, feature branches
   off `develop` (D-036).
 
-## 0.4.0 — 2026-10-28 (branch `rule-of-three`, in testing)
+## 0.4.1 — 2026-10-28 (branch `rule-of-three`)
+
+**Changed**
+- Rule of three after Peter's first look: the page is three framed sections
+  (More of one, more of the other | More hands, less time | When it lies);
+  examples and pictures are big choice bars; inputs are labelled like a form
+  ("Počet maliarov: [4]"), so no plural word sits next to a number field;
+  smallest text 12.5 pt; charts stack on a phone.
+
+**Added**
+- DESIGN.md: one design system for the whole site (D-038), and the shared
+  widgets `kit::section`, `choice_bar`, `inset`, `takeaway`.
+
+## 0.4.0 — 2026-10-28 (branch `rule-of-three`)
 
 **Added**
 - Rule of three / Trojčlenka (draft): "If 180 is 30 %, what is 100 %?" with

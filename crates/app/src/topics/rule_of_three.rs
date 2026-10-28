@@ -97,6 +97,15 @@ impl Picture {
         Picture::Squares,
     ];
 
+    fn glyph(self) -> &'static str {
+        match self {
+            Picture::Pieces => "▦",
+            Picture::Rulers => "📏",
+            Picture::Line => "📈",
+            Picture::Squares => "💯",
+        }
+    }
+
     fn key(self) -> &'static str {
         match self {
             Picture::Pieces => "r3-pic-pieces",
@@ -178,28 +187,28 @@ impl Topic for RuleOfThree {
         let meta = content::page(ID).expect("rule-of-three is on the site map");
         heading(ui, tr, pal, meta);
 
-        self.question_ui(ui, tr, pal);
-        ui.add_space(6.0);
-        self.picture_ui(ui, tr, pal);
         ui.add_space(4.0);
-        self.school_ui(ui, tr, pal);
-
-        ui.add_space(14.0);
-        ui.heading(tr.t("r3-inverse-title"));
-        ui.separator();
-        self.inverse_ui(ui, tr, pal);
-
-        ui.add_space(14.0);
-        ui.heading(tr.t("r3-lies-title"));
-        ui.separator();
-        ui.label(tr.t("r3-lies-intro"));
-        ui.add_space(4.0);
-        lies_ui(ui, tr, pal);
-        ui.add_space(6.0);
-        kit::card(pal).show(ui, |ui| {
-            ui.label(RichText::new(tr.t("r3-rule")).color(pal.note));
+        kit::section(ui, pal, &format!("⚖ {}", tr.t("r3-direct-title")), |ui| {
+            self.question_ui(ui, tr, pal);
+            ui.add_space(10.0);
+            self.picture_ui(ui, tr, pal);
+            ui.add_space(4.0);
+            self.school_ui(ui, tr, pal);
         });
-
+        kit::section(
+            ui,
+            pal,
+            &format!("👥 {}", tr.t("r3-inverse-title")),
+            |ui| {
+                self.inverse_ui(ui, tr, pal);
+            },
+        );
+        kit::section(ui, pal, &format!("⚠ {}", tr.t("r3-lies-title")), |ui| {
+            ui.label(tr.t("r3-lies-intro"));
+            ui.add_space(6.0);
+            lies_ui(ui, tr, pal);
+        });
+        kit::takeaway(ui, pal, tr.t("r3-rule"));
         ui.add_space(8.0);
         kit::grown_ups(ui, pal, tr, ID, |ui| {
             ui.label(tr.t("r3-grown-formula"));
@@ -263,17 +272,21 @@ fn amount(tr: &I18n, ex: Example, which: char, x: f64) -> String {
 
 impl RuleOfThree {
     fn question_ui(&mut self, ui: &mut egui::Ui, tr: &I18n, pal: &Palette) {
+        let choices: Vec<kit::Choice<Example>> = Example::ALL
+            .iter()
+            .map(|e| kit::Choice {
+                value: *e,
+                label: format!("{} {}", e.glyph(), tr.t(&e.key())),
+                disabled: None,
+            })
+            .collect();
+        let mut picked = self.s.example;
+        if kit::choice_bar(ui, pal, &tr.t("r3-examples"), &choices, &mut picked) {
+            self.pick(picked);
+        }
         let ex = self.s.example;
-        ui.horizontal_wrapped(|ui| {
-            ui.label(RichText::new(tr.t("r3-examples")).color(pal.weak));
-            for e in Example::ALL {
-                let label = format!("{} {}", e.glyph(), tr.t(&e.key()));
-                if ui.selectable_label(ex == e, label).clicked() && ex != e {
-                    self.pick(e);
-                }
-            }
-        });
-        ui.label(RichText::new(tr.attr(&ex.key(), "story")).color(pal.weak));
+        ui.add_space(6.0);
+        ui.label(tr.attr(&ex.key(), "story"));
         ui.add_space(4.0);
 
         let q = self.question();
@@ -288,39 +301,49 @@ impl RuleOfThree {
         );
         ui.add_space(4.0);
 
+        // Form style (DESIGN.md "Inputs"): the quantity's name before the field,
+        // only a fixed symbol after it, so no plural forms next to numbers.
         let mut changed = false;
-        ui.horizontal_wrapped(|ui| {
-            ui.label(tr.t("r3-we-know"));
-            changed |= ui
-                .add(
-                    egui::DragValue::new(&mut self.s.a)
-                        .range(0.01..=1.0e6)
-                        .speed(1.0),
-                )
-                .changed();
-            unit_label(ui, unit_only(tr, ex, 'a', self.s.a));
-            ui.label(tr.t("r3-is"));
-            changed |= ui
-                .add(
-                    egui::DragValue::new(&mut self.s.b)
-                        .range(0.0..=1.0e9)
-                        .speed(1.0),
-                )
-                .changed();
-            unit_label(ui, unit_only(tr, ex, 'b', self.s.b));
-            ui.separator();
-            ui.label(tr.t("r3-we-ask"));
-            changed |= ui
-                .add(
-                    egui::DragValue::new(&mut self.s.c)
-                        .range(0.0..=1.0e6)
-                        .speed(1.0),
-                )
-                .changed();
-            unit_label(ui, unit_only(tr, ex, 'a', self.s.c));
-            ui.label(tr.t("r3-is"));
-            ui.label(RichText::new("?").strong().color(pal.series[1]));
-        });
+        let (name_a, name_b) = (qty(tr, ex, 'a'), qty(tr, ex, 'b'));
+        let (sym_a, sym_b) = (sym(tr, ex, 'a'), sym(tr, ex, 'b'));
+        let cap_w = 96.0;
+        let caption = |ui: &mut egui::Ui, key: &str| {
+            ui.add_sized(
+                [cap_w, 20.0],
+                egui::Label::new(RichText::new(tr.t(key)).color(pal.weak)),
+            );
+        };
+        for row in 0..2 {
+            ui.horizontal_wrapped(|ui| {
+                caption(ui, if row == 0 { "r3-we-know" } else { "r3-we-ask" });
+                ui.label(&name_a);
+                let v = if row == 0 {
+                    &mut self.s.a
+                } else {
+                    &mut self.s.c
+                };
+                let lo = if row == 0 { 0.01 } else { 0.0 };
+                changed |= ui
+                    .add(egui::DragValue::new(v).range(lo..=1.0e6).speed(1.0))
+                    .changed();
+                unit_label(ui, sym_a.clone());
+                ui.label("  →  ");
+                ui.label(&name_b);
+                if row == 0 {
+                    changed |= ui
+                        .add(
+                            egui::DragValue::new(&mut self.s.b)
+                                .range(0.0..=1.0e9)
+                                .speed(1.0),
+                        )
+                        .changed();
+                    unit_label(ui, sym_b.clone());
+                } else {
+                    ui.label(RichText::new("?").strong().size(18.0).color(pal.series[1]));
+                }
+            });
+        }
+        ui.add_space(4.0);
         if changed {
             self.reset_guess();
         }
@@ -329,11 +352,13 @@ impl RuleOfThree {
             ui.label(RichText::new(tr.t("r3-no-answer")).color(pal.weak));
             return;
         };
-        kit::card(pal).show(ui, |ui| {
+        kit::inset(pal).show(ui, |ui| {
+            ui.set_width(ui.available_width());
             ui.horizontal_wrapped(|ui| {
                 ui.label(tr.t("r3-your-guess"));
+                ui.label(RichText::new(&name_b).color(pal.weak));
                 let r = ui.add(egui::DragValue::new(&mut self.s.guess).speed(1.0));
-                unit_label(ui, unit_only(tr, ex, 'b', self.s.guess));
+                unit_label(ui, sym_b.clone());
                 if r.changed() {
                     self.verdict = None;
                 }
@@ -374,24 +399,17 @@ impl RuleOfThree {
 
     fn picture_ui(&mut self, ui: &mut egui::Ui, tr: &I18n, pal: &Palette) {
         let ex = self.s.example;
-        ui.horizontal_wrapped(|ui| {
-            ui.label(RichText::new(tr.t("r3-picture")).color(pal.weak));
-            for p in Picture::ALL {
-                let allowed = p != Picture::Squares || ex.in_percent();
-                let r = ui.add_enabled(
-                    allowed,
-                    egui::RadioButton::new(self.s.picture == p, tr.t(p.key())),
-                );
-                let r = if allowed {
-                    r
-                } else {
-                    r.on_disabled_hover_text(tr.t("r3-squares-only-percent"))
-                };
-                if r.clicked() {
-                    self.s.picture = p;
-                }
-            }
-        });
+        let choices: Vec<kit::Choice<Picture>> = Picture::ALL
+            .iter()
+            .map(|p| kit::Choice {
+                value: *p,
+                label: format!("{} {}", p.glyph(), tr.t(p.key())),
+                disabled: (*p == Picture::Squares && !ex.in_percent())
+                    .then(|| tr.t("r3-squares-only-percent")),
+            })
+            .collect();
+        kit::choice_bar(ui, pal, &tr.t("r3-picture"), &choices, &mut self.s.picture);
+        ui.add_space(4.0);
         ui.label(RichText::new(tr.attr(self.s.picture.key(), "hint")).color(pal.weak));
 
         let q = self.question();
@@ -437,30 +455,24 @@ impl RuleOfThree {
 
     fn inverse_ui(&mut self, ui: &mut egui::Ui, tr: &I18n, pal: &Palette) {
         ui.label(tr.t("r3-inverse-story"));
+        ui.add_space(4.0);
+        egui::Grid::new("r3-inverse-inputs")
+            .num_columns(4)
+            .spacing(vec2(10.0, 6.0))
+            .show(ui, |ui| {
+                ui.label(tr.t("r3-inv-painters"));
+                ui.add(whole(&mut self.s.painters, 12.0));
+                ui.label(tr.t("r3-inv-days"));
+                ui.add(whole(&mut self.s.days, 20.0));
+                ui.end_row();
+            });
         ui.horizontal_wrapped(|ui| {
-            ui.add(
-                egui::DragValue::new(&mut self.s.painters)
-                    .max_decimals(0)
-                    .range(1.0..=12.0)
-                    .speed(0.1),
-            );
-            ui.label(tr.ta("r3-painters", &count(self.s.painters)));
-            ui.add(
-                egui::DragValue::new(&mut self.s.days)
-                    .max_decimals(0)
-                    .range(1.0..=20.0)
-                    .speed(0.1),
-            );
-            ui.label(tr.ta("r3-days", &count(self.s.days)));
-            ui.separator();
-            ui.label(tr.t("r3-how-long-for"));
-            ui.add(
-                egui::DragValue::new(&mut self.s.ask_painters)
-                    .max_decimals(0)
-                    .range(1.0..=12.0)
-                    .speed(0.1),
-            );
-            ui.label(tr.ta("r3-painters", &count(self.s.ask_painters)));
+            // no gap before the comma that follows the field
+            ui.spacing_mut().item_spacing.x = 0.0;
+            ui.label(tr.t("r3-inv-ask"));
+            ui.add_space(8.0);
+            ui.add(whole(&mut self.s.ask_painters, 12.0));
+            ui.label(tr.t("r3-inv-ask-end"));
         });
         for v in [
             &mut self.s.painters,
@@ -481,7 +493,7 @@ impl RuleOfThree {
 
         let rows = self.s.painters.max(self.s.ask_painters) as f32;
         let (resp, painter) = ui.allocate_painter(
-            vec2(ui.available_width(), rows * 14.0 + 66.0),
+            vec2(ui.available_width(), rows * 14.0 + 46.0),
             Sense::hover(),
         );
         let r = resp.rect;
@@ -536,12 +548,10 @@ impl RuleOfThree {
                 tr.ta("r3-grid-label", &a),
             );
         }
-        painter.text(
-            r.left_bottom() + vec2(10.0, -8.0),
-            Align2::LEFT_BOTTOM,
-            format!("🐄 {}", tr.t("r3-inverse-cow")),
-            FontId::proportional(12.0),
-            pal.weak,
+        ui.label(
+            RichText::new(format!("🐄 {}", tr.t("r3-inverse-cow")))
+                .small()
+                .color(pal.weak),
         );
     }
 }
@@ -554,18 +564,14 @@ fn unit_label(ui: &mut egui::Ui, unit: String) {
     }
 }
 
-/// Arguments for a word that follows a number: `{ $n -> [one] … }`.
-fn count(n: f64) -> FluentArgs<'static> {
-    let mut a = FluentArgs::new();
-    a.set("n", n);
-    a
+/// Name of a quantity for its input field, e.g. "People" / "Počet osôb".
+fn qty(tr: &I18n, ex: Example, which: char) -> String {
+    tr.t(&format!("r3-qty-{}-{which}", ex.param()))
 }
 
-fn unit_only(tr: &I18n, ex: Example, which: char, x: f64) -> String {
-    let mut args = FluentArgs::new();
-    args.set("n", x);
-    args.set("num", "");
-    tr.ta(&format!("r3-unit-{}-{which}", ex.param()), &args)
+/// Fixed symbol after an input field ("%", "km", "€"); empty when there is none.
+fn sym(tr: &I18n, ex: Example, which: char) -> String {
+    tr.t(&format!("r3-sym-{}-{which}", ex.param()))
         .trim()
         .to_string()
 }
@@ -775,7 +781,7 @@ impl Draw<'_> {
                 .line_segment([pos2(xx, yt - 4.0), pos2(xx, yt + 4.0)], line);
             self.p
                 .line_segment([pos2(xx, yb - 4.0), pos2(xx, yb + 4.0)], line);
-            let small = FontId::proportional(11.0);
+            let small = FontId::proportional(12.0);
             self.p.text(
                 pos2(xx, yt - 7.0),
                 Align2::CENTER_BOTTOM,
@@ -861,7 +867,7 @@ impl Draw<'_> {
             )
         };
         let grid = Stroke::new(1.0, lerp(pal.deep, pal.line, 0.7));
-        let small = FontId::proportional(11.0);
+        let small = FontId::proportional(12.0);
         let ys = nice_step(ymax / 6.0);
         let mut y = 0.0;
         while y <= ymax + 1e-9 {
@@ -1049,8 +1055,19 @@ fn nice_max(x: f64) -> f64 {
 // ---------------------------------------------------------------- when it lies
 
 fn lies_ui(ui: &mut egui::Ui, tr: &I18n, pal: &Palette) {
-    let w = ((ui.available_width() - 12.0) / 2.0).max(240.0);
-    ui.horizontal_wrapped(|ui| {
+    // side by side when there is room, stacked on a phone
+    let avail = ui.available_width();
+    let w = if avail < 560.0 {
+        avail
+    } else {
+        (avail - 12.0) / 2.0
+    };
+    let dir = if avail < 560.0 {
+        egui::Layout::top_down(egui::Align::Min)
+    } else {
+        egui::Layout::left_to_right(egui::Align::Min)
+    };
+    ui.with_layout(dir, |ui| {
         for (title, draw) in [
             (
                 "r3-lie-charging",
@@ -1058,7 +1075,7 @@ fn lies_ui(ui: &mut egui::Ui, tr: &I18n, pal: &Palette) {
             ),
             ("r3-lie-taxi", taxi),
         ] {
-            kit::card(pal).show(ui, |ui| {
+            kit::inset(pal).show(ui, |ui| {
                 ui.set_width(w - 22.0);
                 ui.vertical(|ui| {
                     ui.strong(tr.t(title));
@@ -1086,7 +1103,7 @@ fn axes(
 ) -> Rect {
     let plot = Rect::from_min_max(r.min + vec2(46.0, 10.0), r.max - vec2(12.0, 22.0));
     let grid = Stroke::new(1.0, lerp(pal.deep, pal.line, 0.7));
-    let small = FontId::proportional(11.0);
+    let small = FontId::proportional(12.0);
     for (t, s) in y_ticks {
         let y = plot.bottom() - t * plot.height();
         p.line_segment([pos2(plot.left(), y), pos2(plot.right(), y)], grid);
@@ -1215,6 +1232,14 @@ fn taxi(p: &Painter, r: Rect, tr: &I18n, pal: &Palette) {
             (pal.series[1], false, tr.t("r3-lie-taxi-real")),
         ],
     );
+}
+
+/// A whole-number input from 1 to `max`.
+fn whole(v: &mut f64, max: f64) -> egui::DragValue<'_> {
+    egui::DragValue::new(v)
+        .max_decimals(0)
+        .range(1.0..=max)
+        .speed(0.1)
 }
 
 #[cfg(test)]

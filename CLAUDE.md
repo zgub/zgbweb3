@@ -2,7 +2,7 @@
 
 - Read `docs/STATUS.md` first; update it at the end of every working session.
 - Docs: BRIEF (what and why), STATUS (per session), CHANGELOG (per version), DECISIONS,
-  QUESTIONS, BUGS, plus topic plans (CURRICULUM, ENERGY-LADDER, WHAT-CHANGES-WHAT).
+  QUESTIONS, BUGS, DESIGN (how pages look), plus topic plans (CURRICULUM, ENERGY-LADDER, WHAT-CHANGES-WHAT).
   Add every user-visible change to CHANGELOG under "Unreleased" or the version being built.
 - Record choices in `docs/DECISIONS.md` (D-nnn), open points in `docs/QUESTIONS.md` (Q-nnn),
   defects in `docs/BUGS.md` (B-nnn). Don't delete history; mark superseded/fixed.
@@ -23,9 +23,9 @@
 - No user-visible text in Rust code: add it to **both** `crates/content/locales/en.ftl` and `sk.ftl`
   (tests fail otherwise). Numbers go through `I18n::num` for the decimal comma.
   Slovak: tykanie, long scale (miliarda = 10⁹), real plural forms via Fluent selectors.
-- Look (D-018 layout, D-034 colours): the old zgbweb layout in the Ember palette (dark), stock
-  egui light. Chrome uses only `accent` for selection/links; `series` and `ramp` are for drawing.
-  Plain buttons, no rounded cards.
+- Look: follow `docs/DESIGN.md` (D-038) for every page: colour roles, type sizes, page anatomy,
+  `kit` widgets (section, choice_bar, inset, takeaway), plot conventions, form-style inputs.
+  Something new goes into DESIGN.md and `kit` first, then into the page.
 - egui gotcha: never put an empty `ui.label("")` in `horizontal_wrapped` (B-007).
 - Texts are compiled in (D-032); the server serves no text files. Nothing needs a database yet.
 - Deep links: `cargo run -- rule-of-three/fuel/rulers/answer`, `ZGB_LANG=sk`, `ZGB_SIZE=400x860`.

@@ -118,7 +118,7 @@ hook-more-hands = Why do more hands mean less time?
 
 ## --- Rule of three (rule-of-three) ----------------------------------------
 
-r3-examples = Examples:
+r3-examples = Pick an example
 r3-ex-percent = Percent
     .story = The classic from school and from shops: you know a part, and how many percent it is.
 r3-ex-pancakes = Pancakes
@@ -146,7 +146,6 @@ r3-unit-sale-a = { $num } %
 r3-unit-sale-b = { $num } €
 
 r3-we-know = We know:
-r3-is = →
 r3-we-ask = We ask:
 r3-no-answer = Start from something that isn't zero.
 r3-your-guess = Your guess:
@@ -159,7 +158,7 @@ r3-verdict-high = Too much. Look at the picture: how much is one piece?
 r3-answer = { $c } → { $answer }
 r3-sale-trap = The usual mistake: 42 € + 30 % = 54.60 €. But the 30 % was taken from the old price, not from 42 €.
 
-r3-picture = Picture:
+r3-picture = Pick a picture
 r3-pic-pieces = Pieces
     .hint = Cut both amounts into equal pieces. Find what one piece is worth, then count the pieces.
 r3-pic-rulers = Two rulers
@@ -193,15 +192,6 @@ r3-school-words = Two more words you will hear: the domain is which numbers make
 
 r3-inverse-title = More hands, less time
 r3-inverse-story = 4 painters paint a house in 6 days. How long do 3 painters need? Fewer hands, so more days: here the rule of three works upside down.
-r3-painters = { $n ->
-        [one] painter
-       *[other] painters
-    }
-r3-days = { $n ->
-        [one] day
-       *[other] days
-    }
-r3-how-long-for = How long for
 r3-inverse-answer = The work is { $work } painter-days: the area of the rectangle. { $p } { $pn ->
         [one] painter needs
        *[other] painters need
@@ -230,3 +220,25 @@ r3-grown-formula = Direct: if a is b, then c is b × c ÷ a. Through one: b ÷ a
 r3-grown-inverse = Inverse: a × b stays the same, so for c the answer is a × b ÷ c.
 r3-grown-numbers = The pictures go through the biggest step that fits both numbers (for 30 % and 100 % it is 10 %), so every step is a whole number.
 r3-grown-sources = No outside data on this page. The charging curve is a typical shape, not a measurement.
+
+r3-direct-title = More of one, more of the other
+r3-qty-percent-a = Percent
+r3-qty-percent-b = Amount
+r3-qty-pancakes-a = People
+r3-qty-pancakes-b = Milk
+r3-qty-fuel-a = Distance
+r3-qty-fuel-b = Petrol
+r3-qty-sale-a = Share of the price
+r3-qty-sale-b = Price
+r3-sym-percent-a = %
+r3-sym-percent-b = { "" }
+r3-sym-pancakes-a = { "" }
+r3-sym-pancakes-b = ml
+r3-sym-fuel-a = km
+r3-sym-fuel-b = l
+r3-sym-sale-a = %
+r3-sym-sale-b = €
+r3-inv-painters = Number of painters:
+r3-inv-days = Number of days:
+r3-inv-ask = If the number of painters is
+r3-inv-ask-end = , how long will it take?

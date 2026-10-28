@@ -319,3 +319,14 @@ Screenshots no longer need a window or GPU: `cargo run --example shot --
 fills the triangles on the CPU into a PNG (`ZGB_SHOT`, `ZGB_SIZE`, `ZGB_LANG`).
 Close to, not identical with, the wgpu output. Used for every page review;
 the consent banner is answered "no" so it stays out of the picture.
+
+**D-038 — One design system: DESIGN.md and the `kit` widgets** (2026-10-28, accepted)
+Peter wants the whole site to look consistent: colours, fonts and sizes,
+element types and plot types picked once and reused. DESIGN.md is the
+rulebook (colour roles, type scale, page anatomy, elements, plot conventions,
+wording, screens); `kit` holds the shared widgets (section, choice bar, inset,
+takeaway, fold-outs). A page needing something new adds it to DESIGN.md and
+`kit` first. First rules from Peter's review of v0.4.0: smallest text 12.5 pt;
+main switches (examples, pictures) as big choice bars, not radio buttons; the
+parts of a page in separate framed sections; inputs in form style ("Počet
+maliarov: [4]") so no plural word sits next to a number field.

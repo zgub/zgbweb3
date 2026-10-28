@@ -1,5 +1,28 @@
 # Status
 
+## 2026-10-28 (late) — v0.4.1: rule of three, first iteration; DESIGN.md
+
+**Done** (Peter's review of v0.4.0)
+- Small text 11.5 → 12.5 pt; nothing on the page below 12 pt.
+- Examples and pictures as big choice bars (`kit::choice_bar`) with captions
+  "Pick an example" / "Pick a picture"; picture glyphs ▦ 📏 📈 💯.
+- Three framed sections (`kit::section`): ⚖ More of one, more of the other |
+  👥 More hands, less time | ⚠ When it lies; insets inside (`kit::inset`);
+  the rule as a takeaway (`kit::takeaway`).
+- Form-style inputs: "We know: People [4] → Milk [250] ml"; painters as
+  "Počet maliarov: [4] Počet dní: [6] / Ak je počet maliarov [3], koľko to potrvá?"
+  (no gap before the comma). Generated sentences keep their Slovak plurals.
+- Phone: input rows wrap, the two "When it lies" charts stack below 560 pt,
+  the painters note moved under the drawing.
+- DESIGN.md (D-038); CLAUDE.md points to it; CHANGELOG 0.4.1.
+
+**Verified**
+- fmt, clippy clean; tests pass. Screenshots: EN 1280, SK 1280, SK 400.
+
+**Next**
+1. Peter tests v0.4.1 (`trunk serve`), with the kids (Q-028).
+2. Percent tricks page, built to DESIGN.md.
+
 ## 2026-10-28 — v0.4.0: Ember palette, rule of three
 
 **Done**
