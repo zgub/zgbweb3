@@ -4,8 +4,9 @@ The site must look like one thing, whoever builds the next page. This document
 is the rulebook: colours, type, page anatomy, element types, plots and wording.
 Decided in D-038; colours in D-034, layout in D-018.
 
-**Rule zero.** Use the shared widgets in `crates/app/src/kit.rs` and the colours
-in `theme::Palette`. If a page needs something that is not here, add it here and
+**Rule zero.** Use the shared widgets in `crates/app/src/kit.rs`, the drawing
+pieces in `crates/app/src/draw.rs` (unit grid, brackets, dashed lines, wrapped
+text) and the colours in `theme::Palette`. If a page needs something that is not here, add it here and
 to `kit` first, then use it. No one-off colours, sizes or widgets inside a page.
 
 ## 1. Colours (Ember, dark first)
@@ -143,6 +144,12 @@ when they cross lines. Arrows → mean "goes with / corresponds to".
 - *unit grid*: 10 × 10 squares for percent;
 - *area grid*: rectangles of squares for "the product stays the same";
 - *line chart* with a dashed model and a solid reality;
+- *before/after bars*: bars for each step, the start level dashed across,
+  the change written between the bars;
+- *split bar*: one whole cut into two named parts (price without VAT + VAT),
+  a wrong cut marked with a dashed coral line;
+- *population grid*: 100 × 100 tiny squares, one per person, the cases as
+  rings so they can be found (risk);
 - *log bar chart* (energy ladder, coming back);
 - 3D scenes in wgpu (powers of ten, later), same colour roles.
 
@@ -159,7 +166,9 @@ when they cross lines. Arrows → mean "goes with / corresponds to".
 
 - Text column at most 1100 pt wide; the menu is 200 pt on the right.
 - Every page works at 400 pt (phone): rows wrap, side-by-side insets stack
-  below 560 pt, drawings use the full width and scale.
+  below 560 pt, drawings use the full width and scale. A drawing with words
+  beside it puts the words below it under 520 pt. Field labels never break
+  inside (`Label::extend`); the whole field moves to the next row instead.
 - Check every changed page by screenshot (D-037): 1280 wide and 400 wide,
   English and Slovak.
 

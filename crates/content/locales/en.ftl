@@ -98,6 +98,7 @@ page-tensor-calculus = Tensor calculus
 page-rule-of-three = Rule of three
     .blurb = If 180 is 30 %, what is 100 %? One question, four pictures, and two cases where the trick lies.
 page-percent = Percent tricks
+    .blurb = Shortcuts for percent in your head, and the traps hidden in sales, prices and headlines.
 page-linear = Same step
 page-quadratic = Twice as fast
 page-inverse = More hands
@@ -242,3 +243,107 @@ r3-inv-painters = Number of painters:
 r3-inv-days = Number of days:
 r3-inv-ask = If the number of painters is
 r3-inv-ask-end = , how long will it take?
+
+## --- Percent tricks (percent) ----------------------------------------------
+
+hook-find-the-whole = If 70 % is 42 €, how do you find 100 %?
+hook-percent-every-year = Why does +7 % a year double your money in about 10 years?
+
+pc-try = Try one
+pc-number = Number:
+pc-percent = Percent:
+pc-of-number = of the number:
+pc-start = Price:
+pc-first = First change:
+pc-second = Second change:
+
+pc-head-title = Percent in your head
+pc-head-intro = Per cent means "per hundred": 1 % is one hundredth. You rarely need a calculator, because a few percents are easy fractions.
+pc-head-pick = Pick a percent
+pc-how-half = 50 % is half: { $x } ÷ 2 = { $r }
+pc-how-quarter = 25 % is half of a half: { $x } ÷ 2 = { $h }, and ÷ 2 again = { $r }
+pc-how-tenth = 10 %: move the decimal point one place left: { $x } → { $r }
+pc-how-five = 5 % is half of 10 %: { $t } ÷ 2 = { $r }
+pc-how-one = 1 %: move the decimal point two places left: { $x } → { $r }
+pc-how-twenty = 20 % is 10 % twice: { $t } × 2 = { $r }
+pc-how-fifteen = 15 % is 10 % plus 5 %: { $t } + { $f } = { $r }
+pc-sq-one = One square is 1 % = { $v }
+pc-sq-many = { $n } of the 100 squares: { $v }
+pc-sq-word = The whole number is all 100 squares.
+pc-school-title = What school calls this
+pc-school-words = In school, { $x } is the base, { $p } is the rate (how many percent), and { $part } is the percentage.
+pc-school-formula = percentage = base × rate ÷ 100
+
+pc-swap-title = Swap the numbers
+pc-swap-intro = x % of y is always the same as y % of x. When one way is hard, turn it round.
+pc-swap-preset = { $p } % of { $x }
+pc-swap-hard = { $p } % of { $x } is the same as
+pc-swap-easy = { $p } % of { $x } = { $v }
+pc-swap-why = Why: both are the two numbers multiplied together and divided by 100, and the order of multiplying doesn't matter.
+
+pc-updown-title = Up and down is not back
+pc-updown-intro = A price goes up by 20 % and then down by 20 %. Is it back where it started?
+pc-bar-start = start
+pc-bar-after1 = after the first
+pc-bar-after2 = after the second
+pc-updown-result = Together: { $total }. After { $first } you would need { $undo } to get back.
+pc-updown-why = The second percent is taken from a different number than the first: 20 % of 120 is more than 20 % of 100.
+
+pc-disc-title = Discounts don't add
+pc-disc-intro = 30 % off, and then another 20 % off at the till. How much off is that in total?
+pc-disc-first = First discount:
+pc-disc-second = Then another:
+pc-disc-guess = Your guess, in total:
+pc-close = Close: within 10 %. Look at the squares.
+pc-too-low = Too little. Look at the squares.
+pc-too-high = Too much. Look at the squares: the second discount is taken from what is left.
+pc-disc-answer = Not { $sum }, but { $total } off in total.
+pc-disc-sq1 = First { $a } off: { $n } of the 100 squares
+pc-disc-sq2 = Then { $b } of the { $left } left: { $n } more
+pc-disc-sq3 = You pay for { $n } of the 100 squares
+
+pc-vat-title = Taking VAT out
+pc-vat-intro = In Slovakia the standard VAT rate is 23 % (since 2025). A price with VAT is 123 €: what is it without VAT? Most people take 23 % off, and get it wrong.
+pc-vat-gross = Price with VAT:
+pc-vat-rate = VAT rate:
+pc-vat-net = without VAT { $v }
+pc-vat-tax = VAT
+pc-vat-gross-label = price with VAT { $v }
+pc-vat-wrong-label = wrong: { $v }
+pc-vat-right = Right: { $g } ÷ { $f } = { $net }
+pc-vat-wrong = Wrong: { $g } − { $rate } = { $wrong }
+pc-vat-why = VAT is { $rate } of the price without VAT, not of the price with it. Of the price you pay, VAT is only { $share }.
+
+pc-news-title = Headline tricks
+pc-news-intro = Two true sentences can describe the same change and sound very different. Headlines pick the one that sounds bigger.
+pc-news-points = Percent or percentage points?
+pc-news-risk = "Risk doubles!"
+pc-points-story = A rate goes up from 2 % to 3 %: an interest rate, a tax, a share of votes.
+pc-points-from = Before:
+pc-points-to = After:
+pc-points-before = before
+pc-points-after = after
+pc-points-result = { $sign }{ $pts } { $n ->
+        [one] percentage point
+       *[other] percentage points
+    }, which is { $rel } of what it was.
+pc-points-why = Both are true. "Up by 1 point" sounds small, "up by 50 %" sounds big. Ask which one you are being told.
+pc-risk-story = A study finds that something doubles the risk of an illness: from 1 in 10 000 people to 2 in 10 000.
+pc-risk-before = Before:
+pc-risk-after = After:
+pc-risk-of = in 10 000 people
+pc-risk-dots = Every square is one person: 10 000 in all. The rings are the people who get ill.
+pc-risk-before-n = Before: { $n } in 10 000
+pc-risk-after-n = After: { $n } in 10 000
+pc-risk-result = "Risk { $rel }!" is true. So is "{ $more } more in 10 000", which is { $pts } { $n ->
+        [one] percentage point
+       *[other] percentage points
+    }.
+pc-risk-why = "Doubles" says nothing about how big the risk was. Always ask: out of how many?
+
+pc-rule = Before you trust a percent, ask: percent of what? The same percent of a different number is a different amount.
+pc-grown-of = p % of x = x × p ÷ 100, so p % of x = x % of p.
+pc-grown-chain = Changes multiply: +a % then +b % is × (1 + a/100) × (1 + b/100). +20 % then −20 % is × 1.2 × 0.8 = × 0.96.
+pc-grown-vat = Without VAT = with VAT ÷ (1 + rate/100). VAT as a share of the price you pay = rate ÷ (100 + rate).
+pc-grown-points = Percentage points are a plain difference of two percents; a percent change is that difference divided by the old value.
+pc-grown-sources = VAT: the Slovak standard rate has been 23 % since 1 January 2025. Everything else on this page is arithmetic.

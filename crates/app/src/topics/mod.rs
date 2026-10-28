@@ -9,6 +9,7 @@
 //! 2. give it an entry in `content::PAGES` and its texts in both catalogs,
 //! 3. add a module here implementing [`Topic`] and register it in [`registry`].
 
+pub mod percent;
 pub mod rule_of_three;
 
 use content::PageMeta;
@@ -74,7 +75,10 @@ pub fn storage_key(id: &str) -> String {
 
 /// All pages that have code.
 pub fn registry() -> Vec<Box<dyn Topic>> {
-    vec![Box::new(rule_of_three::RuleOfThree::default())]
+    vec![
+        Box::new(rule_of_three::RuleOfThree::default()),
+        Box::new(percent::Percent::default()),
+    ]
 }
 
 /// Page title block: glyph and title as a heading, status marker, blurb.
@@ -165,6 +169,7 @@ mod tests {
                 "🖱", "☰", "⚙", "🗑", "🔍", "🐄", "→", "🌙", "☀", "💻", "💾", "·",
                 // rule of three
                 "💯", "🍳", "⛽", "🏷", "👁", "🎓", "÷", "€", "−", "⚠", "⚖", "👥", "▦", "📏", "📈",
+                "💡", "🔄", "📉", "💶", "📰",
             ]
             .map(String::from),
         );

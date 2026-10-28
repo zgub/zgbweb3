@@ -15,6 +15,7 @@
 //! `content` crate.
 
 mod app;
+mod draw;
 // Toolkit for pages with content; idle while every page is a placeholder.
 #[allow(dead_code)]
 mod i18n;

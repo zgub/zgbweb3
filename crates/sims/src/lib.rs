@@ -6,6 +6,7 @@
 
 pub mod energy;
 pub mod fmt;
+pub mod percent;
 pub mod ratio;
 pub mod scale;
 pub mod stats;

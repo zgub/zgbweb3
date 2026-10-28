@@ -178,7 +178,22 @@ pub static PAGES: &[PageMeta] = &[
             },
         ],
     },
-    planned("percent", Section::Explore, "💯"),
+    PageMeta {
+        id: "percent",
+        section: Section::Explore,
+        glyph: "💯",
+        status: Status::Draft,
+        links: &[
+            Link {
+                to: "rule-of-three",
+                hook: "hook-find-the-whole",
+            },
+            Link {
+                to: "exponential",
+                hook: "hook-percent-every-year",
+            },
+        ],
+    },
     planned("linear", Section::Explore, "📏"),
     planned("quadratic", Section::Explore, "🚗"),
     planned("inverse", Section::Explore, "👥"),

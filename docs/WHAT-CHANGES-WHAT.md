@@ -68,7 +68,7 @@ Examples page ("the same trick, everywhere"):
 Closing line: rule of three works when twice the one means twice the other,
 a straight line through zero.
 
-## Percent tricks (planned)
+## Percent tricks (built in v0.5.0)
 10×10 grid as the base picture, bars for before/after:
 x % of y = y % of x; +20 % then −20 % is not back; discounts don't add;
 taking VAT out is not "minus the VAT rate" (check the current Slovak rate);
