@@ -9,6 +9,14 @@ Versions are git tags `vX.Y.Z` (D-036); the version shows in the site footer.
 - Branch flow: `main` = released, `develop` = development, feature branches
   off `develop` (D-036).
 
+## 0.5.1 — 2026-10-28 (branch `menu-markers`)
+
+**Added**
+- Menu markers (D-039): ● new (this or the previous minor version), ✏ draft,
+  ⏳ planned with a dimmed title; the hover says what each means. Same markers
+  on the section pages. Long menu titles end in "…" instead of wrapping.
+- Screenshot tool: `ZGB_HOVER=x,y` to capture tooltips.
+
 ## 0.5.0 — 2026-10-28 (branch `percent`)
 
 **Added**

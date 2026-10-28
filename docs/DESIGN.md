@@ -22,7 +22,7 @@ to `kit` first, then use it. No one-off colours, sizes or widgets inside a page.
 | weak | `weak` | `#8f8577` | captions, hints, axis labels, notes |
 | accent | `accent` | `#f0a04b` amber | selection, links, the chosen option, **what we know** |
 | note | `note` | `#e8b04f` | takeaways, 🐄 callouts |
-| series 1 | `series[1]` | `#4fb3a2` teal | **what we ask** / the result, "right" |
+| series 1 | `series[1]` | `#4fb3a2` teal | **what we ask** / the result, "right", the ● new marker |
 | series 2 | `series[2]` | `#e06c5a` coral | traps, wrong answers, "careful" |
 | series 3–5 | `series[3..]` | sky, plum, olive gold | further series in charts |
 | ramp | `ramp_at(t)` | `#2a1b38` → `#f8d66d` | continuous values: speed, heat, height |
@@ -110,6 +110,11 @@ formulas, assumptions, sources. Both closed by default.
 
 **Insets** (`kit::inset`): boxes inside a section (guess box, small charts),
 `bg` on the section's `card`. Never a card inside a card of the same colour.
+
+**Menu markers** (D-039). At the end of each menu and index row: ● teal =
+new (changed in this or the previous minor version, `changed_in`), ✏ = draft,
+⏳ with a dimmed title = planned, nothing there yet. The hover text explains
+the marker under the page's blurb. Menu titles never wrap; they end in "…".
 
 Buttons for actions (Check, Show the answer, Run, Start over) stay plain egui
 buttons with a glyph where it helps: 👁 show, ▶ run, ⏸ pause, 🔄 start over.

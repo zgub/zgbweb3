@@ -7,7 +7,9 @@
 - Record choices in `docs/DECISIONS.md` (D-nnn), open points in `docs/QUESTIONS.md` (Q-nnn),
   defects in `docs/BUGS.md` (B-nnn). Don't delete history; mark superseded/fixed.
 - Physics and maths go in `crates/sims` with tests. The `app` crate only draws and wires.
-- The site map lives in `crates/content` (`PAGES`): section, glyph, status, cross-links.
+- The site map lives in `crates/content` (`PAGES`): section, glyph, status, cross-links, and
+  `changed_in` ("major.minor"): set it whenever a page gains something visitors should notice;
+  it drives the ● new marker (D-039).
   Page ids are permanent (URL + storage + catalog key). Never rename a published one without a redirect.
 - Cross-link across sections (D-029): a page marked `Ready` must link outside its own section (tested).
 - No names of private people anywhere on the site (D-023).

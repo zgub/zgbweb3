@@ -347,3 +347,8 @@ pc-grown-chain = Changes multiply: +a % then +b % is × (1 + a/100) × (1 + b/10
 pc-grown-vat = Without VAT = with VAT ÷ (1 + rate/100). VAT as a share of the price you pay = rate ÷ (100 + rate).
 pc-grown-points = Percentage points are a plain difference of two percents; a percent change is that difference divided by the old value.
 pc-grown-sources = VAT: the Slovak standard rate has been 23 % since 1 January 2025. Everything else on this page is arithmetic.
+
+## --- Menu markers (D-039) -------------------------------------------------
+marker-new = New in version { $v }
+marker-planned = Planned: nothing here yet. It's on the way.
+marker-draft = Draft: it works, but it is still rough.

@@ -9,6 +9,7 @@
 //! ZGB_LANG=sk ZGB_SIZE=400x860 ZGB_SHOT=shots/r3-sk.png cargo run --example shot -- rule-of-three
 //! ```
 //! The route is the part after `#/`. Output: `ZGB_SHOT`, default `shot.png`.
+//! `ZGB_HOVER=1150,492` puts the mouse at that point (in points) to show a tooltip.
 //! Storage consent is answered "no" so the banner stays out of the picture.
 
 use std::collections::HashMap;
@@ -36,14 +37,24 @@ fn main() {
 
     let mut textures: HashMap<TextureId, (usize, usize, Vec<Color32>)> = HashMap::new();
     let mut last = None;
-    for _ in 0..12 {
+    // ZGB_HOVER=x,y (in points) moves the mouse there, to capture tooltips.
+    let hover: Option<egui::Pos2> = std::env::var("ZGB_HOVER").ok().and_then(|s| {
+        let (x, y) = s.split_once(',')?;
+        Some(egui::pos2(x.parse().ok()?, y.parse().ok()?))
+    });
+    for frame_no in 0..12 {
         let mut raw = egui::RawInput {
+            time: Some(frame_no as f64 * 0.5),
             screen_rect: Some(egui::Rect::from_min_size(
                 egui::Pos2::ZERO,
                 egui::vec2(w, h),
             )),
             ..Default::default()
         };
+        // move once, then rest: moving resets egui's tooltip delay
+        if let Some(pos) = hover.filter(|_| frame_no == 0) {
+            raw.events.push(egui::Event::PointerMoved(pos));
+        }
         raw.viewports
             .entry(egui::ViewportId::ROOT)
             .or_default()

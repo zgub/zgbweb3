@@ -361,3 +361,8 @@ pc-grown-chain = Zmeny sa násobia: +a % a potom +b % je × (1 + a/100) × (1 + 
 pc-grown-vat = Bez DPH = s DPH ÷ (1 + sadzba/100). Podiel DPH na cene, ktorú platíš = sadzba ÷ (100 + sadzba).
 pc-grown-points = Percentuálne body sú obyčajný rozdiel dvoch percent; percentuálna zmena je ten rozdiel vydelený pôvodnou hodnotou.
 pc-grown-sources = DPH: základná sadzba na Slovensku je 23 % od 1. januára 2025. Všetko ostatné na tejto stránke je aritmetika.
+
+## --- Značky v menu (D-039) ------------------------------------------------
+marker-new = Nové vo verzii { $v }
+marker-planned = V pláne: zatiaľ tu nič nie je. Je to na ceste.
+marker-draft = Návrh: funguje, ale ešte nie je dotiahnutý.

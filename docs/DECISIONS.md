@@ -330,3 +330,16 @@ takeaway, fold-outs). A page needing something new adds it to DESIGN.md and
 main switches (examples, pictures) as big choice bars, not radio buttons; the
 parts of a page in separate framed sections; inputs in form style ("Počet
 maliarov: [4]") so no plural word sits next to a number field.
+
+**D-039 — Menu markers: ● new, ✏ draft, ⏳ planned** (2026-10-28, accepted)
+Peter wants the menu to show at a glance where there is something new and
+where there is nothing yet. Each row ends with a small marker, explained on
+hover together with the page's blurb:
+- **●** teal dot: new. A page is new when its `changed_in` ("major.minor") is
+  the site's current or previous minor version, so the dot disappears by
+  itself two releases later and never depends on a date or a cookie.
+- **✏** pencil: draft, it works but is still rough.
+- **⏳** hourglass, dimmed title: planned, nothing there yet ("it's on the way").
+The same markers appear on the section index pages. Long titles in the 200 pt
+menu end in "…" instead of wrapping (full title on hover). 🚧 was tried for
+drafts but renders unclearly in egui's fonts; ✦ and ✎ are missing.
