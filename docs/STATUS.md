@@ -1,5 +1,31 @@
 # Status
 
+## 2026-10-25 — empty shell: menu and placeholders (D-033)
+
+**Done**
+- Site map replaced with Peter's menu: 3 projects, 2 playground, 5 workbench,
+  5 explore pages, History empty. All `Planned`. Ids: `flysch`, `spatlers`,
+  `electronics`, `game-of-life`, `gas-box`, `statistics`, `probability`, `music`,
+  `linear-algebra`, `tensor-calculus`, `numbers`, `thermodynamics`, `energy`,
+  `chemistry`, `biology`.
+- Removed topic code (`powers_of_ten`, `energy_ladder`, `clt_dice`) and all their
+  texts and cross-link hooks from both catalogs; `registry()` is empty.
+- Placeholder on every page and on the empty History index: "Nothing but sawdust"
+  + "right place, wrong time: x, y, z right, t off" (EN and SK).
+- Glyphs: ▦ Game of Life, ⚛ Chemistry, 🌱 Biology, 🎲 Probability, 🔌 Electronics
+  (⚗ is not in the fonts).
+- Removed the Slovak-plurals test (its sugar-cube key went with the energy ladder;
+  bring a plural test back with the first page that has a plural).
+
+**Verified**
+- `cargo clippy --workspace --all-targets` clean, `cargo test --workspace` passes.
+- Screenshots (native, software GL): Game of Life EN, History SK.
+- Not verified: wasm build (B-001).
+
+**Next**
+1. Content, page by page, as Peter provides it.
+2. `trunk serve` on a real machine (B-001).
+
 ## 2026-10-21 — v0.3.0: five-section shell in the old zgbweb look, static-first
 
 **Done**

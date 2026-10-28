@@ -254,3 +254,18 @@ the first feature that stores data (ideas inbox, comments, saved progress,
 accounts), together with its moderation, retention and privacy decisions
 (Q-020). Pages already save through `save()`/`load()` (D-004, D-008), so that
 store can move to the server without touching the pages.
+
+**D-033 — Empty shell: menu and placeholders, content added page by page** (2026-10-25, accepted)
+Peter keeps the concept (five sections, cross-linking, both languages) but
+starts the content from zero and provides it one page at a time. All topic
+code is removed from the app (powers of ten, energy ladder, dice bell; it stays
+in git history, commit 17b57db and earlier). Every page is `Planned` and shows
+the placeholder "Nothing but sawdust" / "Nič, len piliny" with a line about
+being at the right place at the wrong time (x, y, z right, t wrong). The menu
+is Peter's list of 2026-10-25: Projects (Flysch shell journal, Spatlers,
+Electronics), Playground (Conway's Game of Life, Gas in a box), Workbench
+(Statistics, Probability, Music, Linear algebra, Tensor calculus), Explore
+(Numbers, Thermodynamics, What is energy, Chemistry, Biology), History (empty).
+The `sims` crate, `kit` widgets and the `Topic` trait stay as the toolkit for
+new pages; dead-code warnings for them are allowed until pages use them.
+Supersedes the page list in D-028 and in BRIEF.md "The five sections".

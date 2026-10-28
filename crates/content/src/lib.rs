@@ -141,93 +141,27 @@ const fn planned(id: &'static str, section: Section, glyph: &'static str) -> Pag
 }
 
 /// Every page on the site, in menu order within each section.
+/// All placeholders for now: content arrives page by page.
 pub static PAGES: &[PageMeta] = &[
     // --- Projects --------------------------------------------------------
-    planned("lora-mesh", Section::Projects, "📡"),
-    planned("home-lab", Section::Projects, "🖥"),
-    planned("sensors", Section::Projects, "☀"),
     planned("flysch", Section::Projects, "✏"),
-    planned("space-settlers", Section::Projects, "🚀"),
+    planned("spatlers", Section::Projects, "🚀"),
+    planned("electronics", Section::Projects, "🔌"),
     // --- Playground ------------------------------------------------------
-    PageMeta {
-        id: "dice-bell",
-        section: Section::Playground,
-        glyph: "🎲",
-        status: Status::Draft,
-        links: &[
-            Link {
-                to: "statistics",
-                hook: "hook-why-random-makes-a-bell",
-            },
-            Link {
-                to: "gas-box",
-                hook: "hook-molecules-make-a-bell",
-            },
-        ],
-    },
-    PageMeta {
-        id: "gas-box",
-        section: Section::Playground,
-        glyph: "💨",
-        status: Status::Planned,
-        links: &[
-            Link {
-                to: "thermodynamics",
-                hook: "hook-heat-is-jiggling",
-            },
-            Link {
-                to: "dice-bell",
-                hook: "hook-why-random-makes-a-bell",
-            },
-        ],
-    },
+    planned("game-of-life", Section::Playground, "▦"),
+    planned("gas-box", Section::Playground, "💨"),
     // --- Workbench -------------------------------------------------------
     planned("statistics", Section::Workbench, "📊"),
-    planned("music-theory", Section::Workbench, "🎵"),
+    planned("probability", Section::Workbench, "🎲"),
+    planned("music", Section::Workbench, "🎵"),
     planned("linear-algebra", Section::Workbench, "⊞"),
     planned("tensor-calculus", Section::Workbench, "∇"),
     // --- Explore ---------------------------------------------------------
-    planned("exponential", Section::Explore, "📈"),
-    PageMeta {
-        id: "powers-of-ten",
-        section: Section::Explore,
-        glyph: "🔟",
-        status: Status::Draft,
-        links: &[
-            Link {
-                to: "energy-ladder",
-                hook: "hook-what-is-1e13-joules",
-            },
-            Link {
-                to: "exponential",
-                hook: "hook-why-doubling-surprises",
-            },
-        ],
-    },
-    planned("number-bases", Section::Explore, "🔢"),
-    planned("logic-gates", Section::Explore, "⚙"),
-    planned("electricity", Section::Explore, "🔌"),
-    PageMeta {
-        id: "energy-ladder",
-        section: Section::Explore,
-        glyph: "⚡",
-        status: Status::Draft,
-        links: &[
-            Link {
-                to: "powers-of-ten",
-                hook: "hook-what-is-1e9",
-            },
-            Link {
-                to: "gas-box",
-                hook: "hook-heat-is-jiggling",
-            },
-            Link {
-                to: "electricity",
-                hook: "hook-what-is-a-volt",
-            },
-        ],
-    },
+    planned("numbers", Section::Explore, "🔢"),
     planned("thermodynamics", Section::Explore, "🔥"),
+    planned("energy", Section::Explore, "⚡"),
+    planned("chemistry", Section::Explore, "⚛"),
+    planned("biology", Section::Explore, "🌱"),
     // --- History: nothing yet; its shape is Q-024. ----------------------
 ];
 
