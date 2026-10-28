@@ -301,7 +301,11 @@ They sit at the top of Explore. Games for the same curves go to Playground.
 Order of work (Peter): this group, then trigonometry, then big and small
 numbers. Rule of three first (v0.4.0). Plan: WHAT-CHANGES-WHAT.md.
 
-**D-036 — Versions, tags, and a quiet test period** (2026-10-28, tentative)
+**D-036 — Branches, versions, tags, and a quiet test period** (2026-10-28, accepted)
+Branches: `main` is what is released; `develop` is the development branch;
+all work happens on feature branches off `develop` (e.g. `rule-of-three`),
+merged back into `develop`, and `develop` is merged into `main` after a
+version has been tested. Nothing is committed straight to `main` or `develop`.
 Every release bumps the workspace version (shown in the footer) and gets a git
 tag `vX.Y.Z`. 0.4.0 = Ember + rule of three. After a release, Peter tests it
 (with the kids, on real devices) while the code stays unchanged; findings go to

@@ -29,5 +29,7 @@
 - Screenshots without a window or GPU (D-037):
   `ZGB_SHOT=shots/x.png cargo run --example shot -- rule-of-three/sale/squares`.
   Look at every page you change, in both languages and at phone width (400×860).
+- Branches (D-036): `main` = released, `develop` = development; work only on feature branches
+  off `develop`, merged back into `develop`. Never commit straight to `main` or `develop`.
 - Releases (D-036): bump `version` in the root Cargo.toml, tag `vX.Y.Z`; then no code changes
   while Peter tests; findings go to BUGS/QUESTIONS for the next version.
