@@ -20,7 +20,14 @@
 - No user-visible text in Rust code: add it to **both** `crates/content/locales/en.ftl` and `sk.ftl`
   (tests fail otherwise). Numbers go through `I18n::num` for the decimal comma.
   Slovak: tykanie, long scale (miliarda = 10⁹), real plural forms via Fluent selectors.
-- Look (D-018): stock egui visuals and fonts, as in the old zgbweb. No colour in the chrome;
-  `theme::Palette` accents are for drawing inside sims. Plain buttons, no rounded cards.
+- Look (D-018 layout, D-034 colours): the old zgbweb layout in the Ember palette (dark), stock
+  egui light. Chrome uses only `accent` for selection/links; `series` and `ramp` are for drawing.
+  Plain buttons, no rounded cards.
+- egui gotcha: never put an empty `ui.label("")` in `horizontal_wrapped` (B-007).
 - Texts are compiled in (D-032); the server serves no text files. Nothing needs a database yet.
-- Deep links: `cargo run -- powers-of-ten/9`, `ZGB_LANG=sk`, `ZGB_SIZE=400x860` for dev screenshots.
+- Deep links: `cargo run -- rule-of-three/fuel/rulers/answer`, `ZGB_LANG=sk`, `ZGB_SIZE=400x860`.
+- Screenshots without a window or GPU (D-037):
+  `ZGB_SHOT=shots/x.png cargo run --example shot -- rule-of-three/sale/squares`.
+  Look at every page you change, in both languages and at phone width (400×860).
+- Releases (D-036): bump `version` in the root Cargo.toml, tag `vX.Y.Z`; then no code changes
+  while Peter tests; findings go to BUGS/QUESTIONS for the next version.

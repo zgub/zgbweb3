@@ -124,3 +124,20 @@ quick look before each upload. (d) **Being seen:** YouTube is indexed and
 recommended to strangers, so the channel works against "spread by word and
 links" (D-021), and comments under the videos would need moderation like Q-020.
 Unlisted videos linked only from the site are an option.
+
+**Q-026 — Names for "What changes what" (D-035).** Built with these menu
+titles; ids are neutral, so renaming is free:
+Rule of three / Trojčlenka, Percent tricks / Percentové triky, Same step /
+Rovnaký krok, Twice as fast / Dvakrát rýchlejšie, More hands / Viac rúk,
+Doubling / Zdvojovanie, Counting zeros / Počítame nuly. Keep, or rename
+(especially the Slovak ones)? Also: a small label "What changes what / Čo
+mení čo" above them in the menu (needs a group field in the site map), or not?
+
+**Q-027 — Light theme.** Dark is Ember (D-034); light is stock egui with
+darker chart colours. Give light mode its own warm palette (e.g. "warm paper"),
+keep it stock, or drop the light theme?
+
+**Q-028 — Rule of three: what did the kids say?** For the test of v0.4.0
+(D-036): which picture helped whom first (pieces, rulers, line, squares)?
+Which picture should be the default? Did the guess box help or annoy? Any
+sentence of theirs worth putting on the page?

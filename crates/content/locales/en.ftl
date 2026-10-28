@@ -95,8 +95,138 @@ page-music = Music
 page-linear-algebra = Linear algebra
 page-tensor-calculus = Tensor calculus
 
+page-rule-of-three = Rule of three
+    .blurb = If 180 is 30 %, what is 100 %? One question, four pictures, and two cases where the trick lies.
+page-percent = Percent tricks
+page-linear = Same step
+page-quadratic = Twice as fast
+page-inverse = More hands
+page-exponential = Doubling
+page-logarithm = Counting zeros
+
 page-numbers = Numbers
 page-thermodynamics = Thermodynamics
 page-energy = What is energy
 page-chemistry = Chemistry
 page-biology = Biology
+
+## --- Cross-link questions ---------------------------------------------------
+
+hook-percent-tricks = Why doesn't +20 % and then −20 % bring you back?
+hook-taxi-start-fee = What if the line doesn't start at zero?
+hook-more-hands = Why do more hands mean less time?
+
+## --- Rule of three (rule-of-three) ----------------------------------------
+
+r3-examples = Examples:
+r3-ex-percent = Percent
+    .story = The classic from school and from shops: you know a part, and how many percent it is.
+r3-ex-pancakes = Pancakes
+    .story = The recipe is for 4 people and needs 250 ml of milk. You are cooking for 6.
+r3-ex-fuel = Fuel
+    .story = The car uses 6.5 litres per 100 km. The trip is 340 km.
+r3-ex-sale = Sale
+    .story = After 30 % off, a shirt costs 42 €. So you pay 70 % of the old price. What was it?
+
+r3-q-percent = If { $a } is { $b }, what is { $c }?
+r3-q-pancakes = { $a } need { $b } of milk. How much for { $c }?
+r3-q-fuel = { $a } take { $b }. How much for { $c }?
+r3-q-sale = If { $a } is { $b }, what was { $c }?
+
+r3-unit-percent-a = { $num } %
+r3-unit-percent-b = { $num }
+r3-unit-pancakes-a = { $num } { $n ->
+        [one] person
+       *[other] people
+    }
+r3-unit-pancakes-b = { $num } ml
+r3-unit-fuel-a = { $num } km
+r3-unit-fuel-b = { $num } l
+r3-unit-sale-a = { $num } %
+r3-unit-sale-b = { $num } €
+
+r3-we-know = We know:
+r3-is = →
+r3-we-ask = We ask:
+r3-no-answer = Start from something that isn't zero.
+r3-your-guess = Your guess:
+r3-check = Check
+r3-show = Show the answer
+r3-verdict-exact = Exactly!
+r3-verdict-close = Close: within 10 %. A picture below gets you all the way.
+r3-verdict-low = Too little. Look at the picture: how much is one piece?
+r3-verdict-high = Too much. Look at the picture: how much is one piece?
+r3-answer = { $c } → { $answer }
+r3-sale-trap = The usual mistake: 42 € + 30 % = 54.60 €. But the 30 % was taken from the old price, not from 42 €.
+
+r3-picture = Picture:
+r3-pic-pieces = Pieces
+    .hint = Cut both amounts into equal pieces. Find what one piece is worth, then count the pieces.
+r3-pic-rulers = Two rulers
+    .hint = The first quantity on top, the second below. Whatever you do on top, you do below.
+r3-pic-line = A straight line
+    .hint = Twice the one, twice the other: all the points lie on one straight line through zero.
+r3-pic-squares = A hundred squares
+    .hint = Per cent means "per hundred". One square is 1 %.
+r3-squares-only-percent = Only when the first number is a percentage.
+r3-too-many-pieces = Too many pieces to draw. Try the two rulers.
+r3-is-pair = { $a } → { $b }
+r3-one-piece = one piece: { $step } → { $b } ÷ { $down } = { $piece }
+r3-all-pieces = { $c } → { $up } × { $piece } = { $answer }
+r3-line-step = every { $step } more adds the same { $adds }
+r3-sq-known = { $n } { $count ->
+        [one] square is
+       *[other] squares are
+    } { $b }
+r3-sq-one = 1 square is { $b } ÷ { $n } = { $per }
+r3-sq-asked = { $n } { $count ->
+        [one] square is
+       *[other] squares are
+    } { $n } × { $per } = { $answer }
+r3-sq-percent = Percent is just counting squares out of a hundred.
+
+r3-school-title = What school calls this
+r3-school-direct = When twice the one means twice the other, school calls it direct proportion. Working out the missing number is the rule of three.
+r3-school-k = One thing stays the same here: { $one } is always { $per }. School writes it as y = k · x, with k = { $k }.
+r3-school-line = Its graph is a straight line through zero. Further down are a line that doesn't start at zero (the taxi) and a curve (the painters).
+r3-school-words = Two more words you will hear: the domain is which numbers make sense to put in, the range is what can come out. Can you cook pancakes for −3 people? For half a person?
+
+r3-inverse-title = More hands, less time
+r3-inverse-story = 4 painters paint a house in 6 days. How long do 3 painters need? Fewer hands, so more days: here the rule of three works upside down.
+r3-painters = { $n ->
+        [one] painter
+       *[other] painters
+    }
+r3-days = { $n ->
+        [one] day
+       *[other] days
+    }
+r3-how-long-for = How long for
+r3-inverse-answer = The work is { $work } painter-days: the area of the rectangle. { $p } { $pn ->
+        [one] painter needs
+       *[other] painters need
+    } { $work } ÷ { $p } = { $d } { $dn ->
+        [one] day
+       *[other] days
+    }.
+r3-grid-label = { $p } × { $d }
+r3-inverse-cow = Every painter works equally fast and nobody gets in anyone's way.
+
+r3-lies-title = When it lies
+r3-lies-intro = The rule of three only works when twice the one really means twice the other. Two everyday cases where it doesn't:
+r3-lie-charging = Charging a phone
+    .story = 20 % in 15 minutes. Full in 75?
+    .cow = A typical shape, not a measured phone.
+r3-lie-charging-rule = rule of three: full at 75 min
+r3-lie-charging-real = a real phone slows down near full
+r3-lie-taxi = A taxi with a start fee
+    .story = 5 km cost 9 €. Do 10 km cost 18 €?
+    .cow = 3 € to get in, then 1.20 € per km. A straight line, but not through zero.
+r3-lie-taxi-rule = rule of three: 10 km → 18 €
+r3-lie-taxi-real = real fare: 10 km → 15 €
+r3-rule = The rule of three works when twice the one means twice the other: a straight line through zero. Painters are the opposite: twice the hands, half the time. Phones and taxis follow neither.
+
+r3-grown-formula = Direct: if a is b, then c is b × c ÷ a. Through one: b ÷ a is what one unit is worth, times c.
+r3-grown-inverse = Inverse: a × b stays the same, so for c the answer is a × b ÷ c.
+r3-grown-numbers = The pictures go through the biggest step that fits both numbers (for 30 % and 100 % it is 10 %), so every step is a whole number.
+r3-grown-sources = No outside data on this page. The charging curve is a typical shape, not a measurement.

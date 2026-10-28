@@ -96,8 +96,150 @@ page-music = Hudba
 page-linear-algebra = Lineárna algebra
 page-tensor-calculus = Tenzorový počet
 
+page-rule-of-three = Trojčlenka
+    .blurb = Ak 30 % je 180, koľko je 100 %? Jedna otázka, štyri obrázky a dva prípady, keď trojčlenka klame.
+page-percent = Percentové triky
+page-linear = Rovnaký krok
+page-quadratic = Dvakrát rýchlejšie
+page-inverse = Viac rúk
+page-exponential = Zdvojovanie
+page-logarithm = Počítame nuly
+
 page-numbers = Čísla
 page-thermodynamics = Termodynamika
 page-energy = Čo je energia
 page-chemistry = Chémia
 page-biology = Biológia
+
+## --- Otázky na prelinkovanie ----------------------------------------------
+
+hook-percent-tricks = Prečo +20 % a potom −20 % nevráti cenu späť?
+hook-taxi-start-fee = Čo ak priamka nezačína v nule?
+hook-more-hands = Prečo viac rúk znamená menej času?
+
+## --- Trojčlenka (rule-of-three) -------------------------------------------
+
+r3-examples = Príklady:
+r3-ex-percent = Percentá
+    .story = Klasika zo školy aj z obchodu: poznáš časť a vieš, koľko percent to je.
+r3-ex-pancakes = Palacinky
+    .story = Recept je pre 4 osoby a treba doň 250 ml mlieka. Varíš pre 6.
+r3-ex-fuel = Benzín
+    .story = Auto spotrebuje 6,5 litra na 100 km. Cesta má 340 km.
+r3-ex-sale = Zľava
+    .story = Po zľave 30 % stojí tričko 42 €. Platíš teda 70 % pôvodnej ceny. Koľko stálo?
+
+r3-q-percent = Ak { $a } je { $b }, koľko je { $c }?
+r3-q-pancakes = Pre { $a } treba { $b } mlieka. Koľko pre { $c }?
+r3-q-fuel = Na { $a } spotrebuje { $b }. Koľko na { $c }?
+r3-q-sale = Ak { $a } je { $b }, koľko bolo { $c }?
+
+r3-unit-percent-a = { $num } %
+r3-unit-percent-b = { $num }
+r3-unit-pancakes-a = { $num } { $n ->
+        [one] osoba
+        [few] osoby
+        [many] osoby
+       *[other] osôb
+    }
+r3-unit-pancakes-b = { $num } ml
+r3-unit-fuel-a = { $num } km
+r3-unit-fuel-b = { $num } l
+r3-unit-sale-a = { $num } %
+r3-unit-sale-b = { $num } €
+
+r3-we-know = Vieme:
+r3-is = →
+r3-we-ask = Pýtame sa:
+r3-no-answer = Začni od niečoho, čo nie je nula.
+r3-your-guess = Tvoj tip:
+r3-check = Skontroluj
+r3-show = Ukáž výsledok
+r3-verdict-exact = Presne tak!
+r3-verdict-close = Blízko: do 10 %. Obrázok nižšie ťa dovedie až k cieľu.
+r3-verdict-low = Málo. Pozri sa na obrázok: koľko je jeden diel?
+r3-verdict-high = Priveľa. Pozri sa na obrázok: koľko je jeden diel?
+r3-answer = { $c } → { $answer }
+r3-sale-trap = Obvyklá chyba: 42 € + 30 % = 54,60 €. Lenže 30 % sa odrátalo z pôvodnej ceny, nie zo 42 €.
+
+r3-picture = Obrázok:
+r3-pic-pieces = Diely
+    .hint = Rozdeľ obe množstvá na rovnaké diely. Zisti, koľko je jeden diel, a potom diely spočítaj.
+r3-pic-rulers = Dve pravítka
+    .hint = Prvá veličina hore, druhá dole. Čo urobíš hore, urobíš aj dole.
+r3-pic-line = Priamka
+    .hint = Dvakrát viac jedného, dvakrát viac druhého: všetky body ležia na jednej priamke cez nulu.
+r3-pic-squares = Sto štvorčekov
+    .hint = Percento znamená „zo sto“. Jeden štvorček je 1 %.
+r3-squares-only-percent = Len keď je prvé číslo v percentách.
+r3-too-many-pieces = Priveľa dielov na nakreslenie. Skús dve pravítka.
+r3-is-pair = { $a } → { $b }
+r3-one-piece = jeden diel: { $step } → { $b } ÷ { $down } = { $piece }
+r3-all-pieces = { $c } → { $up } × { $piece } = { $answer }
+r3-line-step = každých ďalších { $step } pridá rovnakých { $adds }
+r3-sq-known = { $n } { $count ->
+        [one] štvorček je
+        [few] štvorčeky sú
+        [many] štvorčeka je
+       *[other] štvorčekov je
+    } { $b }
+r3-sq-one = 1 štvorček je { $b } ÷ { $n } = { $per }
+r3-sq-asked = { $n } { $count ->
+        [one] štvorček je
+        [few] štvorčeky sú
+        [many] štvorčeka je
+       *[other] štvorčekov je
+    } { $n } × { $per } = { $answer }
+r3-sq-percent = Percentá sú len počítanie štvorčekov zo sto.
+
+r3-school-title = Ako to volajú v škole
+r3-school-direct = Keď dvakrát viac jedného znamená dvakrát viac druhého, škola to volá priama úmernosť. Dopočítať chýbajúce číslo je trojčlenka.
+r3-school-k = Jedna vec tu zostáva rovnaká: { $one } je vždy { $per }. Škola to píše ako y = k · x, kde k = { $k }.
+r3-school-line = Jej graf je priamka cez nulu. Nižšie nájdeš priamku, ktorá v nule nezačína (taxík), aj krivku (maliari).
+r3-school-words = Ešte dve slová, ktoré budeš počuť: definičný obor sú čísla, ktoré má zmysel dosadiť, obor hodnôt je to, čo môže vyjsť. Dajú sa robiť palacinky pre −3 osoby? Pre pol osoby?
+
+r3-inverse-title = Viac rúk, menej času
+r3-inverse-story = 4 maliari vymaľujú dom za 6 dní. Ako dlho to potrvá trom? Menej rúk, teda viac dní: tu trojčlenka funguje naopak.
+r3-painters = { $n ->
+        [one] maliar
+        [few] maliari
+       *[other] maliarov
+    }
+r3-days = { $n ->
+        [one] deň
+        [few] dni
+        [many] dňa
+       *[other] dní
+    }
+r3-how-long-for = Ako dlho pre
+r3-inverse-answer = Práca je { $work } maliarodní: plocha obdĺžnika. { $p } { $pn ->
+        [one] maliar potrebuje
+        [few] maliari potrebujú
+       *[other] maliarov potrebuje
+    } { $work } ÷ { $p } = { $d } { $dn ->
+        [one] deň
+        [few] dni
+        [many] dňa
+       *[other] dní
+    }.
+r3-grid-label = { $p } × { $d }
+r3-inverse-cow = Každý maliar robí rovnako rýchlo a nikto nikomu neprekáža.
+
+r3-lies-title = Keď trojčlenka klame
+r3-lies-intro = Trojčlenka funguje, len keď dvakrát viac jedného naozaj znamená dvakrát viac druhého. Dva bežné prípady, keď to neplatí:
+r3-lie-charging = Nabíjanie mobilu
+    .story = 20 % za 15 minút. Plný za 75?
+    .cow = Typický priebeh, nie meranie konkrétneho mobilu.
+r3-lie-charging-rule = trojčlenka: plný za 75 min
+r3-lie-charging-real = skutočný mobil pri konci spomalí
+r3-lie-taxi = Taxík s nástupným
+    .story = 5 km stálo 9 €. Bude 10 km stáť 18 €?
+    .cow = 3 € za nástup, potom 1,20 € za km. Priamka, ale nie cez nulu.
+r3-lie-taxi-rule = trojčlenka: 10 km → 18 €
+r3-lie-taxi-real = skutočne: 10 km → 15 €
+r3-rule = Trojčlenka funguje, keď dvakrát viac jedného znamená dvakrát viac druhého: priamka cez nulu. Maliari sú opak: dvakrát viac rúk, polovica času. Mobil a taxík nie sú ani jedno.
+
+r3-grown-formula = Priama: ak a je b, potom c je b × c ÷ a. Cez jednotku: b ÷ a je hodnota jednej jednotky, krát c.
+r3-grown-inverse = Nepriama: a × b zostáva rovnaké, takže pre c je výsledok a × b ÷ c.
+r3-grown-numbers = Obrázky idú cez najväčší krok, ktorý sa zmestí do oboch čísel (pre 30 % a 100 % je to 10 %), takže každý krok je celé číslo.
+r3-grown-sources = Na tejto stránke nie sú žiadne cudzie údaje. Krivka nabíjania je typický priebeh, nie meranie.

@@ -48,7 +48,15 @@ through, understood) so a visitor knows how far to trust it. When an entry is
 solid enough to explain to others, it can move to Explore.
 
 ### 4. Explore / Objavuj (working name, D-027)
-Things Peter already understands and wants to explain. First topics:
+Things Peter already understands and wants to explain.
+
+**First: "What changes what"** (D-035, plan in WHAT-CHANGES-WHAT.md). How
+one quantity depends on another, starting from real examples and naming the
+school terms last: rule of three (built, v0.4.0), percent tricks, linear,
+quadratic, inverse, exponential, logarithmic. Then trigonometry, then big and
+small numbers.
+
+Further topics:
 
 - **Exponential growth and orders of magnitude.** Why doubling surprises
   everyone, why the step from a thousand to a million is as big as the step
@@ -137,9 +145,10 @@ demo-app feel, tidied and kept restrained.
   Cross-links sit at the end of the page and inline in the text.
 - **Footer:** one line at the bottom left: site name, version, "Powered by
   egui and eframe", plus links to privacy, license and about.
-- **Colour and effects:** egui's default dark and light visuals following the
-  system setting, with restrained additions where they help a topic. Colour
-  mostly lives inside the simulations.
+- **Colour and effects:** the Ember palette in dark mode (D-034): warm
+  charcoal with one amber accent; light mode is stock egui for now (Q-027).
+  Restrained additions where they help a topic. Colour mostly lives inside
+  the simulations.
 - **Mobile:** below about 720 pt the menu collapses (Q-008).
 
 ## Landing page and About

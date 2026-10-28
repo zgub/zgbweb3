@@ -157,6 +157,33 @@ pub static PAGES: &[PageMeta] = &[
     planned("linear-algebra", Section::Workbench, "⊞"),
     planned("tensor-calculus", Section::Workbench, "∇"),
     // --- Explore ---------------------------------------------------------
+    // "What changes what" (D-035): relationships from real examples first.
+    PageMeta {
+        id: "rule-of-three",
+        section: Section::Explore,
+        glyph: "⚖",
+        status: Status::Draft,
+        links: &[
+            Link {
+                to: "percent",
+                hook: "hook-percent-tricks",
+            },
+            Link {
+                to: "linear",
+                hook: "hook-taxi-start-fee",
+            },
+            Link {
+                to: "inverse",
+                hook: "hook-more-hands",
+            },
+        ],
+    },
+    planned("percent", Section::Explore, "💯"),
+    planned("linear", Section::Explore, "📏"),
+    planned("quadratic", Section::Explore, "🚗"),
+    planned("inverse", Section::Explore, "👥"),
+    planned("exponential", Section::Explore, "📈"),
+    planned("logarithm", Section::Explore, "🔟"),
     planned("numbers", Section::Explore, "🔢"),
     planned("thermodynamics", Section::Explore, "🔥"),
     planned("energy", Section::Explore, "⚡"),

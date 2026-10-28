@@ -89,6 +89,13 @@ impl ZgbApp {
         app
     }
 
+    /// For `examples/shot.rs`: answer the storage question with "no" so the
+    /// consent banner stays out of screenshots.
+    #[doc(hidden)]
+    pub fn decline_storage_for_screenshots(&mut self) {
+        self.consent = StorageConsent::Denied;
+    }
+
     fn go(&mut self, page: Page) {
         self.page = page;
         self.last_route = self.page.route();

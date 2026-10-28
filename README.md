@@ -41,13 +41,16 @@ crates/content/locales en.ftl, sk.ftl — every visible text (Project Fluent), c
 crates/sims            pure maths/physics, no UI, unit tests
 crates/app             egui app: shell (top bar, menu, footer), pages, topics, theme, i18n
 crates/server          thin axum server: dist/ + crawler-refusing headers; /api reserved
-docs/                  BRIEF · STATUS · DECISIONS · QUESTIONS · BUGS · CURRICULUM · ENERGY-LADDER
+docs/                  BRIEF · STATUS · DECISIONS · QUESTIONS · BUGS · CURRICULUM · ENERGY-LADDER · WHAT-CHANGES-WHAT
 index.html             trunk entry; canvas + reserved ad slot
 ```
 
 Adding a page: see the doc comment at the top of `crates/content/src/lib.rs`;
 a page with its own code also needs a module in `crates/app/src/topics/`.
 
-Dev shortcuts (native): `cargo run -- powers-of-ten/9` opens a page (and state),
+Screenshots without a window or GPU:
+`ZGB_SHOT=shot.png cargo run --example shot -- rule-of-three/percent/rulers`.
+
+Dev shortcuts (native): `cargo run -- rule-of-three/fuel` opens a page (and state),
 `cargo run -- explore` a section, `ZGB_LANG=sk` picks the language,
 `ZGB_SIZE=400x860` the window size.

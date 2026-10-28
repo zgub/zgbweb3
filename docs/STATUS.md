@@ -1,5 +1,49 @@
 # Status
 
+## 2026-10-28 — v0.4.0: Ember palette, rule of three
+
+**Done**
+- Committed the 2026-10-25 empty shell (D-033) first, as its own commit, and deleted
+  the three old topic files it could not delete on disk (B-006).
+- Ember palette (D-034): `theme::DARK` and `theme::ember_visuals()` installed for the
+  dark theme; `Palette` gains `bg`, `deep`, `strong`, `accent`, `note`, `series[6]`,
+  `ramp[5]` and `ramp_at()`. Light theme still stock egui (Q-027).
+- "What changes what" (D-035): seven pages at the top of Explore. `rule-of-three`
+  is built (draft); `percent`, `linear`, `quadratic`, `inverse`, `exponential`,
+  `logarithm` are planned. Titles per Q-026.
+- Rule of three page (`topics/rule_of_three.rs`, maths in `sims::ratio` with tests):
+  - four examples: percent (30 % → 180), pancakes, fuel, the sale trap;
+  - "We know / We ask" with editable numbers, a guess box (Check → exactly / close /
+    too little / too much) and "Show the answer"; the pictures show "?" until then;
+  - four pictures: pieces (through the biggest shared step), two rulers with ÷ and ×
+    arrows on both, a straight line through zero with its step, a hundred squares
+    (percent examples only);
+  - "What school calls this" fold-out: direct proportion, y = k·x with this k,
+    domain and range;
+  - inverse rule of three (painters; the work as an area) and "When it lies":
+    phone charging and a taxi start fee;
+  - 🐄 alerts, grown-ups fold-out, three "Where next?" links to planned pages;
+  - deep links: `#/rule-of-three/<percent|pancakes|fuel|sale>[/<pieces|rulers|line|squares>][/answer]`.
+- All texts in EN and SK, with Slovak plurals for people, painters, days and squares
+  (decimals too: 4,8 dňa).
+- Headless screenshot tool `crates/app/examples/shot.rs` (D-037).
+- Docs: D-034…D-037, Q-026…Q-028, B-006, B-007, B-001 note, BRIEF (Explore, look),
+  CLAUDE.md, README, new WHAT-CHANGES-WHAT.md.
+
+**Verified**
+- `cargo fmt --check` and `cargo clippy --workspace --all-targets` clean;
+  `cargo test --workspace`: 5 content + 23 sims + 11 app + 1 server tests pass.
+  New tests: answers and steps for every example, verdicts, deep links, units and
+  plurals in both languages, every new glyph in the fonts.
+- Screenshots (headless): all four pictures, EN and SK, the sale with its answer,
+  phone width 400×860.
+- Not verified: the wasm build (B-001). Run `trunk serve` before testing with the kids.
+
+**Next**
+1. Peter: `trunk serve`, then the test period (D-036) with the kids; notes in Q-028.
+2. Answer Q-026 (names) and Q-027 (light theme).
+3. Percent tricks (on the hundred squares), then the five relationship pages.
+
 ## 2026-10-25 — empty shell: menu and placeholders (D-033)
 
 **Done**
