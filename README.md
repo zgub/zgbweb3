@@ -41,7 +41,7 @@ crates/content/locales en.ftl, sk.ftl — every visible text (Project Fluent), c
 crates/sims            pure maths/physics, no UI, unit tests
 crates/app             egui app: shell (top bar, menu, footer), pages, topics, theme, i18n
 crates/server          thin axum server: dist/ + crawler-refusing headers; /api reserved
-docs/                  BRIEF · STATUS · DECISIONS · QUESTIONS · BUGS · CURRICULUM · ENERGY-LADDER · WHAT-CHANGES-WHAT
+docs/                  BRIEF · STATUS · CHANGELOG · DECISIONS · QUESTIONS · BUGS · CURRICULUM · ENERGY-LADDER · WHAT-CHANGES-WHAT
 index.html             trunk entry; canvas + reserved ad slot
 ```
 

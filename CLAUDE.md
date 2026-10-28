@@ -1,6 +1,9 @@
 # Working agreement (for Claude and any other contributor)
 
 - Read `docs/STATUS.md` first; update it at the end of every working session.
+- Docs: BRIEF (what and why), STATUS (per session), CHANGELOG (per version), DECISIONS,
+  QUESTIONS, BUGS, plus topic plans (CURRICULUM, ENERGY-LADDER, WHAT-CHANGES-WHAT).
+  Add every user-visible change to CHANGELOG under "Unreleased" or the version being built.
 - Record choices in `docs/DECISIONS.md` (D-nnn), open points in `docs/QUESTIONS.md` (Q-nnn),
   defects in `docs/BUGS.md` (B-nnn). Don't delete history; mark superseded/fixed.
 - Physics and maths go in `crates/sims` with tests. The `app` crate only draws and wires.
