@@ -343,3 +343,31 @@ hover together with the page's blurb:
 The same markers appear on the section index pages. Long titles in the 200 pt
 menu end in "…" instead of wrapping (full title on hover). 🚧 was tried for
 drafts but renders unclearly in egui's fonts; ✦ and ✎ are missing.
+
+**D-040 — Scope of the first public release** (2026-10-29, accepted)
+Peter: more content before anything is published. The first public release
+contains:
+1. **What changes what** (D-035): rule of three, percent tricks, same step,
+   twice as fast, more hands, doubling, counting zeros.
+2. **Big and small numbers**, with decibels and logarithms complementing it
+   (counting zeros is its natural partner; whether they merge or link is open).
+3. **What is energy**, with the energy ladder (D-026, ENERGY-LADDER.md) as the
+   biggest piece of content on the site.
+Peter expects many iterations on 2 and 3; each goes through the branch and
+test cycle (D-036). Feedback, "how others guessed" and other server features
+wait for Postgres (Q-030). The release itself also needs `trunk serve`
+verified (B-001), hosting (Q-006), and the open names (Q-026, Q-029).
+
+**D-041 — The shape comes from the visitor's own tries** (2026-11-01, accepted)
+What rule of three lacked and the rest of "what changes what" shares: each
+relationship page has one slider moving a scene, and every setting the
+visitor lets go of leaves a dot on a plot beside it. The straight line (later
+the parabola, the hyperbola) is drawn through the dots only once they show
+it, and only then does 🎓 "What school calls this" name it. One shared widget
+(`kit::Tries`, `kit::try_slider`, `kit::tries_plot`; DESIGN.md "Try slider and
+tries plot") built with Same step (v0.6.0) and reused by Twice as fast and
+More hands. Also from 2026-11-01 (refines D-036): one page = one feature
+branch off `develop`, named after the page id (`linear`, `quadratic`,
+`inverse`); the previous branch is merged (`--no-ff`) before the next starts,
+so branches never stack. Fixes after Peter's review go to the same branch as
+a patch version.

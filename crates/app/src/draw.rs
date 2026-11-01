@@ -129,3 +129,127 @@ pub fn hundred_squares(
     }
     grid
 }
+
+/// 1, 2, 2.5 or 5 times a power of ten, at least `x` (DESIGN.md "Grid and axes").
+pub fn nice_step(x: f64) -> f64 {
+    let p = 10f64.powf(x.log10().floor());
+    for m in [1.0, 2.0, 2.5, 5.0, 10.0] {
+        if m * p >= x - 1e-12 {
+            return m * p;
+        }
+    }
+    10.0 * p
+}
+
+/// A round axis end at least `x`.
+pub fn nice_max(x: f64) -> f64 {
+    let s = nice_step(x / 5.0);
+    (x / s).ceil() * s
+}
+
+/// One axis of a plot: the range and how a tick reads ("10 km", "25 %").
+pub struct Axis<'a> {
+    pub max: f64,
+    pub label: &'a dyn Fn(f64) -> String,
+}
+
+/// Plot area with a grid and tick labels from 0 to each axis's `max`
+/// (DESIGN.md "Grid and axes"). Returns a mapping from values to screen points
+/// and the plot rect. Room is left on the left and below for the labels.
+pub fn grid_axes(
+    p: &Painter,
+    pal: &Palette,
+    r: Rect,
+    x: &Axis,
+    y: &Axis,
+) -> (impl Fn(f64, f64) -> Pos2 + use<>, Rect) {
+    let font = FontId::proportional(12.0);
+    let ys = nice_step(y.max / 5.0);
+    let left = (0..=(y.max / ys).round() as i32)
+        .map(|i| {
+            p.layout_no_wrap((y.label)(i as f64 * ys), font.clone(), pal.weak)
+                .size()
+                .x
+        })
+        .fold(0.0_f32, f32::max);
+    let plot = Rect::from_min_max(r.min + vec2(left + 10.0, 8.0), r.max - vec2(12.0, 22.0));
+    let (xmax, ymax) = (x.max, y.max);
+    let to = move |vx: f64, vy: f64| {
+        pos2(
+            plot.left() + (vx / xmax) as f32 * plot.width(),
+            plot.bottom() - (vy / ymax) as f32 * plot.height(),
+        )
+    };
+    let grid = Stroke::new(1.0, lerp(pal.deep, pal.line, 0.7));
+    let mut v = 0.0;
+    while v <= ymax + 1e-9 {
+        p.line_segment([to(0.0, v), to(xmax, v)], grid);
+        text(
+            p,
+            to(0.0, v) - vec2(6.0, 0.0),
+            Align2::RIGHT_CENTER,
+            (y.label)(v),
+            12.0,
+            pal.weak,
+        );
+        v += ys;
+    }
+    // fewer x ticks on narrow plots, so the labels never touch
+    let xs = nice_step(xmax / if plot.width() < 320.0 { 4.0 } else { 8.0 });
+    let mut v = 0.0;
+    while v <= xmax + 1e-9 {
+        p.line_segment([to(v, 0.0), to(v, ymax)], grid);
+        text(
+            p,
+            to(v, 0.0) + vec2(0.0, 5.0),
+            Align2::CENTER_TOP,
+            (x.label)(v),
+            12.0,
+            pal.weak,
+        );
+        v += xs;
+    }
+    (to, plot)
+}
+
+/// Legend inside a plot, top left (DESIGN.md "Legend"): a line sample, solid or
+/// dashed, and the label in the same colour. A `None` style draws a dot instead.
+pub fn legend(p: &Painter, at: Pos2, rows: &[(Color32, Option<bool>, String)]) {
+    for (i, (c, dashed, label)) in rows.iter().enumerate() {
+        let y = at.y + i as f32 * 17.0;
+        let (a, b) = (pos2(at.x, y), pos2(at.x + 18.0, y));
+        match dashed {
+            Some(true) => p.extend(Shape::dashed_line(&[a, b], Stroke::new(2.0, *c), 4.0, 3.0)),
+            Some(false) => {
+                p.line_segment([a, b], Stroke::new(2.5, *c));
+            }
+            None => {
+                p.circle_filled(pos2(at.x + 9.0, y), 4.5, *c);
+            }
+        }
+        text(
+            p,
+            pos2(at.x + 24.0, y),
+            Align2::LEFT_CENTER,
+            label,
+            12.0,
+            *c,
+        );
+    }
+}
+
+/// A label on a `deep` tag, so it stays readable across grid lines.
+pub fn tag(
+    p: &Painter,
+    pal: &Palette,
+    pos: Pos2,
+    anchor: Align2,
+    s: String,
+    size: f32,
+    c: Color32,
+) {
+    let g = p.layout_no_wrap(s, FontId::proportional(size), c);
+    let rr = anchor.anchor_size(pos, g.size() + vec2(8.0, 2.0));
+    p.rect_filled(rr, 3.0, pal.deep);
+    p.galley(rr.min + vec2(4.0, 1.0), g, c);
+}

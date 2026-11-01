@@ -101,6 +101,7 @@ page-rule-of-three = Trojčlenka
 page-percent = Triky s percentami
     .blurb = Skratky na percentá spamäti a pasce schované vo výpredajoch, cenách a titulkoch.
 page-linear = Rovnaký krok
+    .blurb = Začiatok a potom stále rovnaký krok: jablká, taxík, horiaca sviečka, a prečo trojčlenka nevidí nástupné.
 page-quadratic = Dvakrát rýchlejšie
 page-inverse = Viac rúk
 page-exponential = Zdvojovanie
@@ -117,6 +118,8 @@ page-biology = Biológia
 hook-percent-tricks = Prečo +20 % a potom −20 % nevráti cenu späť?
 hook-taxi-start-fee = Čo ak priamka nezačína v nule?
 hook-more-hands = Prečo viac rúk znamená menej času?
+hook-line-through-zero = Čo ak priamka ide cez nulu?
+hook-step-grows = Čo ak je každý krok väčší ako ten predošlý?
 
 ## --- Trojčlenka (rule-of-three) -------------------------------------------
 
@@ -253,6 +256,119 @@ r3-inv-painters = Počet maliarov:
 r3-inv-days = Počet dní:
 r3-inv-ask = Ak je počet maliarov
 r3-inv-ask-end = , koľko to potrvá?
+
+## --- Rovnaký krok (linear) ------------------------------------------------
+
+ln-step-title = Zakaždým rovnaký krok
+ln-examples = Vyber si príklad
+ln-ex-apples = Jablká
+    .story = Jablká stoja 1,80 € za kilo.
+    .domain = Aké hmotnosti dávajú zmysel? 0 kg a viac: −2 kg jabĺk neexistujú. Cena je teda 0 € alebo viac. Škola tomu prvému hovorí definičný obor a tomu druhému obor hodnôt.
+ln-ex-taxi = Taxík
+    .story = Nástup stojí 3 €. Potom každý kilometer pridá 1,20 €.
+    .trap = To je trojčlenka: dvakrát dlhšia cesta, dvakrát vyššia cena. Lenže 3 € za nástup platíš iba raz.
+    .domain = Aké vzdialenosti dávajú zmysel? 0 km a viac. Cena nikdy neklesne pod 3 €: aj jazda na 0 km stojí nástupné. Škola tomu prvému hovorí definičný obor a tomu druhému obor hodnôt.
+ln-ex-candle = Sviečka
+    .story = Nová sviečka je vysoká 20 cm. Za každú hodinu zhorí 2 cm.
+    .trap = To je trojčlenka: dvakrát dlhší čas, dvakrát väčšia výška. Lenže sviečka sa skracuje, nie predlžuje.
+    .broken = Bodky prestali ležať na priamke: po 10 hodinách už sviečka nie je a kratšia ako 0 cm byť nemôže.
+    .domain = Aké časy dávajú zmysel? Od 0 do 10 hodín: potom už nie je čo páliť. Výška ide od 20 cm dole po 0 cm. Škola tomu prvému hovorí definičný obor a tomu druhému obor hodnôt.
+
+ln-q-apples = { $x1 } stojí { $y1 }. Koľko stojí { $x2 }?
+ln-q-taxi = Jazda na { $x1 } stojí { $y1 }. Koľko stojí jazda na { $x2 }?
+ln-q-candle = Keď horí { $x1 }, je vysoká { $y1 }. Aká vysoká bude, keď bude horieť { $x2 }?
+
+ln-unit-apples-x = { $num } kg
+ln-unit-apples-y = { $num } €
+ln-unit-taxi-x = { $num } km
+ln-unit-taxi-y = { $num } €
+ln-unit-candle-x = { $num } { $n ->
+        [one] hodina
+        [few] hodiny
+        [many] hodiny
+       *[other] hodín
+    }
+ln-unit-candle-y = { $num } cm
+ln-unit-apples-xq = { $num } kg
+ln-unit-taxi-xq = { $num } km
+ln-unit-candle-xq = { $num } { $n ->
+        [one] hodinu
+        [few] hodiny
+        [many] hodiny
+       *[other] hodín
+    }
+ln-scene-step-apples = +{ $v } za kg
+ln-scene-step-taxi = +{ $v } za km
+ln-scene-step-candle = −{ $v } za hodinu
+ln-k-apples = koľko pridá každé kilo
+ln-k-taxi = koľko pridá každý kilometer
+ln-k-candle = koľko uberie každá hodina, preto je pod nulou
+ln-sym-apples-x = kg
+ln-sym-apples-y = €
+ln-sym-taxi-x = km
+ln-sym-taxi-y = €
+ln-sym-candle-x = h
+ln-sym-candle-y = cm
+ln-qty-apples-x = Hmotnosť:
+ln-qty-apples-y = Cena:
+ln-qty-taxi-x = Vzdialenosť:
+ln-qty-taxi-y = Cena:
+ln-qty-candle-x = Čas:
+ln-qty-candle-y = Výška:
+
+ln-guess-first = Najprv tipni
+ln-your-guess = Tvoj tip:
+ln-check = Over
+ln-show = Ukáž odpoveď
+ln-verdict-exact = Presne tak!
+ln-verdict-close = Blízko: do 10 %.
+ln-verdict-low = Málo. Vyskúšaj to posuvníkom nižšie.
+ln-verdict-high = Veľa. Vyskúšaj to posuvníkom nižšie.
+ln-answer = { $x } → { $y }
+ln-why-up = { $start } + { $n } × { $step } = { $y }
+ln-why-down = { $start } − { $n } × { $step } = { $y }
+ln-why-zero = { $n } × { $step } = { $y }
+
+ln-try = Teraz to vyskúšaj
+ln-try-hint = Pohni posuvníkom. Každé miesto, kde ho pustíš, nechá bodku v grafe.
+ln-now = { $x } → { $y }
+ln-scene-start = začiatok { $v }
+ln-tries-label = tvoje pokusy
+ln-shape-label = priamka cez ne
+ln-tries-more = Pusti posuvník na niekoľkých rôznych miestach: aspoň tri bodky.
+ln-tries-line = Tvoje bodky ležia na jednej priamke: { $x } navyše → vždy { $y }.
+ln-tries-off = Tieto bodky neležia na jednej priamke.
+ln-start-over = 🔄 Odznova
+
+ln-school-title = Ako to volajú v škole
+ln-school-what = Keď každý krok pridá rovnako, škola tomu hovorí lineárna funkcia. Jej graf je priamka.
+ln-school-formula = Škola to píše y = k · x + q. Tu je k = { $k }: { $kwhat }. A q = { $q }: kde priamka začína, ešte pred prvým krokom.
+ln-school-zero = Keď je q nula, priamka ide cez nulu a trojčlenka funguje: jablká. S nástupným nefunguje: taxík. Záporné k znamená, že priamka klesá: sviečka.
+
+ln-offers-title = Lacný nástup, alebo lacný kilometer?
+ln-offers-story = Dve taxislužby. A: nástup 6 €, potom 1 € za km. B: nástup iba 2 €, ale 1,50 € za km. Ktorá je lacnejšia?
+ln-offer-a = Taxík A
+ln-offer-b = Taxík B
+ln-offer-start = Nástup:
+ln-offer-step = Za km:
+ln-offers-ask = Od koľkých kilometrov je lacnejší A?
+ln-offers-guess = Tvoj tip:
+ln-trip = Jazda:
+ln-offers-now = A: { $a }   B: { $b }
+ln-offers-cheaper-a = A je lacnejší o { $d }.
+ln-offers-cheaper-b = B je lacnejší o { $d }.
+ln-offers-same = Obidva stoja rovnako.
+ln-offers-cross = Pri { $x } stoja obidva { $y }. Na kratšie jazdy je lacnejší { $short }, na dlhšie { $long }.
+ln-offers-parallel = Rovnaká cena za km: ten s lacnejším nástupom je lacnejší na každej jazde.
+ln-offers-never = Jeden z nich je lacnejší na každej jazde: má lacnejší nástup aj lacnejší kilometer.
+ln-offers-meet = rovnaká cena
+ln-offers-cow = Skutočné taxíky si účtujú aj čakanie v zápche a niektoré majú minimálnu cenu jazdy.
+
+ln-rule = Zakaždým rovnaký krok: priamka. Kde začína, je druhé číslo a na ňom záleží: začiatok platíš raz, krok zakaždým. Trojčlenka platí iba pre priamku cez nulu.
+ln-grown-formula = y = k · x + q. Z dvoch bodov (x1, y1) a (x2, y2): k = (y2 − y1) ÷ (x2 − x1), potom q = y1 − k · x1.
+ln-grown-cross = Dve ponuky stoja rovnako tam, kde kA · x + qA = kB · x + qB, teda pri x = (qB − qA) ÷ (kA − kB).
+ln-grown-tries = Bodka sa zapíše, keď pustíš posuvník. Čiarkovaná priamka ide cez tvoje dve krajné bodky; nakreslí sa, keď sú bodky aspoň tri a všetky na nej ležia.
+ln-grown-sources = Ceny aj sviečka sú vymyslené okrúhle čísla, nie skutočná firma ani výrobok.
 
 ## --- Percentové triky (percent) -------------------------------------------
 

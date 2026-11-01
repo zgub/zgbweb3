@@ -219,7 +219,27 @@ pub static PAGES: &[PageMeta] = &[
         ],
         changed_in: Some("0.5"),
     },
-    planned("linear", Section::Explore, "📏"),
+    PageMeta {
+        id: "linear",
+        section: Section::Explore,
+        glyph: "📏",
+        status: Status::Draft,
+        links: &[
+            Link {
+                to: "rule-of-three",
+                hook: "hook-line-through-zero",
+            },
+            Link {
+                to: "quadratic",
+                hook: "hook-step-grows",
+            },
+            Link {
+                to: "inverse",
+                hook: "hook-more-hands",
+            },
+        ],
+        changed_in: Some("0.6"),
+    },
     planned("quadratic", Section::Explore, "🚗"),
     planned("inverse", Section::Explore, "👥"),
     planned("exponential", Section::Explore, "📈"),

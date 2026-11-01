@@ -100,6 +100,7 @@ page-rule-of-three = Rule of three
 page-percent = Percent tricks
     .blurb = Shortcuts for percent in your head, and the traps hidden in sales, prices and headlines.
 page-linear = Same step
+    .blurb = A start, then the same step every time: apples, a taxi, a burning candle, and why the rule of three ignores the start fee.
 page-quadratic = Twice as fast
 page-inverse = More hands
 page-exponential = Doubling
@@ -116,6 +117,8 @@ page-biology = Biology
 hook-percent-tricks = Why doesn't +20 % and then −20 % bring you back?
 hook-taxi-start-fee = What if the line doesn't start at zero?
 hook-more-hands = Why do more hands mean less time?
+hook-line-through-zero = What if the line goes through zero?
+hook-step-grows = What if every step is bigger than the last?
 
 ## --- Rule of three (rule-of-three) ----------------------------------------
 
@@ -243,6 +246,115 @@ r3-inv-painters = Number of painters:
 r3-inv-days = Number of days:
 r3-inv-ask = If the number of painters is
 r3-inv-ask-end = , how long will it take?
+
+## --- Same step (linear) ----------------------------------------------------
+
+ln-step-title = Same step every time
+ln-examples = Pick an example
+ln-ex-apples = Apples
+    .story = Apples cost 1.80 € per kilo.
+    .domain = Which weights make sense? 0 kg and more: there is no −2 kg of apples. So the price is 0 € or more. School calls the first the domain and the second the range.
+ln-ex-taxi = Taxi
+    .story = Getting in costs 3 €. Then every kilometre adds 1.20 €.
+    .trap = That's the rule of three: twice the distance, twice the fare. But the 3 € for getting in is paid only once.
+    .domain = Which distances make sense? 0 km and more. The fare is never below 3 €: even a ride of 0 km costs the start. School calls the first the domain and the second the range.
+ln-ex-candle = Candle
+    .story = A new candle is 20 cm tall. Every hour it burns down 2 cm.
+    .trap = That's the rule of three: twice the time, twice the height. But the candle gets shorter, not taller.
+    .broken = The dots stop lining up: after 10 hours the candle is gone, and it can't get shorter than 0 cm.
+    .domain = Which times make sense? From 0 to 10 hours: after that there is nothing left to burn. The height goes from 20 cm down to 0 cm. School calls the first the domain and the second the range.
+
+ln-q-apples = { $x1 } cost { $y1 }. What do { $x2 } cost?
+ln-q-taxi = { $x1 } cost { $y1 }. What do { $x2 } cost?
+ln-q-candle = After { $x1 } it is { $y1 } tall. How tall is it after { $x2 }?
+
+ln-unit-apples-x = { $num } kg
+ln-unit-apples-y = { $num } €
+ln-unit-taxi-x = { $num } km
+ln-unit-taxi-y = { $num } €
+ln-unit-candle-x = { $num } { $n ->
+        [one] hour
+       *[other] hours
+    }
+ln-unit-candle-y = { $num } cm
+ln-unit-apples-xq = { $num } kg
+ln-unit-taxi-xq = { $num } km
+ln-unit-candle-xq = { $num } { $n ->
+        [one] hour
+       *[other] hours
+    }
+ln-scene-step-apples = +{ $v } per kg
+ln-scene-step-taxi = +{ $v } per km
+ln-scene-step-candle = −{ $v } per hour
+ln-k-apples = what each kilo adds
+ln-k-taxi = what each kilometre adds
+ln-k-candle = what each hour takes away, so it is below zero
+ln-sym-apples-x = kg
+ln-sym-apples-y = €
+ln-sym-taxi-x = km
+ln-sym-taxi-y = €
+ln-sym-candle-x = h
+ln-sym-candle-y = cm
+ln-qty-apples-x = Weight:
+ln-qty-apples-y = Price:
+ln-qty-taxi-x = Distance:
+ln-qty-taxi-y = Fare:
+ln-qty-candle-x = Time:
+ln-qty-candle-y = Height:
+
+ln-guess-first = Guess first
+ln-your-guess = Your guess:
+ln-check = Check
+ln-show = Show the answer
+ln-verdict-exact = Exactly!
+ln-verdict-close = Close: within 10 %.
+ln-verdict-low = Too little. Try it with the slider below.
+ln-verdict-high = Too much. Try it with the slider below.
+ln-answer = { $x } → { $y }
+ln-why-up = { $start } + { $n } × { $step } = { $y }
+ln-why-down = { $start } − { $n } × { $step } = { $y }
+ln-why-zero = { $n } × { $step } = { $y }
+
+ln-try = Now try it
+ln-try-hint = Move the slider. Every place you let go leaves a dot on the graph.
+ln-now = { $x } → { $y }
+ln-scene-start = start { $v }
+ln-tries-label = your tries
+ln-shape-label = the line through them
+ln-tries-more = Let go of the slider at a few different places: three dots or more.
+ln-tries-line = Your dots lie on one straight line: { $x } more → always { $y }.
+ln-tries-off = These dots don't lie on one straight line.
+ln-start-over = 🔄 Start over
+
+ln-school-title = What school calls this
+ln-school-what = When every step adds the same, school calls it a linear function. Its graph is a straight line.
+ln-school-formula = School writes it y = k · x + q. Here k = { $k }: { $kwhat }. And q = { $q }: where the line starts, before the first step.
+ln-school-zero = When q is 0, the line goes through zero and the rule of three works: the apples. With a start fee it doesn't: the taxi. A k below zero means the line goes down: the candle.
+
+ln-offers-title = Cheap to get in, or cheap per kilometre?
+ln-offers-story = Two taxi companies. A: 6 € to get in, then 1 € per km. B: only 2 € to get in, but 1.50 € per km. Which one is cheaper?
+ln-offer-a = Taxi A
+ln-offer-b = Taxi B
+ln-offer-start = Start:
+ln-offer-step = Per km:
+ln-offers-ask = From how many kilometres is A cheaper?
+ln-offers-guess = Your guess:
+ln-trip = Trip:
+ln-offers-now = A: { $a }   B: { $b }
+ln-offers-cheaper-a = A is cheaper by { $d }.
+ln-offers-cheaper-b = B is cheaper by { $d }.
+ln-offers-same = Both cost the same.
+ln-offers-cross = Both cost { $y } at { $x }. Shorter trips: { $short } is cheaper. Longer trips: { $long }.
+ln-offers-parallel = The same price per km: the one with the cheaper start is cheaper on every trip.
+ln-offers-never = One of them is cheaper on every trip: cheaper to get in and cheaper per km.
+ln-offers-meet = same price
+ln-offers-cow = Real taxis also charge for waiting in traffic, and some have a minimum fare.
+
+ln-rule = Same step every time: a straight line. Where it starts is a second number, and it matters: the start is paid once, the step every time. The rule of three works only for a line through zero.
+ln-grown-formula = y = k · x + q. From two points (x1, y1) and (x2, y2): k = (y2 − y1) ÷ (x2 − x1), then q = y1 − k · x1.
+ln-grown-cross = Two offers cost the same where kA · x + qA = kB · x + qB, so at x = (qB − qA) ÷ (kA − kB).
+ln-grown-tries = A dot is recorded when you let go of the slider. The dashed line goes through your two outermost dots, drawn once there are three or more and all of them lie on it.
+ln-grown-sources = The prices and the candle are made-up round numbers, not a real company or product.
 
 ## --- Percent tricks (percent) ----------------------------------------------
 

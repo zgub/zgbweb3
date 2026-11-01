@@ -6,7 +6,7 @@ Decided in D-038; colours in D-034, layout in D-018.
 
 **Rule zero.** Use the shared widgets in `crates/app/src/kit.rs`, the drawing
 pieces in `crates/app/src/draw.rs` (unit grid, brackets, dashed lines, wrapped
-text) and the colours in `theme::Palette`. If a page needs something that is not here, add it here and
+text, grid and axes with nice ticks, legend, tags) and the colours in `theme::Palette`. If a page needs something that is not here, add it here and
 to `kit` first, then use it. No one-off colours, sizes or widgets inside a page.
 
 ## 1. Colours (Ember, dark first)
@@ -120,6 +120,21 @@ new (changed in this or the previous minor version, `changed_in`), ✏ = draft,
 ⏳ with a dimmed title = planned, nothing there yet. The hover text explains
 the marker under the page's blurb. Menu titles never wrap; they end in "…".
 
+**Try slider and tries plot** (D-041; `kit::try_slider`, `kit::Tries`,
+`kit::tries_plot`). The "what changes what" pages let the visitor find the
+shape themselves. One slider moves the scene ("Distance: [slider] km", form
+style, decimal comma in Slovak). Every time the visitor lets go of it, the
+setting is recorded as a try and leaves an amber dot on the tries plot beside
+the scene; a try at the same place replaces the old one, at most 40 are kept.
+The current setting is ringed in white with dashed guide lines to the axes.
+When the page decides the dots show a shape (for a line: three or more
+different tries, all on it), the shape is drawn through them as a dashed teal
+line and the legend gains "the line through them". Under the plot one line
+says what the dots show, or what to do next ("three dots or more"), and
+🔄 Start over clears them. Scene and plot sit side by side, stacked below
+560 pt. The guess box comes before the slider, so the visitor guesses first
+and tries second.
+
 Buttons for actions (Check, Show the answer, Run, Start over) stay plain egui
 buttons with a glyph where it helps: 👁 show, ▶ run, ⏸ pause, 🔄 start over.
 
@@ -162,6 +177,13 @@ when they cross lines. Arrows → mean "goes with / corresponds to".
   a wrong cut marked with a dashed coral line;
 - *population grid*: 100 × 100 tiny squares, one per person, the cases as
   rings so they can be found (risk);
+- *scene column* (same step): one column, the start at the bottom in
+  `strong`, one brick per step on top of it in alternating amber; when the
+  value goes down (a candle) the lost bricks stay as faint outlines;
+- *tries plot* (`kit::tries_plot`): see section 4;
+- *two lines and their crossing*: two offers in `series[3]` and `series[4]`,
+  the current setting as a dashed white vertical, the crossing teal and only
+  after the answer is shown;
 - *log bar chart* (energy ladder, coming back);
 - 3D scenes in wgpu (powers of ten, later), same colour roles.
 

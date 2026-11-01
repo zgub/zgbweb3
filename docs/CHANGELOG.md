@@ -7,7 +7,26 @@ Versions are git tags `vX.Y.Z` (D-036); the version shows in the site footer.
 ## Unreleased (on `develop` and feature branches)
 
 - Branch flow: `main` = released, `develop` = development, feature branches
-  off `develop` (D-036).
+  off `develop` (D-036); one page = one branch named after its id (D-041).
+
+## 0.6.0 — 2026-11-01 (branch `linear`)
+
+**Added**
+- Page **Same step / Rovnaký krok** (draft, D-041):
+  - three examples: apples (a line through zero), taxi with a start fee,
+    a candle burning down;
+  - guess first; a guess made with the rule of three gets its own
+    explanation; the answer shows its working (3,00 € + 8 × 1,20 € = 12,60 €);
+  - a slider moves a scene (start + one brick per step); every place you let
+    go leaves a dot, and once three dots lie on a line it is drawn; the candle's
+    dots stop lining up after 10 hours;
+  - 🎓 y = k · x + q with this example's k and q, domain and range;
+  - two taxi offers with editable prices: guess where they cost the same, a
+    trip slider and both lines with the crossing.
+- Shared widgets for the next pages: `kit::Tries`, `kit::try_slider`,
+  `kit::tries_plot`; `draw::grid_axes`, `draw::legend`, `draw::tag`,
+  `draw::nice_step`/`nice_max` (moved from rule of three). DESIGN.md "Try
+  slider and tries plot" and three picture types.
 
 ## 0.5.2 — 2026-10-28 (branch `menu-markers`)
 

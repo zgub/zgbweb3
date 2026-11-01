@@ -14,6 +14,7 @@ use serde::{Deserialize, Serialize};
 use sims::ratio::{Question, Verdict, judge};
 
 use super::{Cx, Topic, heading, storage_key};
+use crate::draw::{nice_max, nice_step};
 use crate::i18n::I18n;
 use crate::kit;
 use crate::theme::{Palette, lerp};
@@ -1023,23 +1024,6 @@ impl Draw<'_> {
         self.p
             .galley(pos2(tx, r.top() + 20.0 + 3.0 * 26.0 + 12.0), g, pal.weak);
     }
-}
-
-/// 1, 2, 2.5 or 5 times a power of ten, at least `x`.
-fn nice_step(x: f64) -> f64 {
-    let p = 10f64.powf(x.log10().floor());
-    for m in [1.0, 2.0, 2.5, 5.0, 10.0] {
-        if m * p >= x - 1e-12 {
-            return m * p;
-        }
-    }
-    10.0 * p
-}
-
-/// A round axis end at least `x`.
-fn nice_max(x: f64) -> f64 {
-    let s = nice_step(x / 5.0);
-    (x / s).ceil() * s
 }
 
 // ---------------------------------------------------------------- when it lies

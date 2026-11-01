@@ -6,7 +6,7 @@ starts from a real situation, lets the visitor play with it, and only then
 names what they just saw ("what school calls this"). Status: proposal;
 names open in Q-026. Order of work (Peter, 2026-10-28): this group first,
 then trigonometry, then big and small numbers. Built so far: rule of three
-(v0.4.0, draft). Page ids are neutral so titles can change: `rule-of-three`,
+(v0.4.0), percent tricks (v0.5.0), same step (v0.6.0), all drafts. Page ids are neutral so titles can change: `rule-of-three`,
 `percent`, `linear`, `quadratic`, `inverse`, `exponential`, `logarithm`.
 
 ## Why
@@ -74,6 +74,21 @@ x % of y = y % of x; +20 % then −20 % is not back; discounts don't add;
 taking VAT out is not "minus the VAT rate" (check the current Slovak rate);
 percent vs percentage point; "risk doubles" on a grid of 10,000 dots;
 quick tricks (10 %, 5 %, 15 %).
+
+## Same step (built in v0.6.0)
+First page with the tries plot (D-041).
+1. **📏 Same step every time**: apples (1.80 €/kg, through zero), taxi
+   (3 € + 1.20 €/km, the default), candle (20 cm, −2 cm an hour, gone after
+   10 h). Guess first ("4 km cost 7.80 €. What do 8 km cost?"); a guess equal to
+   the rule of three gets its own explanation (the start fee is paid once).
+   Then the slider: a column scene (start + one brick per step) and the tries
+   plot; three dots on a line draw the line. The candle's dots stop lining up
+   past 10 h: the domain, found by the visitor. 🎓 y = k · x + q with this
+   example's k and q, domain and range.
+2. **🚕 Cheap to get in, or cheap per kilometre?** Two taxis (A 6 € + 1 €/km,
+   B 2 € + 1.50 €/km, editable), guess where A becomes cheaper (8 km, 14 €),
+   a trip slider and both lines with the crossing.
+Ohm's law waits for an Electricity page to link to.
 
 ## Real examples per relationship
 - **Same step:** price per kilo (rule of three is a line through zero), taxi

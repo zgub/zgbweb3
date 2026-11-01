@@ -1,5 +1,40 @@
 # Status
 
+## 2026-11-01 — v0.6.0: Same step (linear)
+
+Branch `linear`, off `develop` after the merges of `rule-of-three`, `percent`
+and `menu-markers` (Peter). Worked in the cloud from a git bundle of Peter's
+repo; handed back as a bundle.
+
+**Done**
+- `sims::linear` with tests: `Line` (at, through, zero_at, crossing,
+  through_zero), `rule_of_three`, `line_of_tries`.
+- `kit::Tries` / `try_slider` / `tries_plot` (D-041), `draw::grid_axes`,
+  `legend`, `tag`, `nice_step`, `nice_max`. The tries legend moves to the top
+  right when dots sit in the top left.
+- Page `linear` (draft), two sections: 📏 Same step every time (apples, taxi,
+  candle; guess, slider, scene column, tries plot, 🎓) and 🚕 Cheap to get in,
+  or cheap per kilometre? (two offers, crossing). Takeaway, grown-ups, links
+  to rule of three, twice as fast, more hands. Deep links
+  `#/linear/<apples|taxi|candle>[/dots][/answer][/crossing]`.
+- Glyphs 🍎 🚕 🕯 in the font test. Texts EN + SK with hour plurals
+  (accusative "1 hodinu" in the question).
+- D-040 copied from the project docs (it was missing in git), D-041;
+  DESIGN.md, WHAT-CHANGES-WHAT.md, CHANGELOG 0.6.0.
+
+**Verified**
+- fmt, clippy clean; tests: 6 content + 35 sims + 16 app + 1 server.
+- Screenshots: EN 1280 (taxi), SK 1280 (taxi with dots and answer),
+  SK 400 (candle past its end, offers with the crossing).
+- Not verified: wasm (B-001); Peter runs `trunk serve`.
+
+**Next**
+1. Peter: `trunk serve` → `#/linear`, then with the kids.
+2. Merge `linear` → `develop` (`--no-ff`), then branch `quadratic` (Twice as fast).
+3. Slider and number fields show "0.0" with a dot in Slovak in DragValues
+   (the sliders use the comma): same in rule of three and percent; fix once in `kit`?
+
+
 ## 2026-10-28 (late night) — v0.5.2: percent review
 
 On branch `menu-markers` (after v0.5.1).
@@ -19,8 +54,10 @@ On branch `menu-markers` (after v0.5.1).
 - fmt, clippy, tests. Screenshots SK 1280 and 400.
 
 **Next**
-1. Q-029 when rested; Q-026 names; Q-030 feedback button (proposal: in-app form).
-2. Merge chain into `develop`: rule-of-three → percent → menu-markers.
+1. First public release scope (D-040): finish What changes what, then Big and
+   small numbers (with decibels/logarithms), then What is energy + the ladder.
+2. Q-029 when rested; Q-026 names; Q-030 feedback waits for Postgres.
+3. Merge chain into `develop`: rule-of-three → percent → menu-markers.
 
 ## 2026-10-28 (night) — v0.5.1: menu markers
 
