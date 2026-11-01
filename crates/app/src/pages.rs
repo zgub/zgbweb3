@@ -92,11 +92,20 @@ pub fn section(ui: &mut egui::Ui, tr: &I18n, pal: &Palette, section: Section) ->
         any = true;
         ui.horizontal_wrapped(|ui| {
             let title = format!("{} {}", m.glyph, tr.page_title(m.id));
-            if ui.link(title).clicked() {
+            let mk = crate::shell::markers(tr, pal, m);
+            let r = ui.link(title);
+            let r = match &mk.hover {
+                Some(h) => r.on_hover_text(h),
+                None => r,
+            };
+            if r.clicked() {
                 go = Some(Page::Item(m.id.to_string()));
             }
-            if let Some(key) = m.status.key() {
-                ui.label(RichText::new(tr.t(key)).small().color(pal.weak));
+            if !mk.status.text().is_empty() {
+                ui.label(mk.status);
+            }
+            if !mk.dot.text().is_empty() {
+                ui.label(mk.dot);
             }
         });
         if let Some(blurb) = tr.page_blurb(m.id) {

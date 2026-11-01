@@ -119,8 +119,11 @@ pub struct PageMeta {
     /// Must exist in the app's fonts (tested in the app).
     pub glyph: &'static str,
     pub status: Status,
-    /// Shown as "Where next?" at the end of the page. Every target must exist (tested).
+    /// Shown as "Where next?" at the end of a page. Every target must exist (tested).
     pub links: &'static [Link],
+    /// The "major.minor" version in which the page was added or last changed in
+    /// a way visitors should notice. Drives the "new" dot in the menu (D-039).
+    pub changed_in: Option<&'static str>,
 }
 
 impl PageMeta {
@@ -128,6 +131,25 @@ impl PageMeta {
     pub fn title_key(&self) -> String {
         format!("page-{}", self.id)
     }
+
+    /// New for visitors: changed in the current or the previous minor version of
+    /// `current` (the site's version, e.g. "0.5.1"). Never goes stale by date.
+    pub fn is_new(&self, current: &str) -> bool {
+        let (Some(changed), Some(now)) =
+            (self.changed_in.and_then(major_minor), major_minor(current))
+        else {
+            return false;
+        };
+        changed.0 == now.0 && changed.1 <= now.1 && now.1 - changed.1 <= NEW_FOR_MINORS
+    }
+}
+
+/// How many minor versions back a change still counts as new (D-039).
+pub const NEW_FOR_MINORS: u32 = 1;
+
+fn major_minor(v: &str) -> Option<(u32, u32)> {
+    let mut it = v.split('.');
+    Some((it.next()?.parse().ok()?, it.next()?.parse().ok()?))
 }
 
 const fn planned(id: &'static str, section: Section, glyph: &'static str) -> PageMeta {
@@ -137,6 +159,7 @@ const fn planned(id: &'static str, section: Section, glyph: &'static str) -> Pag
         glyph,
         status: Status::Planned,
         links: &[],
+        changed_in: None,
     }
 }
 
@@ -177,6 +200,7 @@ pub static PAGES: &[PageMeta] = &[
                 hook: "hook-more-hands",
             },
         ],
+        changed_in: Some("0.4"),
     },
     PageMeta {
         id: "percent",
@@ -193,6 +217,7 @@ pub static PAGES: &[PageMeta] = &[
                 hook: "hook-percent-every-year",
             },
         ],
+        changed_in: Some("0.5"),
     },
     planned("linear", Section::Explore, "📏"),
     planned("quadratic", Section::Explore, "🚗"),
@@ -290,6 +315,29 @@ mod tests {
                 p.id,
                 p.section
             );
+        }
+    }
+
+    #[test]
+    fn new_means_this_or_the_previous_minor_version() {
+        let mut p = PageMeta {
+            id: "x",
+            section: Section::Explore,
+            glyph: "x",
+            status: Status::Draft,
+            links: &[],
+            changed_in: Some("0.5"),
+        };
+        assert!(p.is_new("0.5.1"));
+        assert!(p.is_new("0.6.0"));
+        assert!(!p.is_new("0.7.0"));
+        assert!(!p.is_new("1.5.0"));
+        assert!(!p.is_new("0.4.9")); // "changed" in a later version than now: not new
+        p.changed_in = None;
+        assert!(!p.is_new("0.5.0"));
+        // every page with content says when it changed
+        for m in PAGES.iter().filter(|m| m.status != Status::Planned) {
+            assert!(m.changed_in.is_some(), "{} has no changed_in", m.id);
         }
     }
 

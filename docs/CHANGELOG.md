@@ -9,6 +9,25 @@ Versions are git tags `vX.Y.Z` (D-036); the version shows in the site footer.
 - Branch flow: `main` = released, `develop` = development, feature branches
   off `develop` (D-036).
 
+## 0.5.2 — 2026-10-28 (branch `menu-markers`)
+
+**Changed** (Peter's review of percent tricks)
+- Slovak title "Triky s percentami" (was "Percentové triky").
+- The hundred squares show what each square is worth, on both pages.
+- "Swap the numbers" with real examples (a tip of 8 % on 50 € → 50 % of 8),
+  no x and y.
+- Up-and-down section titled "Zdražie o 20 % a potom zlacnie o 20 %: cena sa
+  nevráti na pôvodnú hodnotu!" / "Up 20 %, then down 20 %: the price does not
+  come back!".
+
+## 0.5.1 — 2026-10-28 (branch `menu-markers`)
+
+**Added**
+- Menu markers (D-039): ● new (this or the previous minor version), ✏ draft,
+  ⏳ planned with a dimmed title; the hover says what each means. Same markers
+  on the section pages. Long menu titles end in "…" instead of wrapping.
+- Screenshot tool: `ZGB_HOVER=x,y` to capture tooltips.
+
 ## 0.5.0 — 2026-10-28 (branch `percent`)
 
 **Added**

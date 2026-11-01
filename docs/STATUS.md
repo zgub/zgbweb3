@@ -1,5 +1,47 @@
 # Status
 
+## 2026-10-28 (late night) — v0.5.2: percent review
+
+On branch `menu-markers` (after v0.5.1).
+
+**Done**
+- SK title "Triky s percentami".
+- `draw::hundred_squares`: 10 × 10 with the value of one square written in each
+  (size fitted, dark on filled, soft on empty). Used by percent ("in your head")
+  and rule of three (hundred squares picture).
+- Swap section: four real presets (tip, interest, discount, fee, all in €), fields
+  "Percent / Amount", working shown with the real numbers; no x/y anywhere in the
+  main text (DESIGN.md rule added).
+- Up-and-down section title as Peter wrote it (EN equivalent).
+- Q-029: Slovak name for Game of Life, to decide later.
+
+**Verified**
+- fmt, clippy, tests. Screenshots SK 1280 and 400.
+
+**Next**
+1. Q-029 when rested; Q-026 names; Q-030 feedback button (proposal: in-app form).
+2. Merge chain into `develop`: rule-of-three → percent → menu-markers.
+
+## 2026-10-28 (night) — v0.5.1: menu markers
+
+Branch `menu-markers`, off `percent`.
+
+**Done**
+- `PageMeta.changed_in` and `is_new(version)` in `content` (tested): new = the
+  current or previous minor version. rule-of-three 0.4, percent 0.5.
+- `shell::markers`: ● teal new, ✏ draft, ⏳ planned (dimmed); hover = blurb +
+  marker lines, EN and SK. Used in the menu and on section index pages.
+- Menu rows truncate long titles with "…" (no more two-line rows).
+- `examples/shot.rs`: `ZGB_HOVER=x,y` for tooltip screenshots.
+- D-039, DESIGN.md "Menu markers", CLAUDE.md rule for `changed_in`.
+
+**Verified**
+- fmt, clippy clean; tests pass (content 6). Screenshots with tooltips EN and SK.
+
+**Next**
+1. Merge chain into `develop`: rule-of-three → percent → menu-markers.
+2. Same step (linear) page.
+
 ## 2026-10-28 (night) — v0.5.0: percent tricks
 
 Branch `percent`, off `rule-of-three` (it needs the v0.4.1 widgets, which are

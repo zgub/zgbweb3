@@ -145,6 +145,8 @@ pub fn menu(
 ) {
     egui::ScrollArea::vertical().show(ui, |ui| {
         ui.with_layout(Layout::top_down_justified(Align::LEFT), |ui| {
+            // one line per row: long titles end in "…" (full title on hover)
+            ui.style_mut().wrap_mode = Some(egui::TextWrapMode::Truncate);
             ui.heading(format!("🖱 {}", tr.t("menu-title")));
             ui.separator();
             for s in Section::ALL {
@@ -177,33 +179,63 @@ fn menu_row(
     actions: &mut Vec<Action>,
 ) {
     let selected = matches!(current, Page::Item(id) if id == m.id);
-    // Planned pages are dimmed instead of labelled, so titles fit in 200 pt;
-    // drafts get a small marker. Section pages spell out every status.
-    let planned = m.status == content::Status::Planned;
+    let mk = markers(tr, pal, m);
     let mut title = RichText::new(format!("{} {}", m.glyph, tr.page_title(m.id)));
-    if planned && !selected {
+    if m.status == content::Status::Planned && !selected {
         title = title.color(pal.weak);
     }
-    let status = match m.status {
-        content::Status::Draft => m
-            .status
-            .key()
-            .map(|k| RichText::new(tr.t(k)).small().color(pal.weak))
-            .unwrap_or_default(),
-        _ => RichText::default(),
-    };
-    let r = ui.selectable_label(selected, (title, egui::Atom::grow(), status));
-    let hover = match (tr.page_blurb(m.id), m.status.key()) {
-        (Some(b), _) => Some(b),
-        (None, Some(k)) => Some(tr.t(k)),
-        (None, None) => None,
-    };
-    let r = match hover {
+    // A long title is cut with "…" rather than pushing the markers to a second line;
+    // the full title is in the hover text.
+    use egui::AtomExt as _;
+    let title = title.atom_shrink(true);
+    let r = ui.selectable_label(selected, (title, egui::Atom::grow(), mk.status, mk.dot));
+    let r = match mk.hover {
         Some(h) => r.on_hover_text(h),
         None => r,
     };
     if r.clicked() {
         actions.push(Action::Go(Page::Item(m.id.to_string())));
+    }
+}
+
+/// What a page's menu row and index row show at their end, and say on hover
+/// (D-039, DESIGN.md "Menu markers"): ⏳ planned, ✏ draft, ● new.
+pub struct Markers {
+    pub status: RichText,
+    pub dot: RichText,
+    pub hover: Option<String>,
+}
+
+pub fn markers(tr: &I18n, pal: &Palette, m: &PageMeta) -> Markers {
+    let new = m.is_new(env!("CARGO_PKG_VERSION")) && m.status != content::Status::Planned;
+    let status = match m.status {
+        content::Status::Planned => RichText::new("⏳").small().color(pal.weak),
+        content::Status::Draft => RichText::new("✏").small().color(pal.weak),
+        content::Status::Ready => RichText::default(),
+    };
+    let dot = if new {
+        RichText::new(" ●").small().color(pal.series[1])
+    } else {
+        RichText::default()
+    };
+    let mut lines = Vec::new();
+    if let Some(b) = tr.page_blurb(m.id) {
+        lines.push(b);
+    }
+    if new {
+        let mut a = fluent_bundle::FluentArgs::new();
+        a.set("v", m.changed_in.unwrap_or_default());
+        lines.push(format!("● {}", tr.ta("marker-new", &a)));
+    }
+    match m.status {
+        content::Status::Planned => lines.push(format!("⏳ {}", tr.t("marker-planned"))),
+        content::Status::Draft => lines.push(format!("✏ {}", tr.t("marker-draft"))),
+        content::Status::Ready => {}
+    }
+    Markers {
+        status,
+        dot,
+        hover: (!lines.is_empty()).then(|| lines.join("\n")),
     }
 }
 

@@ -22,7 +22,7 @@ to `kit` first, then use it. No one-off colours, sizes or widgets inside a page.
 | weak | `weak` | `#8f8577` | captions, hints, axis labels, notes |
 | accent | `accent` | `#f0a04b` amber | selection, links, the chosen option, **what we know** |
 | note | `note` | `#e8b04f` | takeaways, 🐄 callouts |
-| series 1 | `series[1]` | `#4fb3a2` teal | **what we ask** / the result, "right" |
+| series 1 | `series[1]` | `#4fb3a2` teal | **what we ask** / the result, "right", the ● new marker |
 | series 2 | `series[2]` | `#e06c5a` coral | traps, wrong answers, "careful" |
 | series 3–5 | `series[3..]` | sky, plum, olive gold | further series in charts |
 | ramp | `ramp_at(t)` | `#2a1b38` → `#f8d66d` | continuous values: speed, heat, height |
@@ -87,6 +87,10 @@ after it, never a word that has to change with the number:
 | Počet maliarov: [4]  Počet dní: [6] | [4] maliari [6] dní |
 | Ak je počet maliarov [3], koľko to potrvá? | Ako dlho pre [3] maliarov |
 | Distance [100] km → Petrol [6.5] l | [100] km take [6.5] l |
+| Tip 8 % of 50 € → swap: 50 % of 8 = 4 € | x % of y = y % of x |
+
+No letters for numbers in the main text (x, y, p): use a real example with
+real numbers. Letters belong only in the grown-ups fold-out.
 
 Symbols after a field: only units that never change (%, km, l, ml, €, J).
 Sentences the page generates *from* the numbers ("3 maliari potrebujú 8 dní")
@@ -110,6 +114,11 @@ formulas, assumptions, sources. Both closed by default.
 
 **Insets** (`kit::inset`): boxes inside a section (guess box, small charts),
 `bg` on the section's `card`. Never a card inside a card of the same colour.
+
+**Menu markers** (D-039). At the end of each menu and index row: ● teal =
+new (changed in this or the previous minor version, `changed_in`), ✏ = draft,
+⏳ with a dimmed title = planned, nothing there yet. The hover text explains
+the marker under the page's blurb. Menu titles never wrap; they end in "…".
 
 Buttons for actions (Check, Show the answer, Run, Start over) stay plain egui
 buttons with a glyph where it helps: 👁 show, ▶ run, ⏸ pause, 🔄 start over.
@@ -141,7 +150,10 @@ when they cross lines. Arrows → mean "goes with / corresponds to".
 - *double number line* ("two rulers"): two scales, partner values linked,
   the same ÷ and × arrows above and below;
 - *line through zero* with a step triangle;
-- *unit grid*: 10 × 10 squares for percent;
+- *unit grid* ("hundred squares", `draw::hundred_squares`): 10 × 10 squares
+  for percent, **each square showing what it is worth** (2,4 when 1 % of 240),
+  dark text on filled squares, soft text on empty ones; skipped only when the
+  number cannot fit;
 - *area grid*: rectangles of squares for "the product stays the same";
 - *line chart* with a dashed model and a solid reality;
 - *before/after bars*: bars for each step, the start level dashed across,

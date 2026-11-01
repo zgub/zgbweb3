@@ -972,30 +972,20 @@ impl Draw<'_> {
         let pal = self.pal;
         let q = self.q;
         let known = q.a.round().clamp(0.0, 100.0) as usize;
-        let side = ((r.height() - 4.0) / 10.0).min(28.0);
-        let g0 = pos2(r.left() + 4.0, r.top() + 2.0);
-        for i in 0..100 {
-            let (row, col) = (i / 10, i % 10);
-            let sq = Rect::from_min_size(
-                g0 + vec2(col as f32 * side, row as f32 * side),
-                vec2(side, side),
-            )
-            .shrink(1.5);
-            let c = if i < known {
-                pal.accent
-            } else {
-                lerp(pal.deep, pal.series[1], 0.18)
-            };
-            self.p.rect_filled(sq, 1.5, c);
-        }
-        self.p.rect_stroke(
-            Rect::from_min_size(g0, vec2(side, side)).expand(1.0),
-            2.0,
-            Stroke::new(2.2, pal.strong),
-            StrokeKind::Outside,
-        );
-        let tx = g0.x + 10.0 * side + 22.0;
         let per = q.b / q.a;
+        let area = Rect::from_min_size(r.min + vec2(4.0, 2.0), vec2(r.width(), r.height() - 4.0));
+        let empty = crate::draw::empty_cell(pal);
+        let label = num(self.tr, per);
+        let grid = crate::draw::hundred_squares(
+            self.p,
+            pal,
+            area,
+            |i| if i < known { pal.accent } else { empty },
+            Some(&label),
+        );
+        crate::draw::outline_cell(self.p, pal, grid, 10, 0);
+        let (g0, side) = (grid.min, grid.width() / 10.0);
+        let tx = g0.x + 10.0 * side + 22.0;
         let mut l1 = FluentArgs::new();
         l1.set("n", num(self.tr, q.a));
         l1.set("b", self.b(q.b));

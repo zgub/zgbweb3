@@ -41,7 +41,7 @@ pub fn unit_grid(
     cols: usize,
     rows: usize,
     gap: f32,
-    fill: impl Fn(usize) -> Color32,
+    fill: &impl Fn(usize) -> Color32,
 ) -> Rect {
     let side = (r.width() / cols as f32).min(r.height() / rows as f32);
     let origin = r.min;
@@ -81,4 +81,51 @@ pub fn bracket(p: &Painter, x0: f32, x1: f32, y: f32, up: bool, c: Color32, labe
         (y + d + 3.0, Align2::CENTER_TOP)
     };
     text(p, pos2((x0 + x1) / 2.0, ty), anchor, label, 14.0, c);
+}
+
+/// The hundred squares (DESIGN.md "unit grid"): 10 × 10 in `area`, top-left,
+/// each square showing `label` (what one square is worth) when it fits.
+/// Text is dark on bright squares and soft on dark ones. Returns the grid's rect.
+pub fn hundred_squares(
+    p: &Painter,
+    pal: &Palette,
+    area: Rect,
+    fill: impl Fn(usize) -> Color32,
+    label: Option<&str>,
+) -> Rect {
+    let grid = unit_grid(p, area, 10, 10, 1.5, &fill);
+    let Some(label) = label.filter(|l| !l.is_empty()) else {
+        return grid;
+    };
+    let side = grid.width() / 10.0;
+    // largest size up to 14 pt that fits inside a square; skip if it would be tiny
+    let mut size = (side * 0.42).min(14.0);
+    let fits = |size: f32| {
+        p.layout_no_wrap(label.to_owned(), FontId::proportional(size), pal.text)
+            .size()
+            .x
+            <= side - 5.0
+    };
+    while size > 8.0 && !fits(size) {
+        size -= 0.5;
+    }
+    if !fits(size) {
+        return grid;
+    }
+    for i in 0..100 {
+        let c = fill(i);
+        let bright = 0.299 * c.r() as f32 + 0.587 * c.g() as f32 + 0.114 * c.b() as f32 > 110.0;
+        let tc = if bright {
+            pal.deep
+        } else {
+            lerp(c, pal.text, 0.55)
+        };
+        let center = grid.min
+            + vec2(
+                ((i % 10) as f32 + 0.5) * side,
+                ((i / 10) as f32 + 0.5) * side,
+            );
+        text(p, center, Align2::CENTER_CENTER, label, size, tc);
+    }
+    grid
 }
