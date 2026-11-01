@@ -10,6 +10,9 @@ on a real machine may surface wasm-only compile errors (web.rs, main.rs wasm bra
 First `trunk serve` (2026-10-21): "found more than one target artifact" — the app
 crate built both a cdylib and a bin named `zgbweb3`. Fixed by dropping the cdylib
 crate type. Further wasm-only errors may still show up.
+2026-10-28: v0.4.0 again checked natively only (the sandbox cannot download the
+wasm std). Nothing new is wasm-specific; first `trunk serve` on Peter's machine
+is the real check.
 
 **B-002 — "Forget everything" on native doesn't delete the file** (2026-10-11, open, low)
 Native eframe keeps storage in its own dir and in memory; we only clear
@@ -26,3 +29,15 @@ Workaround: delete `~/.local/share/zgbweb3/app.ron` before exact-size screenshot
 **B-005 — "→" comes from the Hack fallback font** (2026-10-11, obsolete 2026-10-21: Nunito removed by D-018; → still comes from Hack, which suits the stock egui look)
 Nunito has no arrows; the hook links' → is drawn in Hack (slightly different
 weight). Could add an arrow glyph the same way as superscript minus.
+
+**B-006 — Tests failed on Peter's machine after the 2026-10-25 session** (2026-10-28, fixed in v0.4.0)
+The empty-shell session removed `topics/{powers_of_ten,energy_ladder,clt_dice}.rs`
+from the code, but the files could not be deleted on disk. They are no longer
+compiled, yet `every_literal_key_in_code_exists` scans every file in `src/`
+and found their keys missing from the catalogs. Fixed by deleting the files.
+
+**B-007 — An empty label inside `horizontal_wrapped` overlaps the row** (2026-10-28, fixed in v0.4.0)
+egui 0.36: `ui.label("")` in a wrapping row sends the next widget back to the
+start of the row, so widgets draw over each other. Seen with unit labels that
+are empty (percent amounts have no unit). Fixed by skipping empty labels
+(`rule_of_three::unit_label`). Watch for it in other pages.

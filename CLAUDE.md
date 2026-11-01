@@ -1,6 +1,9 @@
 # Working agreement (for Claude and any other contributor)
 
 - Read `docs/STATUS.md` first; update it at the end of every working session.
+- Docs: BRIEF (what and why), STATUS (per session), CHANGELOG (per version), DECISIONS,
+  QUESTIONS, BUGS, DESIGN (how pages look), plus topic plans (CURRICULUM, ENERGY-LADDER, WHAT-CHANGES-WHAT).
+  Add every user-visible change to CHANGELOG under "Unreleased" or the version being built.
 - Record choices in `docs/DECISIONS.md` (D-nnn), open points in `docs/QUESTIONS.md` (Q-nnn),
   defects in `docs/BUGS.md` (B-nnn). Don't delete history; mark superseded/fixed.
 - Physics and maths go in `crates/sims` with tests. The `app` crate only draws and wires.
@@ -20,7 +23,16 @@
 - No user-visible text in Rust code: add it to **both** `crates/content/locales/en.ftl` and `sk.ftl`
   (tests fail otherwise). Numbers go through `I18n::num` for the decimal comma.
   Slovak: tykanie, long scale (miliarda = 10⁹), real plural forms via Fluent selectors.
-- Look (D-018): stock egui visuals and fonts, as in the old zgbweb. No colour in the chrome;
-  `theme::Palette` accents are for drawing inside sims. Plain buttons, no rounded cards.
+- Look: follow `docs/DESIGN.md` (D-038) for every page: colour roles, type sizes, page anatomy,
+  `kit` widgets (section, choice_bar, inset, takeaway), plot conventions, form-style inputs.
+  Something new goes into DESIGN.md and `kit` first, then into the page.
+- egui gotcha: never put an empty `ui.label("")` in `horizontal_wrapped` (B-007).
 - Texts are compiled in (D-032); the server serves no text files. Nothing needs a database yet.
-- Deep links: `cargo run -- powers-of-ten/9`, `ZGB_LANG=sk`, `ZGB_SIZE=400x860` for dev screenshots.
+- Deep links: `cargo run -- rule-of-three/fuel/rulers/answer`, `ZGB_LANG=sk`, `ZGB_SIZE=400x860`.
+- Screenshots without a window or GPU (D-037):
+  `ZGB_SHOT=shots/x.png cargo run --example shot -- rule-of-three/sale/squares`.
+  Look at every page you change, in both languages and at phone width (400×860).
+- Branches (D-036): `main` = released, `develop` = development; work only on feature branches
+  off `develop`, merged back into `develop`. Never commit straight to `main` or `develop`.
+- Releases (D-036): bump `version` in the root Cargo.toml, tag `vX.Y.Z`; then no code changes
+  while Peter tests; findings go to BUGS/QUESTIONS for the next version.

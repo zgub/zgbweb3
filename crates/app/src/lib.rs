@@ -15,12 +15,20 @@
 //! `content` crate.
 
 mod app;
+// Toolkit for pages with content; idle while every page is a placeholder.
+#[allow(dead_code)]
 mod i18n;
+// Toolkit for pages with content; idle while every page is a placeholder.
+#[allow(dead_code)]
 mod kit;
 mod pages;
 mod settings;
 mod shell;
+// Toolkit for pages with content; idle while every page is a placeholder.
+#[allow(dead_code)]
 mod theme;
+// Toolkit for pages with content; idle while every page is a placeholder.
+#[allow(dead_code)]
 mod topics;
 mod web;
 

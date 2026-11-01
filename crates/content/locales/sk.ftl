@@ -40,8 +40,8 @@ where-next = Kam ďalej?
 grown-ups = Pre dospelých: odkiaľ sú tie čísla
 model-alert = Pozor, model!
 draft-note = Návrh — pred zverejnením stránky ho ešte dokončíme.
-planned-body = Zatiaľ tu nič nie je. Stránka je na mape a príde na rad.
-section-empty = Zatiaľ tu nič nie je.
+sawdust = Nič, len piliny
+    .body = Si na správnom mieste, len v nesprávnom čase. Tri zo štyroch súradníc sedia presne: x, y aj z. Netrafil si len t. Príď neskôr.
 
 status-planned = v pláne
 status-draft = návrh
@@ -83,235 +83,172 @@ license-third = Časti, ktoré vyrobili iní:
 
 ## --- Stránky: názvy a krátky popis, keď stránka existuje -------------------
 
-page-lora-mesh = Rádio a LoRa sieť
-page-home-lab = Raspberry Pi a domáce laboratórium
-page-sensors = Senzory UV a ovzdušia
-page-flysch = Zápisník Flysch
-page-space-settlers = Hra o vesmírnych osadníkoch
+page-flysch = Denník Flysch
+page-spatlers = Spatlers
+page-electronics = Elektronika
 
-page-dice-bell = Prečo kocky robia zvon
-    .blurb = Jedna kocka je plochá a férová. Sčítaj dve, päť, dvadsať kociek a zrazu sa objaví zvonová krivka.
+page-game-of-life = Conwayova hra života
 page-gas-box = Plyn v krabici
-    .blurb = Stovky poskakujúcich guličiek vytvoria tlak a teplotu — a postupne zabudnú, kde začínali.
 
-page-statistics = Štatistika a pravdepodobnosť
-page-music-theory = Hudobná teória
+page-statistics = Štatistika
+page-probability = Pravdepodobnosť
+page-music = Hudba
 page-linear-algebra = Lineárna algebra
 page-tensor-calculus = Tenzorový počet
 
-page-exponential = Exponenciálny rast a rády veľkosti
-page-powers-of-ten = Mocniny desiatky
-    .blurb = Jedna kocka-hlavolam, desať v rade, sto v pláte, tisíc vo veľkej kocke. A potom znova — a znova.
-page-number-bases = Číselné sústavy
-page-logic-gates = Logika a hradlá
-page-electricity = Elektrina
-page-energy-ladder = Energetický rebrík
-    .blurb = Koľko energie má letiaci komár? Auto? Vesmírna stanica? Zoraď ich vedľa seba a počítaj v kockách cukru.
-page-thermodynamics = Základy termodynamiky
+page-rule-of-three = Trojčlenka
+    .blurb = Ak 30 % je 180, koľko je 100 %? Jedna otázka, štyri obrázky a dva prípady, keď trojčlenka klame.
+page-percent = Percentové triky
+page-linear = Rovnaký krok
+page-quadratic = Dvakrát rýchlejšie
+page-inverse = Viac rúk
+page-exponential = Zdvojovanie
+page-logarithm = Počítame nuly
 
-## --- „Kam ďalej?“ otázky ------------------------------------------------------
+page-numbers = Čísla
+page-thermodynamics = Termodynamika
+page-energy = Čo je energia
+page-chemistry = Chémia
+page-biology = Biológia
 
-hook-why-random-makes-a-bell = Prečo náhoda robí zvon?
-hook-what-is-1e9 = Čo vlastne znamená 10⁹?
-hook-heat-is-jiggling = Odkiaľ sa berie teplo? Z trasúcich sa molekúl
-hook-molecules-make-a-bell = Miliardy molekúl, jedna zvonová krivka rýchlostí
-hook-what-is-1e13-joules = Čo je 10¹³ joulov? Pozri energetický rebrík
-hook-what-kind-of-number = 0,001 — aké je to vlastne číslo?
-hook-why-doubling-surprises = Prečo zdvojnásobovanie každého prekvapí?
-hook-what-is-a-volt = Čo je volt a prečo iskrí sveter?
+## --- Otázky na prelinkovanie ----------------------------------------------
 
-## --- Energetický rebrík --------------------------------------------------------
+hook-percent-tricks = Prečo +20 % a potom −20 % nevráti cenu späť?
+hook-taxi-start-fee = Čo ak priamka nezačína v nule?
+hook-more-hands = Prečo viac rúk znamená menej času?
 
-energy-count-in = Energiu počítaj v
-unit-joule = jouloch
-unit-electronvolt = elektrónvoltoch
-unit-kilocalorie = kilokalóriách (kalórie v jedle)
-unit-kilowatt-hour = kilowatthodinách (ako na účte za elektrinu)
-unit-sugar-cube = kockách cukru (zjedených)
-unit-mosquito = letiacich komároch
+## --- Trojčlenka (rule-of-three) -------------------------------------------
 
-# $shown = číslo ako text, $count = to isté číslo na výber tvaru (1 / 2–4 / desatinné / 5+)
-amount-sugar-cube = { $count ->
-    [one] { $shown } kocka cukru
-    [few] { $shown } kocky cukru
-    [many] { $shown } kocky cukru
-   *[other] { $shown } kociek cukru
-}
-amount-mosquito = { $count ->
-    [one] { $shown } letiaci komár
-    [few] { $shown } letiace komáre
-    [many] { $shown } letiaceho komára
-   *[other] { $shown } letiacich komárov
-}
+r3-examples = Vyber si príklad
+r3-ex-percent = Percentá
+    .story = Klasika zo školy aj z obchodu: poznáš časť a vieš, koľko percent to je.
+r3-ex-pancakes = Palacinky
+    .story = Recept je pre 4 osoby a treba doň 250 ml mlieka. Varíš pre 6.
+r3-ex-fuel = Benzín
+    .story = Auto spotrebuje 6,5 litra na 100 km. Cesta má 340 km.
+r3-ex-sale = Zľava
+    .story = Po zľave 30 % stojí tričko 42 €. Platíš teda 70 % pôvodnej ceny. Koľko stálo?
 
-energy-make-own = Vyrob si vlastnú vec v pohybe
-energy-own-energy = Pohybová energia: { $energy }
-energy-ex-mine = Tvoja vec
+r3-q-percent = Ak { $a } je { $b }, koľko je { $c }?
+r3-q-pancakes = Pre { $a } treba { $b } mlieka. Koľko pre { $c }?
+r3-q-fuel = Na { $a } spotrebuje { $b }. Koľko na { $c }?
+r3-q-sale = Ak { $a } je { $b }, koľko bolo { $c }?
 
-energy-ex-thermal = Jedna roztrasená molekula vzduchu (25 °C)
-    .note = Boltzmannova konštanta × izbová teplota: typická energia tepelného trasenia na jeden smer pohybu.
-energy-ex-photon = Jeden fotón zeleného svetla
-    .note = Vlnová dĺžka 530 nm, E = h·c/λ ≈ 2,3 eV.
-energy-ex-mosquito = Letiaci komár
-    .note = 2 mg pri 0,4 m/s (asi 1,5 km/h). Zhruba jeden teraelektrónvolt.
-energy-ex-lhc = Jeden protón v LHC
-    .note = 6,8 TeV na protón (LHC, Run 3). Energia niekoľkých komárov — v jedinej častici.
-energy-ex-apple = Zdvihnúť jablko o meter
-    .note = Jablko s hmotnosťou 102 g zdvihnuté o 1 m: asi jeden joule. Šikovná predstava pre „1 J“.
-energy-ex-tennis = Rýchle tenisové podanie
-    .note = Loptička 58 g pri 200 km/h.
-energy-ex-aa = Tužková batéria AA
-    .note = Alkalická AA: asi 2,5 Ah pri asi 1,2 V ≈ 3 Wh.
-energy-ex-sugar = Jedna kocka cukru (zjedená)
-    .note = 4 g cukru × asi 16,5 kJ na gram.
-energy-ex-car50 = Rodinné auto pri 50 km/h
-    .note = 1500 kg, rýchlosť v meste.
-energy-ex-car130 = Rodinné auto pri 130 km/h
-    .note = To isté auto na diaľnici: 2,6× vyššia rýchlosť, 6,8× viac energie (rýchlosť sa umocňuje na druhú).
-energy-ex-food_day = Jedlo dospelého na jeden deň
-    .note = 2000 kcal.
-energy-ex-lightning = Blesk
-    .note = Veľmi zhruba: pri jednom blesku sa často uvádza okolo jedného gigajoulu; skutočné blesky sa veľmi líšia.
-energy-ex-b747_fuel = Plné nádrže Boeingu 747-400
-    .note = 216 840 l leteckého paliva × 0,80 kg/l × 43 MJ/kg (chemická energia).
-energy-ex-iss = ISS letiaca na obežnej dráhe
-    .note = 420 t pri 7,66 km/s (iba pohybová energia). Viac ako plné nádrže jumbo jetu.
+r3-unit-percent-a = { $num } %
+r3-unit-percent-b = { $num }
+r3-unit-pancakes-a = { $num } { $n ->
+        [one] osoba
+        [few] osoby
+        [many] osoby
+       *[other] osôb
+    }
+r3-unit-pancakes-b = { $num } ml
+r3-unit-fuel-a = { $num } km
+r3-unit-fuel-b = { $num } l
+r3-unit-sale-a = { $num } %
+r3-unit-sale-b = { $num } €
 
-energy-grid = Každá čiara mriežky je ×10.
-energy-compare = Porovnaj dve veci
-energy-ratio = { $big } má { $ratio }× toľko energie ako { $small }.
-energy-orders = To je { $orders } { $n ->
-    [one] rád
-    [few] rády
-    [many] rádu
-   *[other] rádov
-} veľkosti: zhruba { $pow } — vynásob desiatimi { $times }-krát za sebou.
-energy-model = Každú vec v pohybe berieme ako jeden pevný kus, ktorý letí jednou rýchlosťou: žiadne točiace sa kolesá, žiadne mávajúce krídla, žiadne kmitanie.
-energy-notes-intro = Pohybová (kinetická) energia je ½·m·v². Dvakrát vyššia rýchlosť znamená štyrikrát viac energie.
+r3-we-know = Vieme:
+r3-we-ask = Pýtame sa:
+r3-no-answer = Začni od niečoho, čo nie je nula.
+r3-your-guess = Tvoj tip:
+r3-check = Skontroluj
+r3-show = Ukáž výsledok
+r3-verdict-exact = Presne tak!
+r3-verdict-close = Blízko: do 10 %. Obrázok nižšie ťa dovedie až k cieľu.
+r3-verdict-low = Málo. Pozri sa na obrázok: koľko je jeden diel?
+r3-verdict-high = Priveľa. Pozri sa na obrázok: koľko je jeden diel?
+r3-answer = { $c } → { $answer }
+r3-sale-trap = Obvyklá chyba: 42 € + 30 % = 54,60 €. Lenže 30 % sa odrátalo z pôvodnej ceny, nie zo 42 €.
 
-## --- Kocky a zvonová krivka -------------------------------------------------------
+r3-picture = Vyber si obrázok
+r3-pic-pieces = Diely
+    .hint = Rozdeľ obe množstvá na rovnaké diely. Zisti, koľko je jeden diel, a potom diely spočítaj.
+r3-pic-rulers = Dve pravítka
+    .hint = Prvá veličina hore, druhá dole. Čo urobíš hore, urobíš aj dole.
+r3-pic-line = Priamka
+    .hint = Dvakrát viac jedného, dvakrát viac druhého: všetky body ležia na jednej priamke cez nulu.
+r3-pic-squares = Sto štvorčekov
+    .hint = Percento znamená „zo sto“. Jeden štvorček je 1 %.
+r3-squares-only-percent = Len keď je prvé číslo v percentách.
+r3-too-many-pieces = Priveľa dielov na nakreslenie. Skús dve pravítka.
+r3-is-pair = { $a } → { $b }
+r3-one-piece = jeden diel: { $step } → { $b } ÷ { $down } = { $piece }
+r3-all-pieces = { $c } → { $up } × { $piece } = { $answer }
+r3-line-step = každých ďalších { $step } pridá rovnakých { $adds }
+r3-sq-known = { $n } { $count ->
+        [one] štvorček je
+        [few] štvorčeky sú
+        [many] štvorčeka je
+       *[other] štvorčekov je
+    } { $b }
+r3-sq-one = 1 štvorček je { $b } ÷ { $n } = { $per }
+r3-sq-asked = { $n } { $count ->
+        [one] štvorček je
+        [few] štvorčeky sú
+        [many] štvorčeka je
+       *[other] štvorčekov je
+    } { $n } × { $per } = { $answer }
+r3-sq-percent = Percentá sú len počítanie štvorčekov zo sto.
 
-dice-n = kocky
-dice-sides = stien na kocke
-dice-roll = Hoď ×{ $n }
-dice-keep = ▶ Hádž ďalej
-dice-restart = ⟲ Odznova
-dice-curve = Ukáž zvonovú (Gaussovu) krivku
-dice-empty = Hoď si kockami!
-dice-summary = { $rolls ->
-    [one] { $rolls } hod
-    [few] { $rolls } hody
-   *[other] { $rolls } hodov
-}. Priemerný súčet: { $mean } (teória hovorí { $theory }).
-dice-notes = Súčet n férových kociek, každá má s stien: priemer n·(s+1)/2 = { $mean }, smerodajná odchýlka √(n·(s²−1)/12) = { $sd }. Oranžová krivka je normálna (Gaussova) krivka s týmto priemerom a odchýlkou, zväčšená podľa počtu hodov. Centrálna limitná veta hovorí, že súčet mnohých nezávislých náhodných vecí dáva približne tento tvar — bez ohľadu na to, aký tvar má každá z nich.
+r3-school-title = Ako to volajú v škole
+r3-school-direct = Keď dvakrát viac jedného znamená dvakrát viac druhého, škola to volá priama úmernosť. Dopočítať chýbajúce číslo je trojčlenka.
+r3-school-k = Jedna vec tu zostáva rovnaká: { $one } je vždy { $per }. Škola to píše ako y = k · x, kde k = { $k }.
+r3-school-line = Jej graf je priamka cez nulu. Nižšie nájdeš priamku, ktorá v nule nezačína (taxík), aj krivku (maliari).
+r3-school-words = Ešte dve slová, ktoré budeš počuť: definičný obor sú čísla, ktoré má zmysel dosadiť, obor hodnôt je to, čo môže vyjsť. Dajú sa robiť palacinky pre −3 osoby? Pre pol osoby?
 
-## --- Mocniny desiatky ----------------------------------------------------------------
-## Mená čísel v dlhej škále: miliarda = 10⁹, bilión = 10¹², biliarda = 10¹⁵, trilión = 10¹⁸.
+r3-inverse-title = Viac rúk, menej času
+r3-inverse-story = 4 maliari vymaľujú dom za 6 dní. Ako dlho to potrvá trom? Menej rúk, teda viac dní: tu trojčlenka funguje naopak.
+r3-inverse-answer = Práca je { $work } maliarodní: plocha obdĺžnika. { $p } { $pn ->
+        [one] maliar potrebuje
+        [few] maliari potrebujú
+       *[other] maliarov potrebuje
+    } { $work } ÷ { $p } = { $d } { $dn ->
+        [one] deň
+        [few] dni
+        [many] dňa
+       *[other] dní
+    }.
+r3-grid-label = { $p } × { $d }
+r3-inverse-cow = Každý maliar robí rovnako rýchlo a nikto nikomu neprekáža.
 
-pot-name-p0 = jeden
-pot-name-p1 = desať
-pot-name-p2 = sto
-pot-name-p3 = tisíc
-pot-name-p4 = desaťtisíc
-pot-name-p5 = stotisíc
-pot-name-p6 = milión
-pot-name-p7 = desať miliónov
-pot-name-p8 = sto miliónov
-pot-name-p9 = miliarda
-pot-name-p10 = desať miliárd
-pot-name-p11 = sto miliárd
-pot-name-p12 = bilión
-pot-name-p13 = desať biliónov
-pot-name-p14 = sto biliónov
-pot-name-p15 = biliarda
-pot-name-p16 = desať biliárd
-pot-name-p17 = sto biliárd
-pot-name-p18 = trilión
-pot-name-m1 = jedna desatina
-pot-name-m2 = jedna stotina
-pot-name-m3 = jedna tisícina
-pot-name-m4 = jedna desaťtisícina
-pot-name-m5 = jedna stotisícina
-pot-name-m6 = jedna milióntina
-pot-name-m7 = jedna desaťmilióntina
-pot-name-m8 = jedna stomilióntina
-pot-name-m9 = jedna miliardtina
-pot-name-m10 = jedna desaťmiliardtina
-pot-name-m11 = jedna stomiliardtina
-pot-name-m12 = jedna bilióntina
-pot-name-m13 = jedna desaťbilióntina
-pot-name-m14 = jedna stobilióntina
-pot-name-m15 = jedna biliardtina
-pot-name-m16 = jedna desaťbiliardtina
-pot-name-m17 = jedna stobiliardtina
-pot-name-m18 = jedna trilióntina
+r3-lies-title = Keď trojčlenka klame
+r3-lies-intro = Trojčlenka funguje, len keď dvakrát viac jedného naozaj znamená dvakrát viac druhého. Dva bežné prípady, keď to neplatí:
+r3-lie-charging = Nabíjanie mobilu
+    .story = 20 % za 15 minút. Plný za 75?
+    .cow = Typický priebeh, nie meranie konkrétneho mobilu.
+r3-lie-charging-rule = trojčlenka: plný za 75 min
+r3-lie-charging-real = skutočný mobil pri konci spomalí
+r3-lie-taxi = Taxík s nástupným
+    .story = 5 km stálo 9 €. Bude 10 km stáť 18 €?
+    .cow = 3 € za nástup, potom 1,20 € za km. Priamka, ale nie cez nulu.
+r3-lie-taxi-rule = trojčlenka: 10 km → 18 €
+r3-lie-taxi-real = skutočne: 10 km → 15 €
+r3-rule = Trojčlenka funguje, keď dvakrát viac jedného znamená dvakrát viac druhého: priamka cez nulu. Maliari sú opak: dvakrát viac rúk, polovica času. Mobil a taxík nie sú ani jedno.
 
-si-m30 = quekto
-si-m27 = ronto
-si-m24 = yokto
-si-m21 = zepto
-si-m18 = atto
-si-m15 = femto
-si-m12 = piko
-si-m9 = nano
-si-m6 = mikro
-si-m3 = mili
-si-m2 = centi
-si-m1 = deci
-si-p1 = deka
-si-p2 = hekto
-si-p3 = kilo
-si-p6 = mega
-si-p9 = giga
-si-p12 = tera
-si-p15 = peta
-si-p18 = exa
-si-p21 = zetta
-si-p24 = yotta
-si-p27 = ronna
-si-p30 = quetta
+r3-grown-formula = Priama: ak a je b, potom c je b × c ÷ a. Cez jednotku: b ÷ a je hodnota jednej jednotky, krát c.
+r3-grown-inverse = Nepriama: a × b zostáva rovnaké, takže pre c je výsledok a × b ÷ c.
+r3-grown-numbers = Obrázky idú cez najväčší krok, ktorý sa zmestí do oboch čísel (pre 30 % a 100 % je to 10 %), takže každý krok je celé číslo.
+r3-grown-sources = Na tejto stránke nie sú žiadne cudzie údaje. Krivka nabíjania je typický priebeh, nie meranie.
 
-pot-prefix-table = Všetky predpony SI, od quekto po quetta
-pot-col-power = mocnina
-pot-col-prefix = predpona
-pot-col-symbol = značka
-pot-legend = Farby:
-pot-legend-cube = 1 kocka-hlavolam ({ $side })
-pot-legend-block = { $count } kociek ({ $side })
-
-pot-story-one = Jedna kocka-hlavolam s hranou { $cube } sedí uprostred svojej neviditeľnej škatuľky s hranou { $box }. Desať škatuliek v rade má presne jeden meter — a medzi susednými kockami ostane { $gap } vzduchu.
-pot-story = { $count } kociek-hlavolamov, každá vo svojej 10 cm škatuľke, tvorí { $shape ->
-    [row] rad dlhý { $len }.
-    [slab] štvorec { $len } × { $len }, hrubý jednu kocku.
-   *[cube] kocku s hranou { $len }.
-}
-pot-hint = To je zhruba { $thing }.
-pot-weight = Spolu by vážili asi { $mass }.
-pot-story-neg = Rozkrájaj kocku s hranou 1 m na { $count } rovnakých { $shape ->
-    [slab] plátov, každý { $big } × { $big } × { $thin }.
-    [stick] tyčiniek, každá dlhá { $big } a hrubá { $thin } × { $thin }.
-   *[cube] kociek, každá s hranou { $thin }.
-}
-
-size-hint-k1 = škatuľa, do ktorej sa akurát zmestíš
-size-hint-k2 = trojposchodový dom
-size-hint-k3 = 30-poschodový panelák
-size-hint-k4 = veľký kopec — vyšší ako ktorákoľvek budova na svete
-size-hint-k5 = hora vyššia ako Mount Everest — dopravné lietadlá lietajú zhruba v tejto výške
-size-hint-k6 = kocka siahajúca až na okraj vesmíru (100 km nad zemou)
-size-hint-neg3 = neviditeľná škatuľka jednej kocky-hlavolamu
-size-hint-neg6 = kocka cukru
-size-hint-neg9 = zrnko piesku
-size-hint-neg12 = hrúbka vlasu
-size-hint-neg15 = bunka v tvojom tele
-size-hint-neg18 = malá baktéria
-
-pot-model = Skutočné kocky-hlavolamy sa vo vzduchu nevznášajú. Každej kocke dávame vlastnú 10 cm škatuľku, aby desať kociek malo presne jeden meter — počítanie tak zostane poctivé a čísla okrúhle.
-pot-kid = dieťa, { $h }
-pot-neg-zoomed = Priblížené: bledá kocka tu má hranu { $size }.
-pot-notes =
-    Každý tretí krok sa vzor opakuje: 1000 blokov sa spojí do jedného nového, väčšieho bloku (s novou farbou).
-    Štandardná kocka-hlavolam 3×3 má hranu 57 mm (rýchlostné kocky 55–56 mm) a váži 70–100 g; počítame s 80 g.
-    Každá kocka sedí v 10 cm škatuľke, takže medzi susedmi je 4,3 cm vzduchu a desať škatuliek má presne 1 m.
-    Veľké bloky kreslíme tak, že na ich stenách vidno bloky o úroveň menšie — stena 1 m bloku ukazuje 10 × 10 kociek-hlavolamov.
-    Mená čísel sú v dlhej škále (miliarda = 10⁹, bilión = 10¹²). Angličtina používa krátku škálu (billion = 10⁹, trillion = 10¹²).
+r3-direct-title = Viac jedného, viac druhého
+r3-qty-percent-a = Percentá
+r3-qty-percent-b = Hodnota
+r3-qty-pancakes-a = Počet osôb
+r3-qty-pancakes-b = Mlieko
+r3-qty-fuel-a = Vzdialenosť
+r3-qty-fuel-b = Benzín
+r3-qty-sale-a = Časť ceny
+r3-qty-sale-b = Cena
+r3-sym-percent-a = %
+r3-sym-percent-b = { "" }
+r3-sym-pancakes-a = { "" }
+r3-sym-pancakes-b = ml
+r3-sym-fuel-a = km
+r3-sym-fuel-b = l
+r3-sym-sale-a = %
+r3-sym-sale-b = €
+r3-inv-painters = Počet maliarov:
+r3-inv-days = Počet dní:
+r3-inv-ask = Ak je počet maliarov
+r3-inv-ask-end = , koľko to potrvá?

@@ -295,21 +295,6 @@ mod tests {
     }
 
     #[test]
-    fn slovak_plurals() {
-        let i = I18n::new(Lang::Sk);
-        let cubes = |n: f64| {
-            i.ta(
-                "amount-sugar-cube",
-                &args!["count" => n, "shown" => i.num(&n.to_string())],
-            )
-        };
-        assert_eq!(cubes(1.0), "1 kocka cukru");
-        assert_eq!(cubes(3.0), "3 kocky cukru");
-        assert_eq!(cubes(3.4), "3,4 kocky cukru");
-        assert_eq!(cubes(7.0), "7 kociek cukru");
-    }
-
-    #[test]
     fn helpers() {
         assert_eq!(localize_decimal("1.65 × 10¹³ J", ','), "1,65 × 10¹³ J");
         assert_eq!(localize_decimal("v0.1.0 a. b", ','), "v0,1,0 a. b");

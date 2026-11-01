@@ -105,11 +105,7 @@ pub fn section(ui: &mut egui::Ui, tr: &I18n, pal: &Palette, section: Section) ->
         ui.add_space(2.0);
     }
     if !any {
-        ui.label(
-            RichText::new(tr.t("section-empty"))
-                .italics()
-                .color(pal.weak),
-        );
+        sawdust(ui, tr, pal);
     }
     go
 }
@@ -117,8 +113,15 @@ pub fn section(ui: &mut egui::Ui, tr: &I18n, pal: &Palette, section: Section) ->
 /// A page that is on the map but has no code yet.
 pub fn planned(ui: &mut egui::Ui, tr: &I18n, pal: &Palette, meta: &PageMeta) {
     crate::topics::heading(ui, tr, pal, meta);
+    sawdust(ui, tr, pal);
+}
+
+/// The placeholder for anything not built yet: "Nothing but sawdust".
+fn sawdust(ui: &mut egui::Ui, tr: &I18n, pal: &Palette) {
+    ui.add_space(8.0);
+    ui.strong(tr.t("sawdust"));
     ui.label(
-        RichText::new(tr.t("planned-body"))
+        RichText::new(tr.attr("sawdust", "body"))
             .italics()
             .color(pal.weak),
     );
@@ -183,10 +186,10 @@ mod tests {
     fn unknown_routes_land_and_params_split() {
         assert_eq!(Page::from_route("no-such-page"), Page::Landing);
         assert_eq!(
-            Page::from_route("/powers-of-ten/9"),
-            Page::Item("powers-of-ten".into())
+            Page::from_route("/game-of-life/9"),
+            Page::Item("game-of-life".into())
         );
-        assert_eq!(route_param("powers-of-ten/9"), Some("9"));
-        assert_eq!(route_param("powers-of-ten"), None);
+        assert_eq!(route_param("game-of-life/9"), Some("9"));
+        assert_eq!(route_param("game-of-life"), None);
     }
 }

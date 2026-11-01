@@ -136,6 +136,7 @@ one-line footer. Simulation controls sit in a row above the canvas, as on the
 old Game of Life page. The same look for every section and every audience.
 Visually appealing but not overly colourful: content first, and colour,
 effects and fanciness only where they underline the topic. Fonts later (Q-013).
+Colours: Ember since D-034 (the chrome is no longer stock grey).
 
 **D-019 — Domain zgub.net; identities kept loosely apart** (2026-10-21, accepted)
 Peter owns zgub.net and the site lives there. It may move to hunci.sk later;
@@ -254,3 +255,78 @@ the first feature that stores data (ideas inbox, comments, saved progress,
 accounts), together with its moderation, retention and privacy decisions
 (Q-020). Pages already save through `save()`/`load()` (D-004, D-008), so that
 store can move to the server without touching the pages.
+
+**D-033 — Empty shell: menu and placeholders, content added page by page** (2026-10-25, accepted)
+Peter keeps the concept (five sections, cross-linking, both languages) but
+starts the content from zero and provides it one page at a time. All topic
+code is removed from the app (powers of ten, energy ladder, dice bell; it stays
+in git history, commit 17b57db and earlier). Every page is `Planned` and shows
+the placeholder "Nothing but sawdust" / "Nič, len piliny" with a line about
+being at the right place at the wrong time (x, y, z right, t wrong). The menu
+is Peter's list of 2026-10-25: Projects (Flysch shell journal, Spatlers,
+Electronics), Playground (Conway's Game of Life, Gas in a box), Workbench
+(Statistics, Probability, Music, Linear algebra, Tensor calculus), Explore
+(Numbers, Thermodynamics, What is energy, Chemistry, Biology), History (empty).
+The `sims` crate, `kit` widgets and the `Topic` trait stay as the toolkit for
+new pages; dead-code warnings for them are allowed until pages use them.
+Supersedes the page list in D-028 and in BRIEF.md "The five sections".
+
+**D-034 — Colour palette: Ember, dark first** (2026-10-28, accepted)
+Refines D-018: same layout, but the chrome is no longer stock grey. Peter and
+his son compared four warm dark palettes rendered in real egui (Ember,
+Lamplight, Dusk, Slate & Copper, plus stock egui) and chose **Ember**: warm
+charcoal panels `#1d1a17`, canvases `#141210`, cards `#27231f`, lines
+`#3b352f`; text `#cfc6b8`, strong `#f3ece1`, weak `#8f8577`; one accent, amber
+`#f0a04b` (selection, links, the known value in pictures); note colour
+`#e8b04f` (🐄 callouts). Chart series in order: amber `#f0a04b`, teal
+`#4fb3a2`, coral `#e06c5a`, sky `#6aa6d6`, plum `#b58ad0`, olive gold
+`#c9b458`. Sequential ramp (speed, heat, height): `#2a1b38` → `#7a2a4f` →
+`#c8463d` → `#ef8a32` → `#f8d66d`. Dark mode is preferred because Peter finds
+it easier on the eyes; light mode stays stock egui for now (Q-027). Colour
+still lives mostly inside the pictures; text stays calm. Code:
+`theme::DARK`, `theme::ember_visuals()`.
+
+**D-035 — "What changes what": relationships taught from real examples** (2026-10-28, tentative)
+Many people manage big and small numbers but struggle with the basics: rule
+of three, percentages, and the shapes of linear, quadratic, inverse,
+exponential and logarithmic relationships. A group of Explore pages covers
+them, the other way round from school: a real situation first, the visitor
+guesses and plays, the picture or curve comes from their tries, and only
+then a box "What school calls this / Ako to volajú v škole" gives the names
+(function, direct proportion, domain = definičný obor, range = obor hodnôt).
+Menu titles say what happens, not the school term, so nobody is put off.
+Page ids stay neutral so titles can change (Q-026): `rule-of-three`,
+`percent`, `linear`, `quadratic`, `inverse`, `exponential`, `logarithm`.
+They sit at the top of Explore. Games for the same curves go to Playground.
+Order of work (Peter): this group, then trigonometry, then big and small
+numbers. Rule of three first (v0.4.0). Plan: WHAT-CHANGES-WHAT.md.
+
+**D-036 — Branches, versions, tags, and a quiet test period** (2026-10-28, accepted)
+Branches: `main` is what is released; `develop` is the development branch;
+all work happens on feature branches off `develop` (e.g. `rule-of-three`),
+merged back into `develop`, and `develop` is merged into `main` after a
+version has been tested. Nothing is committed straight to `main` or `develop`.
+Every release bumps the workspace version (shown in the footer) and gets a git
+tag `vX.Y.Z`. 0.4.0 = Ember + rule of three. After a release, Peter tests it
+(with the kids, on real devices) while the code stays unchanged; findings go to
+BUGS.md and QUESTIONS.md and are fixed in the next version, not in place.
+Docs may change during the test period. Peter pushes to GitHub
+(github.com/zgub/zgbweb3). Commits use his noreply address.
+
+**D-037 — Headless screenshots: `examples/shot.rs`** (2026-10-28, accepted)
+Screenshots no longer need a window or GPU: `cargo run --example shot --
+<route>` runs the real app for a few frames, tessellates egui's output and
+fills the triangles on the CPU into a PNG (`ZGB_SHOT`, `ZGB_SIZE`, `ZGB_LANG`).
+Close to, not identical with, the wgpu output. Used for every page review;
+the consent banner is answered "no" so it stays out of the picture.
+
+**D-038 — One design system: DESIGN.md and the `kit` widgets** (2026-10-28, accepted)
+Peter wants the whole site to look consistent: colours, fonts and sizes,
+element types and plot types picked once and reused. DESIGN.md is the
+rulebook (colour roles, type scale, page anatomy, elements, plot conventions,
+wording, screens); `kit` holds the shared widgets (section, choice bar, inset,
+takeaway, fold-outs). A page needing something new adds it to DESIGN.md and
+`kit` first. First rules from Peter's review of v0.4.0: smallest text 12.5 pt;
+main switches (examples, pictures) as big choice bars, not radio buttons; the
+parts of a page in separate framed sections; inputs in form style ("Počet
+maliarov: [4]") so no plural word sits next to a number field.

@@ -43,3 +43,5 @@ fluent-syntax = "0.12"
 # Reads the font files' character maps in a test: egui's own has_glyph() reports
 # false for glyphs that share a font with the replacement character.
 skrifa = "0.44"
+# examples/shot.rs: headless screenshots without a GPU.
+image = { version = "0.25", default-features = false, features = ["png"] }

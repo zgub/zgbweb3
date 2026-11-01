@@ -1,5 +1,98 @@
 # Status
 
+## 2026-10-28 (late) — v0.4.1: rule of three, first iteration; DESIGN.md
+
+**Done** (Peter's review of v0.4.0)
+- Small text 11.5 → 12.5 pt; nothing on the page below 12 pt.
+- Examples and pictures as big choice bars (`kit::choice_bar`) with captions
+  "Pick an example" / "Pick a picture"; picture glyphs ▦ 📏 📈 💯.
+- Three framed sections (`kit::section`): ⚖ More of one, more of the other |
+  👥 More hands, less time | ⚠ When it lies; insets inside (`kit::inset`);
+  the rule as a takeaway (`kit::takeaway`).
+- Form-style inputs: "We know: People [4] → Milk [250] ml"; painters as
+  "Počet maliarov: [4] Počet dní: [6] / Ak je počet maliarov [3], koľko to potrvá?"
+  (no gap before the comma). Generated sentences keep their Slovak plurals.
+- Phone: input rows wrap, the two "When it lies" charts stack below 560 pt,
+  the painters note moved under the drawing.
+- DESIGN.md (D-038); CLAUDE.md points to it; CHANGELOG 0.4.1.
+
+**Verified**
+- fmt, clippy clean; tests pass. Screenshots: EN 1280, SK 1280, SK 400.
+
+**Next**
+1. Peter tests v0.4.1 (`trunk serve`), with the kids (Q-028).
+2. Percent tricks page, built to DESIGN.md.
+
+## 2026-10-28 — v0.4.0: Ember palette, rule of three
+
+**Done**
+- Committed the 2026-10-25 empty shell (D-033) first, as its own commit, and deleted
+  the three old topic files it could not delete on disk (B-006).
+- Ember palette (D-034): `theme::DARK` and `theme::ember_visuals()` installed for the
+  dark theme; `Palette` gains `bg`, `deep`, `strong`, `accent`, `note`, `series[6]`,
+  `ramp[5]` and `ramp_at()`. Light theme still stock egui (Q-027).
+- "What changes what" (D-035): seven pages at the top of Explore. `rule-of-three`
+  is built (draft); `percent`, `linear`, `quadratic`, `inverse`, `exponential`,
+  `logarithm` are planned. Titles per Q-026.
+- Rule of three page (`topics/rule_of_three.rs`, maths in `sims::ratio` with tests):
+  - four examples: percent (30 % → 180), pancakes, fuel, the sale trap;
+  - "We know / We ask" with editable numbers, a guess box (Check → exactly / close /
+    too little / too much) and "Show the answer"; the pictures show "?" until then;
+  - four pictures: pieces (through the biggest shared step), two rulers with ÷ and ×
+    arrows on both, a straight line through zero with its step, a hundred squares
+    (percent examples only);
+  - "What school calls this" fold-out: direct proportion, y = k·x with this k,
+    domain and range;
+  - inverse rule of three (painters; the work as an area) and "When it lies":
+    phone charging and a taxi start fee;
+  - 🐄 alerts, grown-ups fold-out, three "Where next?" links to planned pages;
+  - deep links: `#/rule-of-three/<percent|pancakes|fuel|sale>[/<pieces|rulers|line|squares>][/answer]`.
+- All texts in EN and SK, with Slovak plurals for people, painters, days and squares
+  (decimals too: 4,8 dňa).
+- Headless screenshot tool `crates/app/examples/shot.rs` (D-037).
+- Docs: D-034…D-037, Q-026…Q-028, B-006, B-007, B-001 note, BRIEF (Explore, look),
+  CLAUDE.md, README, new WHAT-CHANGES-WHAT.md.
+
+**Verified**
+- `cargo fmt --check` and `cargo clippy --workspace --all-targets` clean;
+  `cargo test --workspace`: 5 content + 23 sims + 11 app + 1 server tests pass.
+  New tests: answers and steps for every example, verdicts, deep links, units and
+  plurals in both languages, every new glyph in the fonts.
+- Screenshots (headless): all four pictures, EN and SK, the sale with its answer,
+  phone width 400×860.
+- Not verified: the wasm build (B-001). Run `trunk serve` before testing with the kids.
+
+**Next**
+1. Peter: `trunk serve`, then the test period (D-036) with the kids; notes in Q-028.
+2. Answer Q-026 (names) and Q-027 (light theme).
+3. Percent tricks (on the hundred squares), then the five relationship pages.
+
+## 2026-10-25 — empty shell: menu and placeholders (D-033)
+
+**Done**
+- Site map replaced with Peter's menu: 3 projects, 2 playground, 5 workbench,
+  5 explore pages, History empty. All `Planned`. Ids: `flysch`, `spatlers`,
+  `electronics`, `game-of-life`, `gas-box`, `statistics`, `probability`, `music`,
+  `linear-algebra`, `tensor-calculus`, `numbers`, `thermodynamics`, `energy`,
+  `chemistry`, `biology`.
+- Removed topic code (`powers_of_ten`, `energy_ladder`, `clt_dice`) and all their
+  texts and cross-link hooks from both catalogs; `registry()` is empty.
+- Placeholder on every page and on the empty History index: "Nothing but sawdust"
+  + "right place, wrong time: x, y, z right, t off" (EN and SK).
+- Glyphs: ▦ Game of Life, ⚛ Chemistry, 🌱 Biology, 🎲 Probability, 🔌 Electronics
+  (⚗ is not in the fonts).
+- Removed the Slovak-plurals test (its sugar-cube key went with the energy ladder;
+  bring a plural test back with the first page that has a plural).
+
+**Verified**
+- `cargo clippy --workspace --all-targets` clean, `cargo test --workspace` passes.
+- Screenshots (native, software GL): Game of Life EN, History SK.
+- Not verified: wasm build (B-001).
+
+**Next**
+1. Content, page by page, as Peter provides it.
+2. `trunk serve` on a real machine (B-001).
+
 ## 2026-10-21 — v0.3.0: five-section shell in the old zgbweb look, static-first
 
 **Done**
