@@ -9,6 +9,17 @@ Versions are git tags `vX.Y.Z` (D-036); the version shows in the site footer.
 - Branch flow: `main` = released, `develop` = development, feature branches
   off `develop` (D-036).
 
+## 0.5.0 — 2026-10-28 (branch `percent`)
+
+**Added**
+- Percent tricks / Percentové triky (draft), six sections: percent in your
+  head (50, 25, 10, 5, 1, 20, 15 % with the hundred squares), swap the
+  numbers (8 % of 50 = 50 % of 8), up and down is not back (+20 % −20 % =
+  −4 %), discounts don't add (30 % + 20 % = 44 %, with a guess), taking VAT
+  out (123 € ÷ 1.23, not −23 %), headline tricks (percentage points; "risk
+  doubles" on 10 000 people). EN and SK.
+- `draw` module: shared drawing pieces (unit grid, brackets, dashed lines).
+
 ## 0.4.1 — 2026-10-28 (branch `rule-of-three`)
 
 **Changed**

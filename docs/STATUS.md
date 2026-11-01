@@ -1,5 +1,41 @@
 # Status
 
+## 2026-10-28 (night) — v0.5.0: percent tricks
+
+Branch `percent`, off `rule-of-three` (it needs the v0.4.1 widgets, which are
+not in `develop` yet). Merge `rule-of-three` into `develop` first, then this.
+
+**Done**
+- `sims::percent` with tests: `of`, `change`, `chain`, `combined`, `undo`,
+  `without_vat`, `points_and_percent`, and the seven quick ways (`Quick`).
+- Page `percent` (draft), built to DESIGN.md, six sections:
+  1. 💡 Percent in your head: number field, choice bar 50/25/10/5/1/20/15 %, the
+     working in one line, hundred squares; 🎓 base, rate, percentage.
+  2. 🔄 Swap the numbers: x % of y = y % of x, four presets, free fields.
+  3. 📉 Up and down is not back: four scenarios, before/after bars, the
+     change needed to get back.
+  4. 🏷 Discounts don't add: guess box, squares in three colours.
+  5. 💶 Taking VAT out: 23 % (Slovak standard rate since 2025), split bar with
+     the wrong cut marked.
+  6. 📰 Headline tricks: percentage points vs percent; "risk doubles" on a grid of
+     10 000 people.
+  Takeaway "percent of what?", grown-ups fold-out, links to rule of three and
+  (planned) doubling. Deep links `#/percent/risk`, `#/percent/answer`.
+- `draw.rs`: shared drawing pieces; DESIGN.md gains three picture types and
+  two phone rules.
+- No plural word next to a field; generated sentences use Fluent plurals
+  (percentage point / percentuálny bod / body / bodu / bodov).
+
+**Verified**
+- fmt, clippy clean; tests: 5 content + 29 sims + 13 app + 1 server.
+- Screenshots: EN 1280, SK 1280 (risk view), SK 400.
+- Not verified: wasm (B-001).
+
+**Next**
+1. Peter: look at it with `trunk serve` (`#/percent`), and with the kids.
+2. Merge order: `rule-of-three` → `develop`, then `percent` → `develop`.
+3. Next relationship page: Same step (linear), then Twice as fast.
+
 ## 2026-10-28 (late) — v0.4.1: rule of three, first iteration; DESIGN.md
 
 **Done** (Peter's review of v0.4.0)

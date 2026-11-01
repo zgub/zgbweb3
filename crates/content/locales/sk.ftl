@@ -99,6 +99,7 @@ page-tensor-calculus = Tenzorový počet
 page-rule-of-three = Trojčlenka
     .blurb = Ak 30 % je 180, koľko je 100 %? Jedna otázka, štyri obrázky a dva prípady, keď trojčlenka klame.
 page-percent = Percentové triky
+    .blurb = Skratky na percentá spamäti a pasce schované vo výpredajoch, cenách a titulkoch.
 page-linear = Rovnaký krok
 page-quadratic = Dvakrát rýchlejšie
 page-inverse = Viac rúk
@@ -252,3 +253,111 @@ r3-inv-painters = Počet maliarov:
 r3-inv-days = Počet dní:
 r3-inv-ask = Ak je počet maliarov
 r3-inv-ask-end = , koľko to potrvá?
+
+## --- Percentové triky (percent) -------------------------------------------
+
+hook-find-the-whole = Ak je 70 % 42 €, ako zistíš 100 %?
+hook-percent-every-year = Prečo +7 % ročne zdvojnásobí peniaze asi za 10 rokov?
+
+pc-try = Vyskúšaj
+pc-number = Číslo:
+pc-percent = Percentá:
+pc-of-number = z čísla:
+pc-start = Cena:
+pc-first = Prvá zmena:
+pc-second = Druhá zmena:
+
+pc-head-title = Percentá spamäti
+pc-head-intro = Percento znamená „zo sto“: 1 % je jedna stotina. Kalkulačku potrebuješ zriedka, lebo niekoľko percent sú jednoduché zlomky.
+pc-head-pick = Vyber si percentá
+pc-how-half = 50 % je polovica: { $x } ÷ 2 = { $r }
+pc-how-quarter = 25 % je polovica z polovice: { $x } ÷ 2 = { $h } a ešte raz ÷ 2 = { $r }
+pc-how-tenth = 10 %: posuň desatinnú čiarku o jedno miesto doľava: { $x } → { $r }
+pc-how-five = 5 % je polovica z 10 %: { $t } ÷ 2 = { $r }
+pc-how-one = 1 %: posuň desatinnú čiarku o dve miesta doľava: { $x } → { $r }
+pc-how-twenty = 20 % sú dvakrát 10 %: { $t } × 2 = { $r }
+pc-how-fifteen = 15 % je 10 % plus 5 %: { $t } + { $f } = { $r }
+pc-sq-one = Jeden štvorček je 1 % = { $v }
+pc-sq-many = { $n } zo 100 štvorčekov: { $v }
+pc-sq-word = Celé číslo je všetkých 100 štvorčekov.
+pc-school-title = Ako to volajú v škole
+pc-school-words = V škole je { $x } základ, { $p } počet percent a { $part } percentová časť.
+pc-school-formula = percentová časť = základ × počet percent ÷ 100
+
+pc-swap-title = Vymeň čísla
+pc-swap-intro = x % z y je vždy to isté ako y % z x. Keď je jedna cesta ťažká, otoč to.
+pc-swap-preset = { $p } % z { $x }
+pc-swap-hard = { $p } % z { $x } je to isté ako
+pc-swap-easy = { $p } % z { $x } = { $v }
+pc-swap-why = Prečo: v oboch prípadoch sa tie dve čísla vynásobia a vydelia sto, a na poradí pri násobení nezáleží.
+
+pc-updown-title = Hore a dole nie je späť
+pc-updown-intro = Cena stúpne o 20 % a potom klesne o 20 %. Je tam, kde bola?
+pc-bar-start = na začiatku
+pc-bar-after1 = po prvej
+pc-bar-after2 = po druhej
+pc-updown-result = Spolu: { $total }. Po { $first } by si na návrat potreboval { $undo }.
+pc-updown-why = Druhé percentá sa rátajú z iného čísla ako prvé: 20 % zo 120 je viac ako 20 % zo 100.
+
+pc-disc-title = Zľavy sa nesčítajú
+pc-disc-intro = Zľava 30 % a pri pokladni ešte ďalších 20 %. Koľko je to spolu?
+pc-disc-first = Prvá zľava:
+pc-disc-second = Potom ešte:
+pc-disc-guess = Tvoj tip, spolu:
+pc-close = Blízko: do 10 %. Pozri sa na štvorčeky.
+pc-too-low = Málo. Pozri sa na štvorčeky.
+pc-too-high = Priveľa. Pozri sa na štvorčeky: druhá zľava sa ráta zo zvyšku.
+pc-disc-answer = Nie { $sum }, ale spolu { $total }.
+pc-disc-sq1 = Najprv zľava { $a }: { $n } zo 100 štvorčekov
+pc-disc-sq2 = Potom { $b } zo zvyšných { $left }: ďalších { $n }
+pc-disc-sq3 = Platíš za { $n } zo 100 štvorčekov
+
+pc-vat-title = Ako odrátať DPH
+pc-vat-intro = Základná sadzba DPH na Slovensku je 23 % (od roku 2025). Cena s DPH je 123 €: koľko je bez DPH? Väčšina ľudí odráta 23 % a pomýli sa.
+pc-vat-gross = Cena s DPH:
+pc-vat-rate = Sadzba DPH:
+pc-vat-net = bez DPH { $v }
+pc-vat-tax = DPH
+pc-vat-gross-label = cena s DPH { $v }
+pc-vat-wrong-label = zle: { $v }
+pc-vat-right = Správne: { $g } ÷ { $f } = { $net }
+pc-vat-wrong = Zle: { $g } − { $rate } = { $wrong }
+pc-vat-why = DPH je { $rate } z ceny bez DPH, nie z ceny s DPH. Z ceny, ktorú platíš, je DPH len { $share }.
+
+pc-news-title = Triky v titulkoch
+pc-news-intro = Dve pravdivé vety môžu opísať tú istú zmenu a znieť úplne inak. Titulky vyberajú tú, ktorá znie väčšie.
+pc-news-points = Percentá či percentuálne body?
+pc-news-risk = „Riziko sa zdvojnásobí!“
+pc-points-story = Sadzba stúpne z 2 % na 3 %: úrok, daň, podiel hlasov.
+pc-points-from = Predtým:
+pc-points-to = Potom:
+pc-points-before = predtým
+pc-points-after = potom
+pc-points-result = { $sign }{ $pts } { $n ->
+        [one] percentuálny bod
+        [few] percentuálne body
+        [many] percentuálneho bodu
+       *[other] percentuálnych bodov
+    }, čo je { $rel } z pôvodnej hodnoty.
+pc-points-why = Obe sú pravda. „Stúpol o 1 bod“ znie málo, „stúpol o 50 %“ znie veľa. Pýtaj sa, ktoré z nich ti hovoria.
+pc-risk-story = Štúdia zistí, že niečo zdvojnásobuje riziko choroby: z 1 človeka z 10 000 na 2 z 10 000.
+pc-risk-before = Predtým:
+pc-risk-after = Potom:
+pc-risk-of = z 10 000 ľudí
+pc-risk-dots = Každý štvorček je jeden človek, spolu 10 000. Krúžky sú tí, čo ochorejú.
+pc-risk-before-n = Predtým: { $n } z 10 000
+pc-risk-after-n = Potom: { $n } z 10 000
+pc-risk-result = „Riziko { $rel }!“ je pravda. Aj „o { $more } viac z 10 000“, čo je { $pts } { $n ->
+        [one] percentuálny bod
+        [few] percentuálne body
+        [many] percentuálneho bodu
+       *[other] percentuálnych bodov
+    }.
+pc-risk-why = „Zdvojnásobí sa“ nehovorí nič o tom, aké veľké riziko bolo. Vždy sa pýtaj: z koľkých?
+
+pc-rule = Skôr než uveríš percentám, spýtaj sa: z čoho? Tie isté percentá z iného čísla sú iná suma.
+pc-grown-of = p % z x = x × p ÷ 100, preto p % z x = x % z p.
+pc-grown-chain = Zmeny sa násobia: +a % a potom +b % je × (1 + a/100) × (1 + b/100). +20 % a potom −20 % je × 1,2 × 0,8 = × 0,96.
+pc-grown-vat = Bez DPH = s DPH ÷ (1 + sadzba/100). Podiel DPH na cene, ktorú platíš = sadzba ÷ (100 + sadzba).
+pc-grown-points = Percentuálne body sú obyčajný rozdiel dvoch percent; percentuálna zmena je ten rozdiel vydelený pôvodnou hodnotou.
+pc-grown-sources = DPH: základná sadzba na Slovensku je 23 % od 1. januára 2025. Všetko ostatné na tejto stránke je aritmetika.
