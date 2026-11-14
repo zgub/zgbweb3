@@ -9,6 +9,21 @@ Versions are git tags `vX.Y.Z` (D-036); the version shows in the site footer.
 - Branch flow: `main` = released, `develop` = development, feature branches
   off `develop` (D-036).
 
+## 0.7.5 — 2026-11-14 (branch `timeline`)
+
+**Added**
+- Timeline: Pangaea (335–175 million years ago) and "the map from school";
+  dinosaurs from different periods (first dinosaurs, Stegosaurus, T. rex,
+  the asteroid), with the point that T. rex lived closer to us than to
+  Stegosaurus; a new People lane: Homo habilis, Homo erectus, Neanderthals,
+  Denisovans, Homo sapiens, Out of Africa, Sumer, Babylon of Hammurabi.
+  Jump buttons "Dinosaurs" and "People". The walk compares the dinosaurs'
+  165 million years (12 m) with our 300 000 (2.2 cm): about 550 times longer.
+
+**Changed**
+- Taller lanes with room under the line for up to four range bars; bars get
+  rows only among those in view.
+
 ## 0.7.4 — 2026-11-14 (branch `timeline`)
 
 **Added**

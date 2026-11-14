@@ -23,8 +23,8 @@ comes from. Code: `crates/sims/src/timeline.rs` (`EVENTS`); texts:
   coloured by event density (importance-weighted, smoothed, scaled to the
   busiest place). Shows where to zoom and which stretches are empty. Click or
   drag moves the view there.
-- **Lanes:** Universe, Stars and galaxies, Sun and Earth, Life (v0.7.1).
-  Planned: People, Science (what was known when: the Jules Verne question).
+- **Lanes:** Universe, Stars and galaxies, Sun and Earth, Life (v0.7.1),
+  People (v0.7.5). Planned: Science (what was known when: the Jules Verne question).
 - **Ranges:** an event may carry the span of its estimates, drawn as a dashed
   bar under the lane line (one row per ranged event, so bars never overlap).
 - **Importance:** 1 = turning point, 2 = big, 3 = detail. Drives the stripe;
@@ -32,7 +32,7 @@ comes from. Code: `crates/sims/src/timeline.rs` (`EVENTS`); texts:
 - **Uncertain** events (models, forecasts) are drawn as rings, measured or
   well-dated ones as filled dots.
 
-## Events (v0.7.0 starter set, v0.7.1 young Earth)
+## Events (v0.7.0 starter set, v0.7.1 young Earth, v0.7.5 continents, dinosaurs, people)
 
 | id | when | lane | imp | sure? | value and source |
 |---|---|---|---|---|---|
@@ -49,6 +49,20 @@ comes from. Code: `crates/sims/src/timeline.rs` (`EVENTS`); texts:
 | `oceans` | 4.3 Gyr ago | Earth | 2 | rough | Jack Hills zircons: liquid water before 4.3 Gyr (Mojzsis et al. 2001; Valley et al. 2014). Source of water debated: carbonaceous asteroids (D/H), some comets (12P/Pons-Brooks D/H matches oceans, Nature Astronomy 2025; 67P re-analysis 2024), or water in the building material from the start |
 | `luca` | 4.2 Gyr ago (range 4.33–4.09) | Life | 2 | model | Last universal common ancestor, molecular clock on 700 genomes (Moody et al., Nature Ecology & Evolution 2024); probably at a hydrothermal vent or hot spring, anaerobic |
 | `first-life` | 3.48 Gyr ago | Life | 1 | yes | Dresser Formation stromatolites, Pilbara (Hickman-Lewis et al. 2023); older claims disputed: Isua 3.7 Gyr (Greenland), Nuvvuagittuq 3.77–4.28 Gyr (Quebec) |
+| `pangaea` | 335 Myr ago (range 335–175) | Earth | 1 | yes | Supercontinent assembled in the Carboniferous ~335 Ma, began to break up ~200 Ma (Central Atlantic), largely apart by ~175 Ma |
+| `todays-map` | 2.8 Myr ago | Earth | 2 | rough | "The map from school": continents roughly in today's places; Isthmus of Panama closes ~2.8 Ma (O'Dea et al., Science Advances 2016; debated). India–Asia collision ~50 Ma |
+| `first-dinosaurs` | 231 Myr ago | Life | 1 | rough | Oldest unequivocal dinosaurs ~230 Ma, Ischigualasto (Argentina), e.g. Eoraptor |
+| `stegosaurus` | 155 Myr ago (range 155–150) | Life | 2 | yes | Late Jurassic, Morrison Formation; extinct ~80 Myr before T. rex appeared (USGS) |
+| `trex` | 68 Myr ago (range 68–66) | Life | 2 | yes | Latest Cretaceous, coexisted with Triceratops |
+| `dinosaurs-end` | 66.0 Myr ago | Life | 1 | yes | Chicxulub impact, K–Pg boundary 66.0 Ma (Renne et al., Science 2013); birds survive |
+| `habilis` | 2.3 Myr ago (range 2.3–1.5) | People | 2 | yes | East and South Africa; overlapped with H. erectus ~0.5 Myr |
+| `erectus` | 2.0 Myr ago (range 2.0 Myr–110 kyr) | People | 1 | yes | First outside Africa (Dmanisi, Georgia, 1.8 Ma); last on Java ~110 ka (Ngandong) |
+| `neanderthals` | 400 kyr ago (range 400–40 kyr) | People | 2 | yes | Europe and western Asia; 1–2 % of non-African genomes today |
+| `sapiens` | 300 kyr ago | People | 1 | yes | Jebel Irhoud, Morocco (Hublin et al., Nature 2017) |
+| `denisovans` | 285 kyr ago (range 285–30 kyr) | People | 2 | rough | Known from Denisova Cave DNA (2010); Harbin skull (≥146 ka) identified as Denisovan by proteins and mtDNA (Fu et al., Science and Cell, June 2025; disputed by some) |
+| `out-of-africa` | 60 kyr ago (range 60–43.5 kyr) | People | 1 | rough | Main dispersal 60–40 ka (MPI-EVA); Neanderthal gene flow ~50.5–43.5 ka, mean ~47 ka (Iasi et al., Science 2024; Sümer et al., Nature 2024) |
+| `sumer` | 5 200 yr ago (range 6 000–5 000) | People | 1 | yes | Uruk period cities; proto-cuneiform ~3200 BC |
+| `babylon` | 3 800 yr ago | People | 2 | yes | Hammurabi, reigned c. 1792–1750 BC (middle chronology); code stele with 282 laws, Louvre |
 | `now` | now | Earth | 1 | — | — |
 | `andromeda` | in 4.5 Gyr | Stars | 2 | forecast | Classic forecast ~4.5 Gyr; Sawala et al., Nature Astronomy 2025 (Hubble + Gaia): only ~50 % chance of a merger within 10 Gyr (ESA/Hubble heic2508, 2 June 2025). A 2026 follow-up with newer Gaia data reportedly put it higher (~90 %, median ~6.5 Gyr): **to verify before the card is final** |
 | `red-giant` | in 5 Gyr | Earth | 1 | forecast | Sun leaves the main sequence in ~5 Gyr; red-giant-branch tip ~7.6 Gyr from now. Oceans boil away in ~1 Gyr (Sun ~10 % brighter) |
@@ -69,6 +83,7 @@ All of time as 1 km: metres before the finish = years ago ÷ 13.787 × 10⁹ ×
 | dinosaurs die out | 66 × 10⁶ | 4.79 m | Chicxulub impact, K–Pg boundary 66.0 Ma (Renne et al., Science 2013) |
 | our species | 300 000 | 2.2 cm | Jebel Irhoud fossils, ~300 ka (Hublin et al., Nature 2017) |
 | writing | 5 200 | 0.38 mm | Sumerian proto-cuneiform, Uruk, ~3200 BC |
+| dinosaur reign vs us | 165 Myr vs 300 kyr | 12 m vs 2.2 cm | 231 → 66 Ma; ×550 |
 
 ## Read-more links (D-043)
 
@@ -84,7 +99,9 @@ actual sources.
    much anaerobic life and changes the air), first complex cells, snowball
    Earth, Cambrian, dinosaurs and their end, first humans. Maybe the Late
    Heavy Bombardment (contested) and the Moon drifting away.
-3. People: farming, writing (Sumer), Greeks, Romans, … up to now; then a
-   Science lane ("what was known when").
+3. People after Babylon (Peter, 2026-11-14): other continents too (Egypt,
+   Indus, China, the Americas, Africa, Europe; Peter wants help with these),
+   farming (~11 700 years ago), Greeks, Romans, … up to now; then a Science
+   lane ("what was known when"). Calendar years (BC/AD) for this part: Q-031c.
 4. Future: Moon drifting away (3.8 cm per year), oceans boiling.
 5. Labels by importance and zoom (level of detail), uncertainty as ranges.

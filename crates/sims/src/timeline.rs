@@ -243,6 +243,16 @@ pub fn walk_before_end(years_ago: f64) -> f64 {
     years_ago / AGE_YR * WALK_M
 }
 
+/// How long the dinosaurs ruled (first dinosaurs to the asteroid) and how
+/// long our species has existed so far, in years.
+pub const DINOSAUR_REIGN_YR: f64 = 231e6 - 66e6;
+pub const SAPIENS_SO_FAR_YR: f64 = 300e3;
+
+/// Length on the walk of a span of `years`.
+pub fn walk_span(years: f64) -> f64 {
+    years / AGE_YR * WALK_M
+}
+
 /// "329 m", "4.79 m", "2.2 cm", "0.38 mm" (dot as decimal point).
 pub fn walk_length(m: f64) -> String {
     let (v, unit, sig) = if m >= 1.0 {
@@ -414,10 +424,18 @@ pub enum Lane {
     Earth,
     /// Living things.
     Life,
+    /// Humans and their relatives, then history.
+    People,
 }
 
 impl Lane {
-    pub const ALL: [Lane; 4] = [Lane::Cosmos, Lane::Stars, Lane::Earth, Lane::Life];
+    pub const ALL: [Lane; 5] = [
+        Lane::Cosmos,
+        Lane::Stars,
+        Lane::Earth,
+        Lane::Life,
+        Lane::People,
+    ];
 }
 
 /// One event on the timeline. Its texts are `tl-ev-<id>` (title) and
@@ -504,6 +522,41 @@ pub static EVENTS: &[Event] = &[
         .between(When::Ago(4.33e9), When::Ago(4.09e9))
         .wiki("Last_universal_common_ancestor"),
     ev("first-life", When::Ago(3.48e9), Lane::Life, 1, false).wiki("Earliest_known_life_forms"),
+    // Continents, dinosaurs, people (v0.7.5). Species: dot at the first
+    // appearance, range to the end.
+    ev("pangaea", When::Ago(335e6), Lane::Earth, 1, false)
+        .between(When::Ago(335e6), When::Ago(175e6))
+        .wiki("Pangaea"),
+    ev("todays-map", When::Ago(2.8e6), Lane::Earth, 2, true).wiki("Isthmus_of_Panama"),
+    ev("first-dinosaurs", When::Ago(231e6), Lane::Life, 1, true).wiki("Evolution_of_dinosaurs"),
+    ev("stegosaurus", When::Ago(155e6), Lane::Life, 2, false)
+        .between(When::Ago(155e6), When::Ago(150e6))
+        .wiki("Stegosaurus"),
+    ev("trex", When::Ago(68e6), Lane::Life, 2, false)
+        .between(When::Ago(68e6), When::Ago(66e6))
+        .wiki("Tyrannosaurus"),
+    ev("dinosaurs-end", When::Ago(66.0e6), Lane::Life, 1, false)
+        .wiki("Cretaceous–Paleogene_extinction_event"),
+    ev("habilis", When::Ago(2.3e6), Lane::People, 2, false)
+        .between(When::Ago(2.3e6), When::Ago(1.5e6))
+        .wiki("Homo_habilis"),
+    ev("erectus", When::Ago(2.0e6), Lane::People, 1, false)
+        .between(When::Ago(2.0e6), When::Ago(110e3))
+        .wiki("Homo_erectus"),
+    ev("neanderthals", When::Ago(400e3), Lane::People, 2, false)
+        .between(When::Ago(400e3), When::Ago(40e3))
+        .wiki("Neanderthal"),
+    ev("sapiens", When::Ago(300e3), Lane::People, 1, false).wiki("Homo_sapiens"),
+    ev("denisovans", When::Ago(285e3), Lane::People, 2, true)
+        .between(When::Ago(285e3), When::Ago(30e3))
+        .wiki("Denisovan"),
+    ev("out-of-africa", When::Ago(60e3), Lane::People, 1, true)
+        .between(When::Ago(60e3), When::Ago(43.5e3))
+        .wiki("Recent_African_origin_of_modern_humans"),
+    ev("sumer", When::Ago(5.2e3), Lane::People, 1, false)
+        .between(When::Ago(6.0e3), When::Ago(5.0e3))
+        .wiki("Sumer"),
+    ev("babylon", When::Ago(3.8e3), Lane::People, 2, false).wiki("Hammurabi"),
     ev("now", When::Ago(0.0), Lane::Earth, 1, false),
     ev("andromeda", When::Ahead(4.5e9), Lane::Stars, 2, true).wiki("Andromeda–Milky_Way_collision"),
     ev("red-giant", When::Ahead(5.0e9), Lane::Earth, 1, true).wiki("Future_of_Earth"),
@@ -693,6 +746,13 @@ mod tests {
         let u = |id: &str| event(id).unwrap().when.u();
         assert!(u("sun") < u("earth") && u("earth") < u("moon"));
         assert!(u("crust") < u("oceans") && u("oceans") < u("first-life"));
+        assert!(u("first-dinosaurs") < u("stegosaurus") && u("stegosaurus") < u("trex"));
+        assert!(u("trex") < u("dinosaurs-end") && u("dinosaurs-end") < u("habilis"));
+        assert!(u("neanderthals") < u("sapiens") && u("sapiens") < u("out-of-africa"));
+        assert!(u("out-of-africa") < u("sumer") && u("sumer") < u("babylon"));
+        // Stegosaurus is further from T. rex than T. rex is from us
+        let gap = |a: &str, b: &str| years_between(event(a).unwrap().when, event(b).unwrap().when);
+        assert!(gap("stegosaurus", "trex") > gap("trex", "now"));
         // every event but "now" has a read-more article, written as a URL path
         for e in EVENTS.iter().filter(|e| e.id != "now") {
             let w = e
@@ -716,6 +776,8 @@ mod tests {
         assert_eq!(d(66.0e6), "4.79 m");
         assert_eq!(d(3.0e5), "2.2 cm");
         assert_eq!(d(5.2e3), "0.38 mm");
+        assert_eq!(walk_length(walk_span(DINOSAUR_REIGN_YR)), "12 m");
+        assert_eq!((DINOSAUR_REIGN_YR / SAPIENS_SO_FAR_YR).round(), 550.0);
         // one 75 cm step is about 10 million years
         let step = 0.75 / WALK_M * AGE_YR;
         assert!((step / 1e7 - 1.0).abs() < 0.05, "{step}");

@@ -1,5 +1,16 @@
 # Status
 
+## 2026-11-14 (late night) — v0.7.5: continents, dinosaurs, people
+
+Branch `timeline`. 14 events (web-checked: Homo habilis/erectus dates,
+Denisovans incl. the 2025 Harbin skull, 2024 Neanderthal gene-flow dating,
+Pangaea, Stegosaurus–T. rex gap). Lane People, jumps Dinosaurs / People
+(🦕 is missing from the fonts, 🐊 used), walk "reign" line
+(`DINOSAUR_REIGN_YR`, `SAPIENS_SO_FAR_YR`, tested). Lanes 90 pt with a 22 pt
+foot for range bars. Verified: fmt, clippy, tests; screenshots EN 1280
+(Stegosaurus, erectus, Babylon), SK 1280 (sapiens), SK 400 (T. rex, walk).
+Next: other continents' civilisations with Peter.
+
 ## 2026-11-14 (night) — v0.7.4: "Not to scale!" banner
 
 Branch `timeline`. Peter: warn visitors at once that the scale is a trick.

@@ -64,16 +64,20 @@ enum Jump {
     Stars,
     SunEarth,
     YoungEarth,
+    Dinosaurs,
+    People,
     Future,
 }
 
 impl Jump {
-    const ALL: [Jump; 6] = [
+    const ALL: [Jump; 8] = [
         Jump::Whole,
         Jump::Beginning,
         Jump::Stars,
         Jump::SunEarth,
         Jump::YoungEarth,
+        Jump::Dinosaurs,
+        Jump::People,
         Jump::Future,
     ];
 
@@ -84,6 +88,8 @@ impl Jump {
             Jump::Stars => "tl-jump-stars",
             Jump::SunEarth => "tl-jump-sun-earth",
             Jump::YoungEarth => "tl-jump-young-earth",
+            Jump::Dinosaurs => "tl-jump-dinosaurs",
+            Jump::People => "tl-jump-people",
             Jump::Future => "tl-jump-future",
         }
     }
@@ -95,6 +101,8 @@ impl Jump {
             Jump::Stars => "⭐",
             Jump::SunEarth => "🌍",
             Jump::YoungEarth => "☄",
+            Jump::Dinosaurs => "🐊",
+            Jump::People => "👣",
             Jump::Future => "🌑",
         }
     }
@@ -106,6 +114,8 @@ impl Jump {
             Jump::Stars => (When::After(1e5).u(), When::After(2e9).u()),
             Jump::SunEarth => (When::Ago(8e9).u(), When::Ahead(2e10).u()),
             Jump::YoungEarth => (When::Ago(4.65e9).u(), When::Ago(3.3e9).u()),
+            Jump::Dinosaurs => (When::Ago(360e6).u(), When::Ago(45e6).u()),
+            Jump::People => (When::Ago(3.0e6).u(), When::Ago(2.5e3).u()),
             Jump::Future => (When::Ahead(1e9).u(), tl::u_end() + 2.0),
         }
     }
@@ -353,6 +363,7 @@ fn lane_colour(pal: &Palette, lane: Lane) -> Color32 {
         Lane::Stars => pal.series[0],
         Lane::Earth => pal.series[1],
         Lane::Life => pal.series[5],
+        Lane::People => pal.series[4],
     }
 }
 
@@ -362,6 +373,7 @@ fn lane_key(lane: Lane) -> &'static str {
         Lane::Stars => "tl-lane-stars",
         Lane::Earth => "tl-lane-earth",
         Lane::Life => "tl-lane-life",
+        Lane::People => "tl-lane-people",
     }
 }
 
@@ -370,7 +382,9 @@ const STRIPE_H: f32 = 28.0;
 const STRIPE_LABELS: f32 = 18.0;
 /// Gap between the stripe and the track, where the zoom lines run.
 const CONNECT_H: f32 = 30.0;
-const LANE_H: f32 = 72.0;
+const LANE_H: f32 = 90.0;
+/// Space under each lane's line, for up to four rows of range bars.
+const LANE_FOOT: f32 = 22.0;
 /// Rows of labels above a lane's line.
 const LABEL_ROWS: usize = 3;
 const AXIS_H: f32 = 64.0;
@@ -565,7 +579,7 @@ impl Timeline {
         // lanes; their names are kept free of event labels
         let mut lane_names: Vec<Rect> = Vec::new();
         for (i, lane) in Lane::ALL.iter().enumerate() {
-            let y = lanes_top + LANE_H * (i as f32 + 1.0) - 10.0;
+            let y = lanes_top + LANE_H * (i as f32 + 1.0) - LANE_FOOT;
             p.line_segment(
                 [pos2(inner.left(), y), pos2(inner.right(), y)],
                 Stroke::new(1.0, lerp(pal.deep, pal.line, 0.8)),
@@ -703,14 +717,17 @@ impl Timeline {
         let mut rows_used = [0usize; Lane::ALL.len()];
         for e in tl::EVENTS {
             let Some((a, b)) = e.range else { continue };
-            let li = Lane::ALL.iter().position(|l| *l == e.lane).unwrap_or(0);
-            let row = rows_used[li];
-            rows_used[li] += 1;
             let (ua, ub) = (a.u().max(u0), b.u().min(u1));
             if ub <= ua {
                 continue;
             }
-            let y = lanes_top + LANE_H * (li as f32 + 1.0) - 10.0 + 6.0 + row as f32 * 5.0;
+            // rows are handed out only among the bars in view
+            let li = Lane::ALL.iter().position(|l| *l == e.lane).unwrap_or(0);
+            let row = rows_used[li];
+            rows_used[li] += 1;
+            let y = lanes_top + LANE_H * (li as f32 + 1.0) - LANE_FOOT
+                + 5.0
+                + (row.min(3)) as f32 * 4.0;
             let c = lerp(pal.deep, lane_colour(pal, e.lane), 0.75);
             let (xa, xb) = (x_of(ua), x_of(ub));
             draw::dashed(&p, pos2(xa, y), pos2(xb, y), 2.0, c);
@@ -729,7 +746,7 @@ impl Timeline {
                 continue;
             }
             let li = Lane::ALL.iter().position(|l| *l == e.lane).unwrap_or(0);
-            let base = lanes_top + LANE_H * (li as f32 + 1.0) - 10.0;
+            let base = lanes_top + LANE_H * (li as f32 + 1.0) - LANE_FOOT;
             let x = x_of(u);
             let c = lane_colour(pal, e.lane);
             let r = if e.importance == 1 { 5.5 } else { 4.5 };
@@ -965,6 +982,17 @@ fn walk(ui: &mut egui::Ui, tr: &I18n, pal: &Palette) {
         let d = tr.num(&tl::walk_length(tl::walk_before_end(*years)));
         ui.label(tr.ta(&format!("tl-walk-{key}"), &args!["d" => d]));
     }
+    ui.add_space(4.0);
+    let reign = tr.num(&tl::walk_length(tl::walk_span(tl::DINOSAUR_REIGN_YR)));
+    let us = tr.num(&tl::walk_length(tl::walk_span(tl::SAPIENS_SO_FAR_YR)));
+    let times = (tl::DINOSAUR_REIGN_YR / tl::SAPIENS_SO_FAR_YR).round();
+    ui.label(
+        RichText::new(tr.ta(
+            "tl-walk-reign",
+            &args!["d" => reign, "s" => us, "x" => times],
+        ))
+        .color(pal.note),
+    );
 }
 
 /// "4.54 billion years", "380 000 years", "10⁻³² s", in the visitor's language.

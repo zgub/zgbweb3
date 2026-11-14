@@ -465,6 +465,40 @@ tl-wiki = Read more on Wikipedia (English)
 tl-not-to-scale = Not to scale!
     .text = This line is squeezed and stretched on purpose. Equal widths do not mean equal times: near now one finger's width holds a few centuries, out in the far future it holds billions of billions of years. Without the trick, everything ever known would be one dot. The tools under the line show how the trick works.
 
+tl-jump-dinosaurs = Dinosaurs
+tl-jump-people = People
+tl-lane-people = People
+tl-walk-reign = Dinosaurs ruled for about 165 million years: { $d } of the walk. Our species so far: { $s }. They lasted about { $x } times longer than we have so far.
+
+tl-ev-pangaea = Pangaea, one supercontinent
+    .text = Almost all the land joins into one huge continent, Pangaea, with one ocean around it. About 200 million years ago it starts to tear apart, and the pieces drift a few centimetres a year, about as fast as your fingernails grow, towards today's map. The first dinosaurs could walk from today's Brazil to today's Africa.
+tl-ev-todays-map = The map from school
+    .text = By about 3 million years ago the continents sit roughly where your school atlas shows them. One of the last pieces: the land bridge of Panama closes and joins North and South America, about 2.8 million years ago. The map is not finished: the plates still move a few centimetres a year.
+tl-ev-first-dinosaurs = First dinosaurs
+    .text = Small, quick, two-legged animals about the size of a dog, in what is now Argentina and Brazil (still part of Pangaea then). The oldest sure dinosaur fossils are about 230 million years old. It took them millions more years to become the biggest animals on land.
+tl-ev-stegosaurus = Stegosaurus
+    .text = The plant-eater with plates on its back lived 155 to 150 million years ago, in the Jurassic. When it died out, T. rex was still about 80 million years in the future: more time than separates T. rex from you.
+tl-ev-trex = Tyrannosaurus rex
+    .text = Lived only at the very end, 68 to 66 million years ago, and really did meet Triceratops. Stegosaurus had been gone for about 80 million years by then. So T. rex lived closer in time to us than to Stegosaurus.
+tl-ev-dinosaurs-end = The end of the dinosaurs
+    .text = An asteroid about 10 km wide hits near today's Chicxulub in Mexico. Dust and soot darken the sky, and about three quarters of all species die out, among them every dinosaur except one group: the birds. The sparrow in your garden is a dinosaur. Dinosaurs ruled for about 165 million years; our species has been here for 300 000.
+tl-ev-habilis = Homo habilis
+    .text = "Handy man", one of the first members of our genus, in East and South Africa, about 2.3 to 1.5 million years ago. A small brain, but it made and used stone tools. For a while it shared Africa with Homo erectus.
+tl-ev-erectus = Homo erectus
+    .text = "Upright man": tall, long-legged, and the first human to walk out of Africa, reaching today's Georgia by 1.8 million years ago and later China and Java. It made hand axes, probably used fire, and lasted well over a million years, until roughly 110 000 years ago on Java.
+tl-ev-neanderthals = Neanderthals
+    .text = Strong, big-brained humans of Europe and western Asia, from about 400 000 to 40 000 years ago. They buried their dead and made tools and ornaments. They are not completely gone: most people whose ancestors lived outside Africa carry 1 to 2 % Neanderthal DNA.
+tl-ev-sapiens = People like us
+    .text = Homo sapiens. The oldest fossils, from Jebel Irhoud in Morocco, are about 300 000 years old. For most of that time several kinds of humans lived on Earth at once.
+tl-ev-denisovans = Denisovans
+    .text = Cousins of the Neanderthals in Asia, first known only from a finger bone and DNA found in a cave in Siberia (2010). In 2025 an almost complete skull from Harbin in China was matched to them. They lived from about 285 000 to 30 000 years ago, and people in Asia and Oceania still carry some of their DNA.
+tl-ev-out-of-africa = Out of Africa
+    .text = A group of modern humans leaves Africa and spreads across Asia and Europe, roughly 60 000 to 45 000 years ago (earlier groups left too, but left few descendants). On the way they meet Neanderthals and have children together, about 47 000 years ago by a 2024 DNA study, and by then they have reached South-East Asia and Oceania.
+tl-ev-sumer = Sumer: cities and writing
+    .text = Between the Tigris and the Euphrates, in today's Iraq, villages grow into the first cities, like Uruk, with temples, canals and tens of thousands of people. Around 3200 BC scribes start pressing marks into clay to keep track of grain and beer: the beginning of writing, and so of recorded history.
+tl-ev-babylon = Babylon of Hammurabi
+    .text = King Hammurabi, who ruled from about 1792 to 1750 BC, makes Babylon the centre of Mesopotamia and has his laws carved on a stone pillar: 282 rules, among them "an eye for an eye". The pillar stands in the Louvre in Paris today.
+
 tl-rule = Almost all of time is empty. Everything you know of happened in a thin slice near now, and the universe is still young.
 tl-grown-axis = The axis is not linear. In the past, position = log₁₀ t − log₁₀ (t_ago + 1 year), where t is the time since the Big Bang and t_ago the time before now; in the future it goes on as log₁₀ (1 + t_ahead / 1 year) after now. Near the Big Bang this is a logarithm of the time since the start, near now a logarithm of the time ago, so both the first second and the last thousand years get room. Zoomed far in, the scale is almost linear.
 tl-grown-now = Dates are kept the way they are known: "380 000 years after the Big Bang", "4.54 billion years ago", "in 5 billion years". The age of the universe, 13.787 ± 0.020 billion years, is uncertain by more than all of human history, so recent dates are never counted from the Big Bang.

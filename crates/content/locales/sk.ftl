@@ -472,6 +472,40 @@ tl-wiki = Viac na Wikipédii (po anglicky)
 tl-not-to-scale = Nie je v mierke!
     .text = Táto čiara je zámerne stlačená aj natiahnutá. Rovnaká šírka neznamená rovnaký čas: pri dnešku sa do šírky prsta zmestí pár storočí, v ďalekej budúcnosti miliardy miliárd rokov. Bez tohto triku by všetko, čo kedy kto poznal, bola jedna bodka. Nástroje pod čiarou ukážu, ako trik funguje.
 
+tl-jump-dinosaurs = Dinosaury
+tl-jump-people = Ľudia
+tl-lane-people = Ľudia
+tl-walk-reign = Dinosaury vládli asi 165 miliónov rokov: { $d } prechádzky. Náš druh zatiaľ: { $s }. Vydržali asi { $x }-krát dlhšie ako my doteraz.
+
+tl-ev-pangaea = Pangea, jeden superkontinent
+    .text = Takmer všetka pevnina sa spojí do jedného obrovského kontinentu, Pangey, s jedným oceánom okolo. Asi pred 200 miliónmi rokov sa začne trhať a kusy sa posúvajú o pár centimetrov za rok, asi tak rýchlo, ako ti rastú nechty, smerom k dnešnej mape. Prvé dinosaury mohli prejsť pešo z dnešnej Brazílie do dnešnej Afriky.
+tl-ev-todays-map = Mapa zo školy
+    .text = Asi pred 3 miliónmi rokov sú kontinenty zhruba tam, kde ich ukazuje školský atlas. Jeden z posledných kúskov: pevninský most v Paname sa uzavrie a spojí Severnú a Južnú Ameriku, asi pred 2,8 milióna rokov. Mapa nie je hotová: dosky sa stále posúvajú o pár centimetrov za rok.
+tl-ev-first-dinosaurs = Prvé dinosaury
+    .text = Malé, rýchle zvieratá na dvoch nohách, veľké asi ako pes, na území dnešnej Argentíny a Brazílie (vtedy ešte súčasť Pangey). Najstaršie isté fosílie dinosaurov majú asi 230 miliónov rokov. Trvalo ešte milióny rokov, kým sa z nich stali najväčšie zvieratá na súši.
+tl-ev-stegosaurus = Stegosaurus
+    .text = Bylinožravec s doskami na chrbte žil pred 155 až 150 miliónmi rokov, v jure. Keď vymrel, T. rex bol ešte asi 80 miliónov rokov v budúcnosti: viac času, než delí T. rexa od teba.
+tl-ev-trex = Tyrannosaurus rex
+    .text = Žil až na samom konci, pred 68 až 66 miliónmi rokov, a s Triceratopsom sa naozaj stretol. Stegosaurus bol vtedy preč už asi 80 miliónov rokov. T. rex teda žil časovo bližšie k nám než k Stegosaurovi.
+tl-ev-dinosaurs-end = Koniec dinosaurov
+    .text = Asteroid široký asi 10 km dopadne pri dnešnom Chicxulube v Mexiku. Prach a sadze zatemnia oblohu a vymrú asi tri štvrtiny všetkých druhov, medzi nimi všetky dinosaury okrem jednej skupiny: vtákov. Vrabec v tvojej záhrade je dinosaurus. Dinosaury vládli asi 165 miliónov rokov; náš druh je tu 300 000.
+tl-ev-habilis = Homo habilis
+    .text = „Zručný človek“, jeden z prvých členov nášho rodu, vo východnej a južnej Afrike, asi pred 2,3 až 1,5 milióna rokov. Malý mozog, ale vyrábal a používal kamenné nástroje. Istý čas žil v Afrike spolu s Homo erectus.
+tl-ev-erectus = Homo erectus
+    .text = „Vzpriamený človek“: vysoký, dlhonohý a prvý človek, ktorý vyšiel z Afriky; do dnešného Gruzínska došiel pred 1,8 milióna rokov, neskôr do Číny a na Jávu. Vyrábal pästné kliny, pravdepodobne používal oheň a vydržal vyše milióna rokov, asi do doby pred 110 000 rokmi na Jáve.
+tl-ev-neanderthals = Neandertálci
+    .text = Silní ľudia s veľkým mozgom v Európe a západnej Ázii, asi pred 400 000 až 40 000 rokmi. Pochovávali mŕtvych, vyrábali nástroje a ozdoby. Celkom nezmizli: väčšina ľudí, ktorých predkovia žili mimo Afriky, nesie 1 až 2 % neandertálskej DNA.
+tl-ev-sapiens = Ľudia ako my
+    .text = Homo sapiens. Najstaršie fosílie, z Džebel Irhúd v Maroku, majú asi 300 000 rokov. Väčšinu toho času žilo na Zemi naraz niekoľko druhov ľudí.
+tl-ev-denisovans = Denisovci
+    .text = Bratranci neandertálcov v Ázii, najprv známi len z kostičky prsta a DNA z jaskyne na Sibíri (2010). V roku 2025 k nim priradili takmer celú lebku z Charbinu v Číne. Žili asi pred 285 000 až 30 000 rokmi a ľudia v Ázii a Oceánii dodnes nesú kúsok ich DNA.
+tl-ev-out-of-africa = Odchod z Afriky
+    .text = Skupina moderných ľudí odíde z Afriky a rozšíri sa po Ázii a Európe, zhruba pred 60 000 až 45 000 rokmi (odchádzali aj skoršie skupiny, ale zanechali málo potomkov). Cestou stretnú neandertálcov a majú s nimi deti, podľa štúdie DNA z roku 2024 asi pred 47 000 rokmi, a vtedy už sú aj v juhovýchodnej Ázii a Oceánii.
+tl-ev-sumer = Sumer: mestá a písmo
+    .text = Medzi Tigrisom a Eufratom, v dnešnom Iraku, vyrastú z dedín prvé mestá, ako Uruk, s chrámami, kanálmi a desaťtisícmi ľudí. Okolo roku 3200 pred n. l. začnú pisári vtláčať značky do hliny, aby mali prehľad o obilí a pive: začiatok písma, a tým aj zapísaných dejín.
+tl-ev-babylon = Babylon Chammurapiho
+    .text = Kráľ Chammurapi, ktorý vládol asi v rokoch 1792 až 1750 pred n. l., urobí z Babylonu stred Mezopotámie a dá vytesať svoje zákony do kamenného stĺpa: 282 pravidiel, medzi nimi „oko za oko“. Stĺp dnes stojí v Louvri v Paríži.
+
 tl-rule = Takmer celý čas je prázdny. Všetko, čo poznáš, sa stalo v tenkom prúžku pri dnešku, a vesmír je ešte mladý.
 tl-grown-axis = Os nie je lineárna. V minulosti je poloha = log₁₀ t − log₁₀ (t_pred + 1 rok), kde t je čas od Veľkého tresku a t_pred čas pred dneškom; v budúcnosti pokračuje za dneškom ako log₁₀ (1 + t_o / 1 rok). Pri Veľkom tresku je to logaritmus času od začiatku, pri dnešku logaritmus času dozadu, takže miesto dostane prvá sekunda aj posledných tisíc rokov. Pri veľkom priblížení je mierka takmer lineárna.
 tl-grown-now = Dátumy sú uložené tak, ako ich poznáme: „380 000 rokov po Veľkom tresku“, „pred 4,54 miliardy rokov“, „o 5 miliárd rokov“. Vek vesmíru, 13,787 ± 0,020 miliardy rokov, je neistý o viac, ako trvajú celé dejiny ľudstva, preto sa nedávne dátumy nikdy nepočítajú od Veľkého tresku.
