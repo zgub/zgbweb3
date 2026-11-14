@@ -185,3 +185,12 @@ pixel of the stripe (honest "how much we listed") or per unit of time
 once the view is inside the last ~10 000 years?
 (d) Andromeda: a 2026 follow-up reportedly raised the merger chance to
 ~90 % (median ~6.5 Gyr); verify from the paper before the card is final.
+
+**Q-032 — Which scale explainers stay on the timeline?** (2026-11-14) Peter
+asked to see every idea and try them with the kids: (1) ×10 / ÷10 arcs between
+neighbouring power-of-ten ticks, (2) the bracket under the mouse showing how
+much time fits in about 1.5 cm, (3) the "honest spacing" slider that squashes
+the view to a linear scale, (4) "if all of time were a 1 km walk". Which ones
+helped, which confused? The piano (each octave doubles the frequency, yet looks
+the same width) goes on the planned "Counting zeros" page. Also: Slovak
+Wikipedia articles instead of English ones where good ones exist (D-043).

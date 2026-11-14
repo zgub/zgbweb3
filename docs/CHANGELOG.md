@@ -9,6 +9,18 @@ Versions are git tags `vX.Y.Z` (D-036); the version shows in the site footer.
 - Branch flow: `main` = released, `develop` = development, feature branches
   off `develop` (D-036).
 
+## 0.7.3 — 2026-11-14 (branch `timeline`)
+
+**Added**
+- Timeline: four ways to feel the stretched scale (Q-032): ×10 / ÷10 arcs
+  between neighbouring round ticks; a bracket under the mouse saying how much
+  time fits in that width; an "Honest spacing" slider that squashes the view
+  to an even scale (try it on "Everything"); a new section "If all of time
+  were a 1 km walk" (the Earth 329 m before the finish, the dinosaurs 4.79 m,
+  our species 2.2 cm, writing 0.38 mm).
+- Every event card links a Wikipedia article (English for now) for reading
+  on (D-043). Deep link `/fair` (e.g. `#/timeline/whole/fair`).
+
 ## 0.7.2 — 2026-11-14 (branch `timeline`)
 
 **Changed** (Peter's review)

@@ -373,7 +373,7 @@ tl-jump-beginning = Prvé okamihy
 tl-jump-stars = Rozsvietia sa hviezdy
 tl-jump-sun-earth = Slnko a Zem
 tl-jump-future = Ďaleká budúcnosť
-tl-how = Koliesko alebo dva prsty: priblíženie. Ťahanie: posun. Klik na bodku: čítanie. Dvojklik: priblíženie.
+tl-how = Koliesko alebo dva prsty: priblíženie. Ťahanie: posun. Klik na bodku: čítanie. Dvojklik: priblíženie. Malá zátvorka pod myšou ukáže, koľko času sa zmestí do tej šírky.
 tl-view-span = Tento pohľad zaberá asi { $a }
 tl-stripe-start = Veľký tresk
 tl-stripe-now = teraz
@@ -451,6 +451,23 @@ tl-ev-luca = Náš posledný spoločný predok
     .text = Všetko živé dnes, baktérie, stromy aj ty, pochádza z jednej populácie buniek. Porovnaním génov 700 žijúcich organizmov a spočítaním, ako sa menili, umiestnila štúdia z roku 2024 tohto predka, prezývaného LUCA, asi pred 4,2 miliardy rokov. Pravdepodobne žil niekde v teple, v mori, pri hydrotermálnom prieduchu alebo v horúcom prameni, a žil bez kyslíka; už vtedy mal okolo seba iné mikróby a bránil sa vírusom. Dátum pochádza z genetických hodín, nie z fosílie.
 tl-ev-first-life = Prvý život: najstaršie isté stopy
     .text = Stromatolity, vrstevnaté kopčeky, ktoré postavili povlaky mikróbov, v horninách starých 3,48 miliardy rokov v oblasti Pilbara v západnej Austrálii. Existujú aj staršie tvrdenia (3,7 miliardy rokov v Grónsku, možno ešte staršie v Quebecu), ale sú sporné: také staré horniny boli toľko stláčané a zohrievané, že stopy života sa ťažko odlišujú od obyčajnej chémie.
+
+tl-fair = Poctivé rozostupy:
+tl-fair-note = Na 100 % má každý rok rovnakú šírku, ako na pravítku. Pozri, ako sa bodky zhrnú na jeden koniec: preto je čiara natiahnutá. Skús to na „Všetko“: priblížený pohľad je už takmer rovnomerný.
+tl-hops = ×10 medzi dvoma susednými značkami: na tej časti čiary je s každým rovnakým krokom čas desaťkrát dlhší. ÷10 (kde čiara počíta dozadu od dneška): každý krok je desaťkrát bližšie k dnešku.
+tl-finger = ≈ { $a }
+tl-walk-title = Keby bol celý čas 1 km prechádzka
+tl-walk-intro = Prejdi jeden kilometer od Veľkého tresku po dnešok. Každý krok dlhý 75 cm je asi 10 miliónov rokov. Kde na prechádzke sa čo stane?
+tl-walk-mark-earth = Zem
+tl-walk-mark-dinosaurs = dinosaury
+tl-walk-too-thin = Celé dejiny ľudstva sú v poslednom prúžku pred „teraz“, príliš tenkom na videnie.
+tl-walk-earth = Zem vznikne { $d } pred cieľom.
+tl-walk-dinosaurs = Dinosaury vyhynú { $d } pred cieľom.
+tl-walk-sapiens = Ľudia ako my sa objavia { $d } pred cieľom.
+tl-walk-writing = Písmo vznikne { $d } pred cieľom: asi ako hrúbka piatich vlasov.
+tl-grown-fair = Poctivé rozostupy posúvajú každú polohu k lineárnej mierke v tom istom pohľade (x = roky od dneška, prepočítané na šírku). Oblúky ×10 a zátvorka pod myšou sú len na natiahnutej osi. Prechádzka: roky pred dneškom ÷ 13,787 miliardy × 1000 m. Jej body: dinosaury zmizli pred 66 miliónmi rokov (dopad pri Chicxulube), náš druh asi pred 300 000 rokmi (fosílie z Džebel Irhúd), písmo asi pred 5 200 rokmi (Sumer, okolo roku 3200 pred n. l.).
+
+tl-wiki = Viac na Wikipédii (po anglicky)
 
 tl-rule = Takmer celý čas je prázdny. Všetko, čo poznáš, sa stalo v tenkom prúžku pri dnešku, a vesmír je ešte mladý.
 tl-grown-axis = Os nie je lineárna. V minulosti je poloha = log₁₀ t − log₁₀ (t_pred + 1 rok), kde t je čas od Veľkého tresku a t_pred čas pred dneškom; v budúcnosti pokračuje za dneškom ako log₁₀ (1 + t_o / 1 rok). Pri Veľkom tresku je to logaritmus času od začiatku, pri dnešku logaritmus času dozadu, takže miesto dostane prvá sekunda aj posledných tisíc rokov. Pri veľkom priblížení je mierka takmer lineárna.

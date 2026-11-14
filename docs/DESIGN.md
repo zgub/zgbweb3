@@ -120,6 +120,11 @@ new (changed in this or the previous minor version, `changed_in`), ✏ = draft,
 ⏳ with a dimmed title = planned, nothing there yet. The hover text explains
 the marker under the page's blurb. Menu titles never wrap; they end in "…".
 
+**External links** (D-043). "Read more" links open in a new tab, start with
+📖 and end with ↗, and say which language the page is in. No tracking
+parameters. The evidence behind a number goes in the grown-ups fold-out and
+the topic's reference doc, not only behind a link.
+
 Buttons for actions (Check, Show the answer, Run, Start over) stay plain egui
 buttons with a glyph where it helps: 👁 show, ▶ run, ⏸ pause, 🔄 start over.
 
@@ -166,6 +171,15 @@ when they cross lines. Arrows → mean "goes with / corresponds to".
   above it, the current view marked in amber; below it the zoomed canvas,
   linked to the marked window by two amber lines with a faint amber fill,
   like a magnifying glass; controls (jump buttons) under the canvas;
+- *×10 hops*: under the tick labels, a thin arc between two neighbouring
+  power-of-ten ticks labelled ×10 (or ×10ⁿ, ÷10 where the axis counts back
+  from now); only on the stretched axis;
+- *width bracket*: under the mouse, a note-coloured bracket about 60 pt wide
+  with "≈ how much" above it on a `deep` tag;
+- *honest spacing*: a slider that blends every position towards a linear
+  scale over the same view (0–100 %); ticks thin out to keep 90 pt apart;
+- *walk bar*: one long bar from start to finish with a few marks, the
+  distances listed under it in sentences;
 - *log bar chart* (energy ladder, coming back);
 - 3D scenes in wgpu (powers of ten, later), same colour roles.
 

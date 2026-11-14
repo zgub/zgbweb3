@@ -360,7 +360,7 @@ tl-jump-beginning = The first moments
 tl-jump-stars = Stars switch on
 tl-jump-sun-earth = The Sun and the Earth
 tl-jump-future = The far future
-tl-how = Wheel or two fingers: zoom. Drag: move. Click a dot: read about it. Double-click: zoom in.
+tl-how = Wheel or two fingers: zoom. Drag: move. Click a dot: read about it. Double-click: zoom in. The small bracket under the mouse shows how much time fits in that width.
 tl-view-span = This view spans about { $a }.
 tl-stripe-start = Big Bang
 tl-stripe-now = now
@@ -444,6 +444,23 @@ tl-ev-luca = Our last common ancestor
     .text = Every living thing today, bacteria, trees and you, descends from one population of cells. By comparing the genes of 700 living organisms and counting how they changed, a 2024 study put this ancestor, nicknamed LUCA, at about 4.2 billion years ago. It probably lived somewhere hot, in the sea, at a hydrothermal vent or in a hot spring, and it lived without oxygen; it already shared its home with other microbes and was defending itself against viruses. The date comes from a genetic clock, not from a fossil.
 tl-ev-first-life = First life: the oldest sure traces
     .text = Stromatolites, layered mounds built by mats of microbes, in 3.48-billion-year-old rocks in the Pilbara, Western Australia. Older claims exist (3.7 billion years in Greenland, perhaps even older in Quebec), but they are disputed: rocks that old have been squeezed and heated so much that traces of life are hard to tell from plain chemistry.
+
+tl-fair = Honest spacing:
+tl-fair-note = At 100 % every year gets the same width, as on a ruler. Watch the dots pile up at one end: that is why the line is stretched. Try it on "Everything": a close-up is almost even already.
+tl-hops = ×10 between two neighbouring ticks: on that part of the line, time grows ten times with each equal step. ÷10 (where the line counts back from now): each step is ten times closer to now.
+tl-finger = ≈ { $a }
+tl-walk-title = If all of time were a 1 km walk
+tl-walk-intro = Walk one kilometre from the Big Bang to today. Every step of 75 cm is about 10 million years. Where on the walk do things happen?
+tl-walk-mark-earth = Earth
+tl-walk-mark-dinosaurs = dinosaurs
+tl-walk-too-thin = All of human history is in the last sliver before "now", too thin to see.
+tl-walk-earth = The Earth forms { $d } before the finish.
+tl-walk-dinosaurs = The dinosaurs die out { $d } before the finish.
+tl-walk-sapiens = People like us appear { $d } before the finish.
+tl-walk-writing = Writing is invented { $d } before the finish: about as thick as five hairs.
+tl-grown-fair = Honest spacing blends every position towards a linear scale over the same view (x = years from now, scaled to the width). The ×10 arcs and the bracket under the mouse show only on the stretched axis. The walk: years before now ÷ 13.787 billion × 1000 m. Its anchors: dinosaurs gone 66 million years ago (Chicxulub impact), our species about 300 000 years (Jebel Irhoud fossils), writing about 5 200 years (Sumer, around 3200 BC).
+
+tl-wiki = Read more on Wikipedia (English)
 
 tl-rule = Almost all of time is empty. Everything you know of happened in a thin slice near now, and the universe is still young.
 tl-grown-axis = The axis is not linear. In the past, position = log₁₀ t − log₁₀ (t_ago + 1 year), where t is the time since the Big Bang and t_ago the time before now; in the future it goes on as log₁₀ (1 + t_ahead / 1 year) after now. Near the Big Bang this is a logarithm of the time since the start, near now a logarithm of the time ago, so both the first second and the last thousand years get room. Zoomed far in, the scale is almost linear.

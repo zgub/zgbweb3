@@ -58,6 +58,24 @@ comes from. Code: `crates/sims/src/timeline.rs` (`EVENTS`); texts:
 | `bh-biggest` | in 10¹⁰⁰ yr | Universe | 2 | theory | Supermassive black holes (~10¹¹ M☉) take up to ~10¹⁰⁰ yr |
 | `heat-death` | in 10¹⁰⁶ yr | Universe | 1 | — | Not a date: an asymptotic approach. The dot marks the end of the drawn line |
 
+## The walk (v0.7.3)
+
+All of time as 1 km: metres before the finish = years ago ÷ 13.787 × 10⁹ ×
+1000. One 75 cm step ≈ 10 million years.
+
+| mark | years ago | before the finish | source |
+|---|---|---|---|
+| Earth forms | 4.54 × 10⁹ | 329 m | as `earth` above |
+| dinosaurs die out | 66 × 10⁶ | 4.79 m | Chicxulub impact, K–Pg boundary 66.0 Ma (Renne et al., Science 2013) |
+| our species | 300 000 | 2.2 cm | Jebel Irhoud fossils, ~300 ka (Hublin et al., Nature 2017) |
+| writing | 5 200 | 0.38 mm | Sumerian proto-cuneiform, Uruk, ~3200 BC |
+
+## Read-more links (D-043)
+
+Each event's `wiki` is an English Wikipedia article name, chosen by hand.
+Wikipedia is where a curious reader goes next; the table above holds the
+actual sources.
+
 ## Next (Peter's plan: sparse end to end, then fill in)
 
 1. Peter reviews the starter set and the feel of the zoom (`trunk serve`, `#/timeline`).

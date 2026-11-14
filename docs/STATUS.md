@@ -1,5 +1,15 @@
 # Status
 
+## 2026-11-14 (night) — v0.7.3: scale explainers, source links
+
+Branch `timeline`. Peter: "put every idea in now, so I can show the kids".
+All four explainers built (Q-032); `Event.wiki` with a test (D-043);
+`sims::timeline::WALK`, `walk_before_end`, `walk_length` (tested).
+Verified: fmt, clippy, tests (sims 39, app 17); screenshots EN 1280 (crust,
+whole with the bracket, whole at 100 % honest spacing), SK 400 (Moon, walk).
+Wikipedia article names chosen from memory, not each clicked: Peter, please
+click through a few.
+
 ## 2026-11-14 (night) — v0.7.2: zoom lines
 
 Branch `timeline`. Peter's sketch: labels above the stripe, jump buttons

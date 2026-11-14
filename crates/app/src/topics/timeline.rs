@@ -33,6 +33,8 @@ struct State {
     u0: f64,
     u1: f64,
     selected: Option<String>,
+    /// 0 = the stretched axis, 1 = honest even spacing (every year as wide).
+    fair: f32,
 }
 
 impl Default for State {
@@ -42,6 +44,7 @@ impl Default for State {
             u0,
             u1,
             selected: None,
+            fair: 0.0,
         }
     }
 }
@@ -245,12 +248,28 @@ impl Topic for Timeline {
                     }
                 }
             });
+            ui.add_space(6.0);
+            ui.horizontal_wrapped(|ui| {
+                ui.label(RichText::new(tr.t("tl-fair")).color(pal.text));
+                let r = ui.add(
+                    egui::Slider::new(&mut self.s.fair, 0.0..=1.0)
+                        .custom_formatter(|v, _| format!("{:.0} %", v * 100.0)),
+                );
+                if r.changed() {
+                    self.target = None;
+                }
+            });
+            if self.s.fair > 0.0 {
+                ui.label(RichText::new(tr.t("tl-fair-note")).small().color(pal.note));
+            }
             ui.add_space(4.0);
-            ui.label(
-                RichText::new(format!("🖱 {}", tr.t("tl-how")))
-                    .small()
-                    .color(pal.weak),
-            );
+            for key in ["tl-how", "tl-hops"] {
+                ui.label(
+                    RichText::new(format!("🖱 {}", tr.t(key)))
+                        .small()
+                        .color(pal.weak),
+                );
+            }
             let span = tl::years_between(
                 When::at(self.s.u0.max(tl::u_start())),
                 When::at(self.s.u1.min(tl::u_end())),
@@ -269,10 +288,19 @@ impl Topic for Timeline {
             }
         });
 
+        kit::section(ui, pal, &format!("🚶 {}", tr.t("tl-walk-title")), |ui| {
+            walk(ui, tr, pal)
+        });
+
         kit::takeaway(ui, pal, tr.t("tl-rule"));
         ui.add_space(8.0);
         kit::grown_ups(ui, pal, tr, ID, |ui| {
-            for k in ["tl-grown-axis", "tl-grown-now", "tl-grown-stripe"] {
+            for k in [
+                "tl-grown-axis",
+                "tl-grown-now",
+                "tl-grown-stripe",
+                "tl-grown-fair",
+            ] {
                 ui.label(tr.t(k));
             }
             ui.label(RichText::new(tr.t("tl-grown-sources")).color(pal.weak));
@@ -291,15 +319,19 @@ impl Topic for Timeline {
     }
 
     /// `#/timeline/<event>` opens that event's card and zooms around it;
-    /// `#/timeline/whole` shows everything.
+    /// `#/timeline/whole` shows everything; a trailing `/fair` turns honest
+    /// spacing fully on (`#/timeline/crust/fair`).
     fn set_param(&mut self, param: &str) {
-        let p = param.split('/').next().unwrap_or("");
-        if p == "whole" {
-            (self.s.u0, self.s.u1) = whole();
-        } else if let Some(e) = tl::event(p) {
-            self.select(e.id);
-            (self.s.u0, self.s.u1) = Self::around(e);
-            self.clamp();
+        for p in param.split('/') {
+            if p == "whole" {
+                (self.s.u0, self.s.u1) = whole();
+            } else if p == "fair" {
+                self.s.fair = 1.0;
+            } else if let Some(e) = tl::event(p) {
+                self.select(e.id);
+                (self.s.u0, self.s.u1) = Self::around(e);
+                self.clamp();
+            }
         }
         self.target = None;
     }
@@ -334,7 +366,7 @@ const CONNECT_H: f32 = 30.0;
 const LANE_H: f32 = 72.0;
 /// Rows of labels above a lane's line.
 const LABEL_ROWS: usize = 3;
-const AXIS_H: f32 = 44.0;
+const AXIS_H: f32 = 64.0;
 const LABEL: f32 = 13.0;
 
 impl Timeline {
@@ -497,7 +529,19 @@ impl Timeline {
         }
 
         let (u0, u1) = (self.s.u0, self.s.u1);
-        let x_of = |u: f64| inner.left() + ((u - u0) / (u1 - u0)) as f32 * inner.width();
+        // honest spacing blends each position towards a plain, linear time
+        // scale over the same view (every year as wide)
+        let fair = self.s.fair.clamp(0.0, 1.0);
+        let (n0, n1) = (When::at(u0).from_now(), When::at(u1).from_now());
+        let x_of = |u: f64| {
+            let xw = inner.left() + ((u - u0) / (u1 - u0)) as f32 * inner.width();
+            if fair <= 0.0 || n1 <= n0 {
+                return xw;
+            }
+            let n = When::at(u).from_now();
+            let xl = inner.left() + ((n - n0) / (n1 - n0)) as f32 * inner.width();
+            xw + (xl - xw) * fair
+        };
         let lanes_top = inner.top() + 4.0;
         let axis_y = lanes_top + LANE_H * Lane::ALL.len() as f32;
 
@@ -539,6 +583,7 @@ impl Timeline {
             (u0.max(tl::u_now()), u1, "tl-axis-ahead"),
         ];
         let wide = |from: f64, to: f64| to > from && x_of(to) - x_of(from) > 100.0;
+        let mut drawn: Vec<(f32, When)> = Vec::new();
         for t in tl::ticks(u0, u1, inner.width() as f64, 118.0) {
             let part = match t.when {
                 When::After(_) => parts[0],
@@ -550,6 +595,11 @@ impl Timeline {
                 continue;
             }
             let x = x_of(t.u);
+            // squashed views pile ticks up: keep only those with room
+            if drawn.last().is_some_and(|(lx, _)| x - lx < 90.0) {
+                continue;
+            }
+            drawn.push((x, t.when));
             p.line_segment(
                 [pos2(x, lanes_top), pos2(x, axis_y)],
                 Stroke::new(1.0, lerp(pal.deep, pal.line, 0.55)),
@@ -571,8 +621,51 @@ impl Timeline {
             };
             draw::text(&p, pos2(x, axis_y + 6.0), anchor, label, 12.0, pal.weak);
         }
+        // ×10 hops between neighbouring power-of-ten ticks (only on the
+        // stretched axis, where equal steps mean multiplying)
+        if fair < 0.01 {
+            let y0 = axis_y + 23.0;
+            let c = lerp(pal.weak, pal.note, 0.6);
+            for pair in drawn.windows(2) {
+                let ((x1, a), (x2, b)) = (pair[0], pair[1]);
+                let (Some(ka), Some(kb)) = (pow10(a), pow10(b)) else {
+                    continue;
+                };
+                // same form, and for "since the Big Bang" the same unit
+                // (ticks under a year count seconds, later ones years)
+                let in_seconds = |w: When| matches!(w, When::After(y) if y < 1.0);
+                if std::mem::discriminant(&a) != std::mem::discriminant(&b)
+                    || in_seconds(a) != in_seconds(b)
+                    || x2 - x1 < 60.0
+                {
+                    continue;
+                }
+                let d = kb - ka;
+                if d == 0 {
+                    continue;
+                }
+                let sign = if d > 0 { "×" } else { "÷" };
+                let label = if d.abs() == 1 {
+                    format!("{sign}10")
+                } else {
+                    format!("{sign}10{}", sims::fmt::superscript(d.abs()))
+                };
+                let mid = (x1 + x2) * 0.5;
+                p.add(egui::epaint::QuadraticBezierShape::from_points_stroke(
+                    [pos2(x1 + 6.0, y0), pos2(mid, y0 + 16.0), pos2(x2 - 6.0, y0)],
+                    false,
+                    Color32::TRANSPARENT,
+                    Stroke::new(1.2, c),
+                ));
+                let g = p.layout_no_wrap(label, FontId::proportional(12.0), c);
+                let r = Rect::from_center_size(pos2(mid, y0 + 8.0), g.size()).expand(2.0);
+                p.rect_filled(r, 2.0, pal.deep);
+                p.galley(r.min + vec2(2.0, 2.0), g, c);
+            }
+        }
+
         // which way the ticks count, per part of the view
-        let cap_y = axis_y + 24.0;
+        let cap_y = axis_y + 44.0;
         for (from, to, key) in parts {
             if to > from {
                 let (xa, xb) = (x_of(from), x_of(to));
@@ -672,6 +765,33 @@ impl Timeline {
             }
         }
 
+        // how much time fits in one finger's width under the mouse
+        if fair < 0.01
+            && let Some(pos) = resp.hover_pos()
+            && pos.x > inner.left() + 30.0
+            && pos.x < inner.right() - 30.0
+            && pos.y < axis_y
+        {
+            let u_at = |x: f32| u0 + ((x - inner.left()) / inner.width()) as f64 * (u1 - u0);
+            let span =
+                tl::years_between(When::at(u_at(pos.x - 30.0)), When::at(u_at(pos.x + 30.0)));
+            let y = (pos.y - 22.0).max(lanes_top + 14.0);
+            let c = pal.note;
+            let s = Stroke::new(1.5, c);
+            p.line_segment([pos2(pos.x - 30.0, y), pos2(pos.x + 30.0, y)], s);
+            for x in [pos.x - 30.0, pos.x + 30.0] {
+                p.line_segment([pos2(x, y - 4.0), pos2(x, y + 4.0)], s);
+            }
+            let text = tr.ta(
+                "tl-finger",
+                &args!["a" => amount_text(tr, &tl::amount(span, 2))],
+            );
+            let g = p.layout_no_wrap(text, FontId::proportional(12.0), c);
+            let r = Rect::from_center_size(pos2(pos.x, y - 12.0), g.size()).expand(2.0);
+            p.rect_filled(r, 2.0, pal.deep);
+            p.galley(r.min + vec2(2.0, 2.0), g, c);
+        }
+
         // hover and click on events
         let pointer = resp.hover_pos();
         let hit = pointer.and_then(|pos| {
@@ -723,6 +843,15 @@ impl Timeline {
             }
             ui.add_space(4.0);
             ui.label(tr.attr(&key, "text"));
+            if let Some(slug) = e.wiki {
+                ui.add(
+                    egui::Hyperlink::from_label_and_url(
+                        format!("📖 {} ↗", tr.t("tl-wiki")),
+                        format!("https://en.wikipedia.org/wiki/{slug}"),
+                    )
+                    .open_in_new_tab(true),
+                );
+            }
             if e.uncertain {
                 ui.add_space(2.0);
                 ui.label(
@@ -747,6 +876,87 @@ impl Timeline {
 fn value(w: When) -> f64 {
     match w {
         When::After(v) | When::Ago(v) | When::Ahead(v) => v,
+    }
+}
+
+/// The exponent when a tick value is a whole power of ten.
+fn pow10(w: When) -> Option<i32> {
+    let v = match w {
+        When::After(y) => y * tl::SEC_PER_YR, // ticks there are in seconds first
+        When::Ago(y) | When::Ahead(y) => y,
+    };
+    let v = if matches!(w, When::After(y) if y >= 1.0) {
+        value(w)
+    } else {
+        v
+    };
+    if v <= 0.0 {
+        return None;
+    }
+    let k = v.log10().round();
+    ((v / 10f64.powf(k) - 1.0).abs() < 1e-6).then_some(k as i32)
+}
+
+/// "If all of time were a 1 km walk": a bar from the Big Bang to now with
+/// the Earth and the dinosaurs marked, and where the rest would be.
+fn walk(ui: &mut egui::Ui, tr: &I18n, pal: &Palette) {
+    ui.label(tr.t("tl-walk-intro"));
+    ui.add_space(6.0);
+    let w = ui.available_width();
+    let (rect, _) = ui.allocate_exact_size(vec2(w, 74.0), Sense::hover());
+    let p = ui.painter_at(rect);
+    draw::canvas(&p, pal, rect);
+    let bar = Rect::from_min_max(
+        pos2(rect.left() + 12.0, rect.top() + 30.0),
+        pos2(rect.right() - 12.0, rect.top() + 40.0),
+    );
+    p.rect_filled(bar, 2.0, lerp(pal.deep, pal.line, 0.9));
+    let x_at = |years_ago: f64| {
+        bar.right() - (tl::walk_before_end(years_ago) / tl::WALK_M) as f32 * bar.width()
+    };
+    draw::text(
+        &p,
+        pos2(bar.left(), bar.bottom() + 6.0),
+        Align2::LEFT_TOP,
+        tr.t("tl-stripe-start"),
+        12.0,
+        pal.weak,
+    );
+    draw::text(
+        &p,
+        pos2(bar.right(), bar.bottom() + 6.0),
+        Align2::RIGHT_TOP,
+        tr.t("tl-stripe-now"),
+        12.0,
+        pal.strong,
+    );
+    for (key, years, c) in [
+        ("tl-walk-mark-earth", 4.54e9, pal.series[1]),
+        ("tl-walk-mark-dinosaurs", 66.0e6, pal.series[5]),
+    ] {
+        let x = x_at(years);
+        p.line_segment(
+            [pos2(x, bar.top() - 4.0), pos2(x, bar.bottom() + 4.0)],
+            Stroke::new(2.0, c),
+        );
+        draw::text(
+            &p,
+            pos2(x, bar.top() - 6.0),
+            Align2::RIGHT_BOTTOM,
+            tr.t(key),
+            12.0,
+            c,
+        );
+    }
+    ui.label(
+        RichText::new(format!("↑ {}", tr.t("tl-walk-too-thin")))
+            .small()
+            .color(pal.note),
+    );
+    ui.add_space(6.0);
+    for (key, years) in tl::WALK {
+        let d = tr.num(&tl::walk_length(tl::walk_before_end(*years)));
+        ui.label(tr.ta(&format!("tl-walk-{key}"), &args!["d" => d]));
     }
 }
 
@@ -827,6 +1037,9 @@ mod tests {
         assert!(t.s.u0 < u && u < t.s.u1);
         t.set_param("whole");
         assert_eq!((t.s.u0, t.s.u1), whole());
+        t.set_param("moon/fair");
+        assert_eq!(t.s.selected.as_deref(), Some("moon"));
+        assert_eq!(t.s.fair, 1.0);
     }
 
     #[test]

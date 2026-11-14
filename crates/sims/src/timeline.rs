@@ -223,6 +223,38 @@ fn number(v: f64, sig: usize) -> String {
     crate::fmt::group_thousands(&crate::fmt::sig_digits(v, sig))
 }
 
+// --- The walk: all of time as one kilometre ----------------------------------
+
+/// Length of the walk, in metres.
+pub const WALK_M: f64 = 1000.0;
+
+/// Things to find on the walk, as (catalog key part, years ago).
+/// Sources in docs/TIMELINE.md ("The walk").
+pub static WALK: &[(&str, f64)] = &[
+    ("earth", 4.54e9),
+    ("dinosaurs", 66.0e6),
+    ("sapiens", 3.0e5),
+    ("writing", 5.2e3),
+];
+
+/// How far before the finish (in metres) something that happened `years_ago`
+/// sits on a walk of [`WALK_M`] from the Big Bang to now.
+pub fn walk_before_end(years_ago: f64) -> f64 {
+    years_ago / AGE_YR * WALK_M
+}
+
+/// "329 m", "4.79 m", "2.2 cm", "0.38 mm" (dot as decimal point).
+pub fn walk_length(m: f64) -> String {
+    let (v, unit, sig) = if m >= 1.0 {
+        (m, "m", 3)
+    } else if m >= 0.01 {
+        (m * 100.0, "cm", 2)
+    } else {
+        (m * 1000.0, "mm", 2)
+    };
+    format!("{} {unit}", crate::fmt::sig_digits(v, sig))
+}
+
 // --- Axis ticks --------------------------------------------------------------
 
 /// A labelled tick on the axis.
@@ -404,6 +436,9 @@ pub struct Event {
     pub uncertain: bool,
     /// Where the estimates lie, earliest first; drawn as a dashed bar.
     pub range: Option<(When, When)>,
+    /// English Wikipedia article for "read more" (the part after `/wiki/`).
+    /// Primary sources stay in docs/TIMELINE.md (D-043).
+    pub wiki: Option<&'static str>,
 }
 
 const fn ev(id: &'static str, when: When, lane: Lane, importance: u8, uncertain: bool) -> Event {
@@ -414,12 +449,18 @@ const fn ev(id: &'static str, when: When, lane: Lane, importance: u8, uncertain:
         importance,
         uncertain,
         range: None,
+        wiki: None,
     }
 }
 
 impl Event {
     const fn between(mut self, earliest: When, latest: When) -> Event {
         self.range = Some((earliest, latest));
+        self
+    }
+
+    const fn wiki(mut self, article: &'static str) -> Event {
+        self.wiki = Some(article);
         self
     }
 }
@@ -433,36 +474,45 @@ pub static EVENTS: &[Event] = &[
         Lane::Cosmos,
         1,
         false,
-    ),
+    )
+    .wiki("Planck_units"),
     ev(
         "transparent",
         When::After(380_000.0),
         Lane::Cosmos,
         1,
         false,
-    ),
-    ev("first-stars", When::After(1.5e8), Lane::Stars, 1, true),
-    ev("first-galaxies", When::After(3.0e8), Lane::Stars, 2, true),
-    ev("second-stars", When::After(5.0e8), Lane::Stars, 2, true),
-    ev("sun", When::Ago(4.567e9), Lane::Earth, 2, false),
-    ev("earth", When::Ago(4.54e9), Lane::Earth, 1, false),
+    )
+    .wiki("Recombination_(cosmology)"),
+    ev("first-stars", When::After(1.5e8), Lane::Stars, 1, true).wiki("Stellar_population"),
+    ev("first-galaxies", When::After(3.0e8), Lane::Stars, 2, true)
+        .wiki("Galaxy_formation_and_evolution"),
+    ev("second-stars", When::After(5.0e8), Lane::Stars, 2, true).wiki("Stellar_population"),
+    ev("sun", When::Ago(4.567e9), Lane::Earth, 2, false)
+        .wiki("Formation_and_evolution_of_the_Solar_System"),
+    ev("earth", When::Ago(4.54e9), Lane::Earth, 1, false).wiki("Age_of_Earth"),
     // Young Earth (v0.7.1)
     ev("moon", When::Ago(4.51e9), Lane::Earth, 1, true)
-        .between(When::Ago(4.53e9), When::Ago(4.43e9)),
-    ev("crust", When::Ago(4.404e9), Lane::Earth, 2, false),
+        .between(When::Ago(4.53e9), When::Ago(4.43e9))
+        .wiki("Giant-impact_hypothesis"),
+    ev("crust", When::Ago(4.404e9), Lane::Earth, 2, false).wiki("Jack_Hills"),
     ev("late-veneer", When::Ago(4.35e9), Lane::Earth, 3, true)
-        .between(When::Ago(4.5e9), When::Ago(3.8e9)),
-    ev("oceans", When::Ago(4.3e9), Lane::Earth, 2, true),
-    ev("luca", When::Ago(4.2e9), Lane::Life, 2, true).between(When::Ago(4.33e9), When::Ago(4.09e9)),
-    ev("first-life", When::Ago(3.48e9), Lane::Life, 1, false),
+        .between(When::Ago(4.5e9), When::Ago(3.8e9))
+        .wiki("Late_veneer_hypothesis"),
+    ev("oceans", When::Ago(4.3e9), Lane::Earth, 2, true).wiki("Origin_of_water_on_Earth"),
+    ev("luca", When::Ago(4.2e9), Lane::Life, 2, true)
+        .between(When::Ago(4.33e9), When::Ago(4.09e9))
+        .wiki("Last_universal_common_ancestor"),
+    ev("first-life", When::Ago(3.48e9), Lane::Life, 1, false).wiki("Earliest_known_life_forms"),
     ev("now", When::Ago(0.0), Lane::Earth, 1, false),
-    ev("andromeda", When::Ahead(4.5e9), Lane::Stars, 2, true),
-    ev("red-giant", When::Ahead(5.0e9), Lane::Earth, 1, true),
-    ev("white-dwarf", When::Ahead(8.0e9), Lane::Earth, 2, true),
-    ev("last-stars", When::Ahead(1e14), Lane::Stars, 1, true),
-    ev("bh-stellar", When::Ahead(1e67), Lane::Cosmos, 2, true),
-    ev("bh-biggest", When::Ahead(1e100), Lane::Cosmos, 2, true),
-    ev("heat-death", When::Ahead(1e106), Lane::Cosmos, 1, true),
+    ev("andromeda", When::Ahead(4.5e9), Lane::Stars, 2, true).wiki("Andromeda–Milky_Way_collision"),
+    ev("red-giant", When::Ahead(5.0e9), Lane::Earth, 1, true).wiki("Future_of_Earth"),
+    ev("white-dwarf", When::Ahead(8.0e9), Lane::Earth, 2, true).wiki("White_dwarf"),
+    ev("last-stars", When::Ahead(1e14), Lane::Stars, 1, true)
+        .wiki("Future_of_an_expanding_universe"),
+    ev("bh-stellar", When::Ahead(1e67), Lane::Cosmos, 2, true).wiki("Hawking_radiation"),
+    ev("bh-biggest", When::Ahead(1e100), Lane::Cosmos, 2, true).wiki("Hawking_radiation"),
+    ev("heat-death", When::Ahead(1e106), Lane::Cosmos, 1, true).wiki("Heat_death_of_the_universe"),
 ];
 
 pub fn event(id: &str) -> Option<&'static Event> {
@@ -643,6 +693,13 @@ mod tests {
         let u = |id: &str| event(id).unwrap().when.u();
         assert!(u("sun") < u("earth") && u("earth") < u("moon"));
         assert!(u("crust") < u("oceans") && u("oceans") < u("first-life"));
+        // every event but "now" has a read-more article, written as a URL path
+        for e in EVENTS.iter().filter(|e| e.id != "now") {
+            let w = e
+                .wiki
+                .unwrap_or_else(|| panic!("{} has no wiki article", e.id));
+            assert!(!w.contains(' ') && !w.contains('/'), "{}: {w}", e.id);
+        }
         // ranges run forward in time and hold their dot
         for e in EVENTS {
             if let Some((a, b)) = e.range {
@@ -650,6 +707,18 @@ mod tests {
                 assert!(a.u() <= e.when.u() && e.when.u() <= b.u(), "{}", e.id);
             }
         }
+    }
+
+    #[test]
+    fn the_walk() {
+        let d = |y: f64| walk_length(walk_before_end(y));
+        assert_eq!(d(4.54e9), "329 m");
+        assert_eq!(d(66.0e6), "4.79 m");
+        assert_eq!(d(3.0e5), "2.2 cm");
+        assert_eq!(d(5.2e3), "0.38 mm");
+        // one 75 cm step is about 10 million years
+        let step = 0.75 / WALK_M * AGE_YR;
+        assert!((step / 1e7 - 1.0).abs() < 0.05, "{step}");
     }
 
     #[test]

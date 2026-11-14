@@ -363,3 +363,13 @@ spine: the pieces about past minds (Q-024) hang on it. Choices:
 - **Lanes** (Universe, Stars and galaxies, Sun and Earth for now), filled dots
   for measured dates, rings for models and forecasts, future shaded.
 - Values and sources in TIMELINE.md first, then in the app (like D-026).
+
+**D-043 — Every event links a source; Wikipedia as the first stop** (2026-11-14, accepted)
+Peter: the finer the timeline gets (down to events like the storming of the
+Bastille), the more each card needs a link to read on. Each event carries one
+"read more" article (`Event.wiki`), English Wikipedia for now, opened in a new
+tab and marked ↗. Wikipedia is the first stop for a curious reader, not the
+evidence: the primary sources (papers, agencies) stay in TIMELINE.md and the
+grown-ups fold-out. Slovak articles replace the English ones where a good one
+exists (Q-032). Outbound links carry no tracking parameters (D-024). A test
+requires an article for every event except "now".
