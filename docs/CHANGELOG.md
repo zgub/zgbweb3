@@ -9,6 +9,23 @@ Versions are git tags `vX.Y.Z` (D-036); the version shows in the site footer.
 - Branch flow: `main` = released, `develop` = development, feature branches
   off `develop` (D-036).
 
+## 0.7.0 — 2026-11-14 (branch `timeline`)
+
+**Added**
+- History: **Timeline of everything** / Časová os všetkého (draft, `#/timeline`,
+  D-042). From the Planck time to the heat death of the universe on one
+  zoomable axis: mouse wheel or pinch zooms, drag moves, double-click zooms in.
+  An overview stripe of the whole axis, coloured by how much happens where,
+  marks the current view; click or drag it to move there. "Jump to" buttons
+  (everything, first moments, stars switch on, the Sun and the Earth, the far
+  future). Three lanes, 15 starter events with short cards in both languages;
+  rings for estimates and forecasts, the future shaded. Deep links
+  `#/timeline/<event>` and `#/timeline/whole`.
+- docs/TIMELINE.md: every event with its value and source.
+
+Version note: 0.6.0 is the `linear` branch (not yet in `develop`); this
+branch is off `develop` and skips to 0.7.0.
+
 ## 0.5.2 — 2026-10-28 (branch `menu-markers`)
 
 **Changed** (Peter's review of percent tricks)

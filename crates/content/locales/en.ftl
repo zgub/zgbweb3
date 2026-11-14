@@ -110,12 +110,15 @@ page-thermodynamics = Thermodynamics
 page-energy = What is energy
 page-chemistry = Chemistry
 page-biology = Biology
+page-timeline = Timeline of everything
+    .blurb = From the first moment to the very end, on one line you can zoom. Where does everything fit?
 
 ## --- Cross-link questions ---------------------------------------------------
 
 hook-percent-tricks = Why doesn't +20 % and then −20 % bring you back?
 hook-taxi-start-fee = What if the line doesn't start at zero?
 hook-more-hands = Why do more hands mean less time?
+hook-log-scale = How can one line hold both a second and a billion years?
 
 ## --- Rule of three (rule-of-three) ----------------------------------------
 
@@ -345,6 +348,88 @@ pc-grown-chain = Changes multiply: +a % then +b % is × (1 + a/100) × (1 + b/10
 pc-grown-vat = Without VAT = with VAT ÷ (1 + rate/100). VAT as a share of the price you pay = rate ÷ (100 + rate).
 pc-grown-points = Percentage points are a plain difference of two percents; a percent change is that difference divided by the old value.
 pc-grown-sources = VAT: the Slovak standard rate has been 23 % since 1 January 2025. Everything else on this page is arithmetic.
+
+## --- Timeline of everything (timeline) -----------------------------------
+## Values and sources: docs/TIMELINE.md. Event ids are permanent (deep links).
+
+tl-map-title = Big Bang to heat death
+tl-map-intro = The stripe is the whole story of the universe: on the left the first moment, on the right the far end of the future. The brighter it is, the more happens there. The dark stretches are real: for almost all of time, almost nothing happens.
+tl-jump-caption = Jump to
+tl-jump-whole = Everything
+tl-jump-beginning = The first moments
+tl-jump-stars = Stars switch on
+tl-jump-sun-earth = The Sun and the Earth
+tl-jump-future = The far future
+tl-how = Wheel or two fingers: zoom. Drag: move. Click a dot: read about it. Double-click: zoom in.
+tl-view-span = This view spans about { $a }.
+tl-stripe-start = Big Bang
+tl-stripe-now = now
+tl-stripe-end = heat death
+tl-stripe-hover = Click or drag to move the view there.
+tl-lane-cosmos = Universe
+tl-lane-stars = Stars and galaxies
+tl-lane-earth = Sun and Earth
+tl-axis-after = since the Big Bang →
+tl-axis-ago = ← before now
+tl-axis-ahead = from now →
+tl-uncertain = A rough estimate or a forecast, not a measurement.
+tl-zoom-here = Zoom here
+tl-close = Close
+tl-when-now = now
+tl-when-after = about { $a } after the Big Bang
+tl-when-ago = about { $a } ago
+tl-when-ahead = in about { $a }
+tl-u-s = { $v } s
+tl-u-min = { $v } min
+tl-u-h = { $v } h
+tl-u-d = { $v } { $n ->
+        [one] day
+       *[other] days
+    }
+tl-u-yr = { $v } { $n ->
+        [one] year
+       *[other] years
+    }
+tl-u-myr = { $v } million years
+tl-u-byr = { $v } billion years
+tl-u-tyr = { $v } trillion years
+
+tl-ev-start = Time starts
+    .text = The earliest moment physics can say anything about: a tiny fraction of a second (about 10⁻⁴³ s), the Planck time. What happened before it, or at zero itself, nobody knows: our theory of gravity and our theory of the very small stop working together here. That is why the line starts here and not at zero.
+tl-ev-transparent = The universe becomes transparent
+    .text = Until now the universe was a glowing fog: a hot gas of nuclei and loose electrons, and light could not get far before bumping into an electron. Cooled to about 3000 kelvin (2700 °C), the electrons settle onto the nuclei, atoms appear, and light flies free. That light is still all around us, stretched into microwaves: the cosmic microwave background, the oldest light there is.
+tl-ev-first-stars = First stars
+    .text = Clouds of hydrogen and helium collapse into the first stars, huge and short-lived. Nobody has seen one yet; the time is an estimate from models (100 to 200 million years after the Big Bang).
+tl-ev-first-galaxies = First galaxies
+    .text = Stars gather into the first small galaxies. The James Webb Space Telescope has seen galaxies as they were less than 300 million years after the Big Bang, earlier and brighter than most models expected.
+tl-ev-second-stars = Second-generation stars
+    .text = The first stars burn out within a few million years and explode, scattering the carbon, oxygen, iron and other elements they made. New stars form from this richer gas, and around them there can be rocky planets. The oldest stars in our Milky Way are about 13 billion years old.
+tl-ev-sun = The Sun forms
+    .text = A cloud of gas and dust, enriched by earlier generations of stars, collapses. Its centre becomes the Sun, the leftovers become the planets. We know the age from the oldest grains in meteorites: 4.567 billion years.
+tl-ev-earth = The Earth forms
+    .text = Dust and rocks circling the young Sun clump together into planets within a few tens of millions of years, the Earth among them. Its age, about 4.54 billion years, comes from radioactive clocks in meteorites and in the oldest rocks on Earth.
+tl-ev-now = Now
+    .text = You are here. All of human history so far fits into the last few thousand years, a sliver right next to this line. Zoom in on it and it grows.
+tl-ev-andromeda = Andromeda meets the Milky Way?
+    .text = For decades the forecast was a collision in about 4.5 billion years. A 2025 study using Hubble and Gaia data gave only a 50/50 chance of a merger within the next 10 billion years; newer measurements may change it again. Even if the two galaxies merge, the stars are so far apart that they almost never hit each other.
+tl-ev-red-giant = The Sun becomes a red giant
+    .text = In about 5 billion years the Sun runs out of hydrogen in its core and starts to swell. Over the next couple of billion years it grows more than a hundred times wider and swallows Mercury and Venus; whether it swallows the Earth too is not settled. Much sooner, in about a billion years, the Sun will shine bright enough to boil away the Earth's oceans.
+tl-ev-white-dwarf = The Sun becomes a white dwarf
+    .text = The Sun blows off its outer layers as a glowing shell of gas. What is left is its hot core, about the size of the Earth but with half the Sun's mass: a white dwarf. It makes no more energy and cools for an unimaginably long time.
+tl-ev-last-stars = The last stars go out
+    .text = New stars keep forming as long as there is gas to make them from. In about 100 trillion years (10¹⁴) the gas is used up, and even the smallest and most frugal stars, the red dwarfs, burn out. The universe goes dark.
+tl-ev-bh-stellar = Black holes evaporate
+    .text = Black holes are not quite black: they glow very faintly (Hawking radiation) and slowly lose mass. A black hole as heavy as the Sun takes about 10⁶⁷ years to evaporate completely. Nobody has measured this glow yet; it comes from theory.
+tl-ev-bh-biggest = The biggest black holes are gone
+    .text = The heavier a black hole, the slower it evaporates. The giants in the centres of galaxies take up to about 10¹⁰⁰ years: a one with a hundred zeros, a googol.
+tl-ev-heat-death = Heat death
+    .text = No stars, no black holes, only an ever thinner and colder spread of light and particles, all at the same temperature. When nothing is hotter than anything else, nothing more can happen. It is not a date but a slow approach; the dot only marks where the line ends.
+
+tl-rule = Almost all of time is empty. Everything you know of happened in a thin slice near now, and the universe is still young.
+tl-grown-axis = The axis is not linear. In the past, position = log₁₀ t − log₁₀ (t_ago + 1 year), where t is the time since the Big Bang and t_ago the time before now; in the future it goes on as log₁₀ (1 + t_ahead / 1 year) after now. Near the Big Bang this is a logarithm of the time since the start, near now a logarithm of the time ago, so both the first second and the last thousand years get room. Zoomed far in, the scale is almost linear.
+tl-grown-now = Dates are kept the way they are known: "380 000 years after the Big Bang", "4.54 billion years ago", "in 5 billion years". The age of the universe, 13.787 ± 0.020 billion years, is uncertain by more than all of human history, so recent dates are never counted from the Big Bang.
+tl-grown-stripe = The colour of the stripe is the number of events nearby, weighted by importance and smoothed, scaled so the busiest place is the brightest. It changes as events are added.
+tl-grown-sources = Sources: Planck 2018 cosmological parameters (age of the universe); NASA and ESA on JWST's most distant galaxies (MoM-z14, about 280 million years after the Big Bang) and on the Milky Way–Andromeda study (Sawala et al., Nature Astronomy, 2025); meteorite ages of the Solar System (4.567 billion years) and the Earth (4.54 billion years). Dates in the future are forecasts from models. The full list is in TIMELINE.md in the source code.
 
 ## --- Menu markers (D-039) -------------------------------------------------
 marker-new = New in version { $v }

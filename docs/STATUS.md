@@ -1,5 +1,35 @@
 # Status
 
+## 2026-11-14 (evening) — v0.7.0: timeline barebone
+
+Branch `timeline`, off `develop` (not off `linear`: the two are independent).
+
+**Done**
+- `sims::timeline` with tests (axis `u`, inverse, local scale, ticks with a
+  linear fallback for deep zooms, durations for people, events, density).
+- Page `timeline` in History (draft): overview stripe with density colour and
+  the view marked, jump buttons, zoomable track with three lanes, labels that
+  avoid each other and the lane names, ticks counting "since the Big Bang"
+  then "ago" then "from now", event cards, deep links, saved view.
+- Wheel over the track zooms and does not scroll the page.
+- 15 starter events (Peter's list plus the Sun forming, now, the last stars),
+  EN and SK, values in docs/TIMELINE.md (web-checked: Andromeda 2025 study,
+  JWST most distant galaxy, Sun's future).
+- D-042, Q-031, TIMELINE.md.
+
+**Verified**
+- fmt, clippy clean; tests: content 6, sims 38, app 17, server 1.
+- Screenshots EN/SK at 1280 and 400; zoomed to the Earth and to the first stars.
+- Not verified: wasm (B-001), real wheel/pinch feel (headless shots can't).
+
+**Next**
+1. Peter: `trunk serve`, `#/timeline`; try the wheel and the stripe. Is the
+   zoom speed right (`WHEEL_ZOOM`)? Does the stripe guide well?
+2. Q-031 (lanes, density, calendar years), then fill in Earth and life.
+3. Merging: `linear` (0.6.0) and `timeline` (0.7.0) both touch
+   `topics/mod.rs`, the catalogs, Cargo.toml version and the docs; conflicts
+   are additive (keep both sides, version 0.7.0).
+
 ## 2026-10-28 (late night) — v0.5.2: percent review
 
 On branch `menu-markers` (after v0.5.1).

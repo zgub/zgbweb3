@@ -111,12 +111,15 @@ page-thermodynamics = Termodynamika
 page-energy = Čo je energia
 page-chemistry = Chémia
 page-biology = Biológia
+page-timeline = Časová os všetkého
+    .blurb = Od prvého okamihu po úplný koniec, na jednej čiare, ktorú si môžeš priblížiť. Kam sa všetko zmestí?
 
 ## --- Otázky na prelinkovanie ----------------------------------------------
 
 hook-percent-tricks = Prečo +20 % a potom −20 % nevráti cenu späť?
 hook-taxi-start-fee = Čo ak priamka nezačína v nule?
 hook-more-hands = Prečo viac rúk znamená menej času?
+hook-log-scale = Ako sa na jednu čiaru zmestí sekunda aj miliarda rokov?
 
 ## --- Trojčlenka (rule-of-three) -------------------------------------------
 
@@ -359,6 +362,81 @@ pc-grown-chain = Zmeny sa násobia: +a % a potom +b % je × (1 + a/100) × (1 + 
 pc-grown-vat = Bez DPH = s DPH ÷ (1 + sadzba/100). Podiel DPH na cene, ktorú platíš = sadzba ÷ (100 + sadzba).
 pc-grown-points = Percentuálne body sú obyčajný rozdiel dvoch percent; percentuálna zmena je ten rozdiel vydelený pôvodnou hodnotou.
 pc-grown-sources = DPH: základná sadzba na Slovensku je 23 % od 1. januára 2025. Všetko ostatné na tejto stránke je aritmetika.
+
+## --- Časová os všetkého (timeline) ----------------------------------------
+
+tl-map-title = Od Veľkého tresku po tepelnú smrť
+tl-map-intro = Pruh je celý príbeh vesmíru: vľavo prvý okamih, vpravo ďaleký koniec budúcnosti. Čím je jasnejší, tým viac sa tam deje. Tmavé úseky sú skutočné: takmer celý čas sa nedeje takmer nič.
+tl-jump-caption = Skoč na
+tl-jump-whole = Všetko
+tl-jump-beginning = Prvé okamihy
+tl-jump-stars = Rozsvietia sa hviezdy
+tl-jump-sun-earth = Slnko a Zem
+tl-jump-future = Ďaleká budúcnosť
+tl-how = Koliesko alebo dva prsty: priblíženie. Ťahanie: posun. Klik na bodku: čítanie. Dvojklik: priblíženie.
+tl-view-span = Tento pohľad zaberá asi { $a }
+tl-stripe-start = Veľký tresk
+tl-stripe-now = teraz
+tl-stripe-end = tepelná smrť
+tl-stripe-hover = Klikni alebo ťahaj a pohľad sa presunie tam.
+tl-lane-cosmos = Vesmír
+tl-lane-stars = Hviezdy a galaxie
+tl-lane-earth = Slnko a Zem
+tl-axis-after = od Veľkého tresku →
+tl-axis-ago = ← pred dneškom
+tl-axis-ahead = od dneška →
+tl-uncertain = Hrubý odhad alebo predpoveď, nie meranie.
+tl-zoom-here = Priblíž sem
+tl-close = Zavri
+tl-when-now = teraz
+tl-when-after = asi { $a } po Veľkom tresku
+tl-when-ago = asi pred { $a }
+tl-when-ahead = asi o { $a }
+tl-u-s = { $v } s
+tl-u-min = { $v } min
+tl-u-h = { $v } h
+tl-u-d = { $v } d
+tl-u-yr = { $v } r.
+tl-u-myr = { $v } mil. r.
+tl-u-byr = { $v } mld. r.
+tl-u-tyr = { $v } bil. r.
+
+tl-ev-start = Začiatok času
+    .text = Najskorší okamih, o ktorom vie fyzika niečo povedať: nepatrný zlomok sekundy (asi 10⁻⁴³ s), Planckov čas. Čo bolo pred ním alebo v samotnej nule, nevie nikto: naša teória gravitácie a teória sveta najmenších vecí tu prestávajú spolu fungovať. Preto čiara začína tu, a nie v nule.
+tl-ev-transparent = Vesmír sa stane priehľadným
+    .text = Dovtedy bol vesmír žiariaca hmla: horúci plyn jadier a voľných elektrónov a svetlo sa nedostalo ďaleko, kým nenarazilo na elektrón. Keď vychladne na asi 3000 kelvinov (2700 °C), elektróny sa usadia na jadrách, vzniknú atómy a svetlo letí voľne. To svetlo je okolo nás dodnes, natiahnuté na mikrovlny: reliktové žiarenie, najstaršie svetlo, aké existuje.
+tl-ev-first-stars = Prvé hviezdy
+    .text = Oblaky vodíka a hélia sa zrútia do prvých hviezd, obrovských a krátko žijúcich. Ešte žiadnu nikto nevidel; čas je odhad z modelov (100 až 200 miliónov rokov po Veľkom tresku).
+tl-ev-first-galaxies = Prvé galaxie
+    .text = Hviezdy sa zhlukujú do prvých malých galaxií. Vesmírny ďalekohľad Jamesa Webba videl galaxie také, aké boli menej ako 300 miliónov rokov po Veľkom tresku, skôr a jasnejšie, než čakala väčšina modelov.
+tl-ev-second-stars = Hviezdy druhej generácie
+    .text = Prvé hviezdy vyhoria za pár miliónov rokov a vybuchnú. Rozhodia uhlík, kyslík, železo a ďalšie prvky, ktoré v sebe vyrobili. Z takto obohateného plynu vznikajú nové hviezdy a okolo nich môžu byť aj kamenné planéty. Najstaršie hviezdy v našej Mliečnej ceste majú asi 13 miliárd rokov.
+tl-ev-sun = Vznik Slnka
+    .text = Oblak plynu a prachu, obohatený predchádzajúcimi generáciami hviezd, sa zrúti. Z jeho stredu vznikne Slnko, zo zvyškov planéty. Vek poznáme z najstarších zrniek v meteoritoch: 4,567 miliardy rokov.
+tl-ev-earth = Vznik Zeme
+    .text = Prach a kamene okolo mladého Slnka sa za niekoľko desiatok miliónov rokov zlepia do planét, medzi nimi aj do Zeme. Jej vek, asi 4,54 miliardy rokov, ukazujú rádioaktívne hodiny v meteoritoch a v najstarších horninách na Zemi.
+tl-ev-now = Teraz
+    .text = Tu si. Celé dejiny ľudstva sa zatiaľ zmestia do posledných pár tisíc rokov, do tenkého prúžku hneď vedľa tejto čiary. Priblíž si ho a narastie.
+tl-ev-andromeda = Andromeda a Mliečna cesta sa stretnú?
+    .text = Desaťročia platila predpoveď zrážky o asi 4,5 miliardy rokov. Štúdia z roku 2025 s údajmi z Hubbla a Gaie jej dala len 50 % šancu v najbližších 10 miliardách rokov; novšie merania to môžu znova zmeniť. Aj keby sa galaxie spojili, hviezdy sú od seba tak ďaleko, že do seba takmer nikdy nenarazia.
+tl-ev-red-giant = Slnko sa stane červeným obrom
+    .text = O asi 5 miliárd rokov Slnku dôjde vodík v jadre a začne sa nafukovať. Počas ďalších zhruba dvoch miliárd rokov narastie na viac ako stonásobok svojej šírky a pohltí Merkúr a Venušu; či pohltí aj Zem, nie je isté. Oveľa skôr, asi o miliardu rokov, bude Slnko svietiť tak silno, že oceány na Zemi vyvrú.
+tl-ev-white-dwarf = Slnko sa stane bielym trpaslíkom
+    .text = Slnko odfúkne vonkajšie vrstvy ako žiariacu bublinu plynu. Zostane z neho horúce jadro veľké asi ako Zem, ale s polovicou hmotnosti Slnka: biely trpaslík. Už nevyrába žiadnu energiu a nepredstaviteľne dlho chladne.
+tl-ev-last-stars = Zhasnú posledné hviezdy
+    .text = Nové hviezdy vznikajú, kým je z čoho. O asi 100 biliónov rokov (10¹⁴) sa plyn minie a vyhoria aj najmenšie a najšetrnejšie hviezdy, červení trpaslíci. Vesmír potemnie.
+tl-ev-bh-stellar = Čierne diery sa vyparujú
+    .text = Čierne diery nie sú celkom čierne: slabučko žiaria (Hawkingovo žiarenie) a pomaly strácajú hmotnosť. Čierna diera ťažká ako Slnko sa úplne vyparí asi za 10⁶⁷ rokov. Toto žiarenie zatiaľ nikto nezmeral; vychádza z teórie.
+tl-ev-bh-biggest = Zmiznú aj najväčšie čierne diery
+    .text = Čím je čierna diera ťažšia, tým pomalšie sa vyparuje. Obrom v stredoch galaxií to trvá až asi 10¹⁰⁰ rokov: jednotka so sto nulami, googol.
+tl-ev-heat-death = Tepelná smrť
+    .text = Žiadne hviezdy, žiadne čierne diery, len stále redšie a chladnejšie rozptýlené svetlo a častice, všetko s rovnakou teplotou. Keď nič nie je teplejšie ako niečo iné, nemôže sa už nič stať. Nie je to dátum, ale pomalé približovanie; bodka len označuje, kde končí čiara.
+
+tl-rule = Takmer celý čas je prázdny. Všetko, čo poznáš, sa stalo v tenkom prúžku pri dnešku, a vesmír je ešte mladý.
+tl-grown-axis = Os nie je lineárna. V minulosti je poloha = log₁₀ t − log₁₀ (t_pred + 1 rok), kde t je čas od Veľkého tresku a t_pred čas pred dneškom; v budúcnosti pokračuje za dneškom ako log₁₀ (1 + t_o / 1 rok). Pri Veľkom tresku je to logaritmus času od začiatku, pri dnešku logaritmus času dozadu, takže miesto dostane prvá sekunda aj posledných tisíc rokov. Pri veľkom priblížení je mierka takmer lineárna.
+tl-grown-now = Dátumy sú uložené tak, ako ich poznáme: „380 000 rokov po Veľkom tresku“, „pred 4,54 miliardy rokov“, „o 5 miliárd rokov“. Vek vesmíru, 13,787 ± 0,020 miliardy rokov, je neistý o viac, ako trvajú celé dejiny ľudstva, preto sa nedávne dátumy nikdy nepočítajú od Veľkého tresku.
+tl-grown-stripe = Farba pruhu je počet udalostí v okolí, vážený ich dôležitosťou a vyhladený, a prepočítaný tak, aby najrušnejšie miesto bolo najjasnejšie. Mení sa, keď pribúdajú udalosti.
+tl-grown-sources = Zdroje: kozmologické parametre Planck 2018 (vek vesmíru); NASA a ESA o najvzdialenejších galaxiách z JWST (MoM-z14, asi 280 miliónov rokov po Veľkom tresku) a o štúdii Mliečna cesta – Andromeda (Sawala a kol., Nature Astronomy, 2025); vek Slnečnej sústavy (4,567 miliardy rokov) a Zeme (4,54 miliardy rokov) z meteoritov. Dátumy v budúcnosti sú predpovede modelov. Celý zoznam je v TIMELINE.md v zdrojovom kóde.
 
 ## --- Značky v menu (D-039) ------------------------------------------------
 marker-new = Nové vo verzii { $v }

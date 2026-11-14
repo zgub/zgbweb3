@@ -11,6 +11,7 @@
 
 pub mod percent;
 pub mod rule_of_three;
+pub mod timeline;
 
 use content::PageMeta;
 use egui::RichText;
@@ -78,6 +79,7 @@ pub fn registry() -> Vec<Box<dyn Topic>> {
     vec![
         Box::new(rule_of_three::RuleOfThree::default()),
         Box::new(percent::Percent::default()),
+        Box::new(timeline::Timeline::default()),
     ]
 }
 
@@ -169,7 +171,8 @@ mod tests {
                 "🖱", "☰", "⚙", "🗑", "🔍", "🐄", "→", "🌙", "☀", "💻", "💾", "·",
                 // rule of three
                 "💯", "🍳", "⛽", "🏷", "👁", "🎓", "÷", "€", "−", "⚠", "⚖", "👥", "▦", "📏", "📈",
-                "💡", "🔄", "📉", "💶", "📰", "●", "⏳", "✏",
+                "💡", "🔄", "📉", "💶", "📰", "●", "⏳", "✏", // timeline
+                "🌌", "🗺", "↔", "💥", "⭐", "🌍", "🌑", "✖", "○", "←",
             ]
             .map(String::from),
         );

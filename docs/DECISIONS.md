@@ -343,3 +343,23 @@ hover together with the page's blurb:
 The same markers appear on the section index pages. Long titles in the 200 pt
 menu end in "…" instead of wrapping (full title on hover). 🚧 was tried for
 drafts but renders unclearly in egui's fonts; ✦ and ✎ are missing.
+
+**D-042 — Timeline of everything: the spine of History** (2026-11-14, accepted for the barebone)
+Peter's idea: one timeline from the Big Bang to the heat death of the
+universe, zoomed with the mouse wheel, sparse from end to end first and
+filled in era by era with sourced events; click an event for a short card.
+It lives in History (`timeline`, 🌌) and is meant to become the section's
+spine: the pieces about past minds (Q-024) hang on it. Choices:
+- **Axis**: past `u = log₁₀ t − log₁₀ (ago + 1 yr)`, future
+  `u_now + log₁₀ (1 + ahead / 1 yr)`. Log near the Big Bang and log near now,
+  so the first second and human history both get room; smooth at now. The
+  wheel zooms in `u`, so a deep zoom reads like an ordinary linear timeline.
+- **Dates are stored as known** (after the Big Bang / ago / from now), never
+  as one absolute number (the age of the universe is uncertain by ±20 Myr).
+- **Overview stripe** (Peter's idea): the whole axis, always visible, coloured
+  by importance-weighted event density, the current view marked. It guides
+  visitors to where things happen and shows honestly that almost all of time
+  is empty. Plus "jump to" buttons.
+- **Lanes** (Universe, Stars and galaxies, Sun and Earth for now), filled dots
+  for measured dates, rings for models and forecasts, future shaded.
+- Values and sources in TIMELINE.md first, then in the app (like D-026).

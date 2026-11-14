@@ -229,7 +229,19 @@ pub static PAGES: &[PageMeta] = &[
     planned("energy", Section::Explore, "⚡"),
     planned("chemistry", Section::Explore, "⚛"),
     planned("biology", Section::Explore, "🌱"),
-    // --- History: nothing yet; its shape is Q-024. ----------------------
+    // --- History: the timeline is its spine (D-042); pieces about past
+    // minds hang on it later (Q-024).
+    PageMeta {
+        id: "timeline",
+        section: Section::History,
+        glyph: "🌌",
+        status: Status::Draft,
+        links: &[Link {
+            to: "logarithm",
+            hook: "hook-log-scale",
+        }],
+        changed_in: Some("0.7"),
+    },
 ];
 
 /// Routes taken by fixed pages and section indexes; page ids must not use them.

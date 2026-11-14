@@ -86,6 +86,8 @@ The topic graph and question-phrased links live in CURRICULUM.md and will
 need updating for the new topic list.
 
 ### 5. History / História (D-030)
+Its spine is the **Timeline of everything** (D-042, TIMELINE.md): Big Bang
+to heat death on one zoomable line; the pieces below hang on it.
 Not extensive. Short, interesting pieces about past minds and their ideas:
 Faraday, Galileo, Descartes and others, with some philosophy. Each piece links
 to the topics, games and projects its ideas live on in, and topics link back

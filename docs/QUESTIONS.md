@@ -173,3 +173,15 @@ hosting), the button can open the form and say "not connected yet".
 Open: storage (file vs Postgres), retention period, whether Peter wants a
 notification (e-mail to himself, or a page he checks).
 
+**Q-031 — Timeline: lanes, density and what comes next.** (2026-11-14)
+(a) **Lanes** once Earth, life and people arrive: proposal Universe | Stars
+and galaxies | Earth | Life | People | Science (what was known when, for the
+"did Jules Verne know latitude?" kind of question). Six lanes need ~350 pt of
+height; maybe lanes appear only when the view contains their events.
+(b) **Density stripe**: weighted by importance now. Should it count events per
+pixel of the stripe (honest "how much we listed") or per unit of time
+(physically "how much happens")? Both differ wildly because the axis is warped.
+(c) **Calendar years** in history: "500 BCE" instead of "2 500 years ago"
+once the view is inside the last ~10 000 years?
+(d) Andromeda: a 2026 follow-up reportedly raised the merger chance to
+~90 % (median ~6.5 Gyr); verify from the paper before the card is final.
