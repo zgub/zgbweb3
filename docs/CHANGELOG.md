@@ -9,6 +9,14 @@ Versions are git tags `vX.Y.Z` (D-036); the version shows in the site footer.
 - Branch flow: `main` = released, `develop` = development, feature branches
   off `develop` (D-036).
 
+## 0.7.2 — 2026-11-14 (branch `timeline`)
+
+**Changed** (Peter's review)
+- Timeline: the names (Big Bang, now, heat death) sit above the stripe, the
+  jump buttons below the zoomed view, and two amber lines with a faint fill
+  link the marked window on the stripe to the zoomed view, like a
+  magnifying glass. DESIGN.md: picture type "overview and zoom".
+
 ## 0.7.1 — 2026-11-14 (branch `timeline`)
 
 **Added**

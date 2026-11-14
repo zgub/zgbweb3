@@ -162,6 +162,10 @@ when they cross lines. Arrows → mean "goes with / corresponds to".
   a wrong cut marked with a dashed coral line;
 - *population grid*: 100 × 100 tiny squares, one per person, the cases as
   rings so they can be found (risk);
+- *overview and zoom* (timeline): a stripe of the whole range on top, names
+  above it, the current view marked in amber; below it the zoomed canvas,
+  linked to the marked window by two amber lines with a faint amber fill,
+  like a magnifying glass; controls (jump buttons) under the canvas;
 - *log bar chart* (energy ladder, coming back);
 - 3D scenes in wgpu (powers of ten, later), same colour roles.
 

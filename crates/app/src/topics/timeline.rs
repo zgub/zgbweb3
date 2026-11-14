@@ -113,6 +113,9 @@ pub struct Timeline {
     s: State,
     /// A view the page is gliding towards (jumps, "zoom here").
     target: Option<(f64, f64)>,
+    /// Where the view sits on the stripe this frame (left x, right x, bottom
+    /// y), for the lines that link it to the track below.
+    window: Option<(f32, f32, f32)>,
 }
 
 impl Timeline {
@@ -224,7 +227,9 @@ impl Topic for Timeline {
             ui.label(tr.t("tl-map-intro"));
             ui.add_space(6.0);
             self.stripe(ui, tr, pal);
-            ui.add_space(8.0);
+            ui.add_space(CONNECT_H);
+            self.track(ui, tr, pal);
+            ui.add_space(6.0);
             ui.label(
                 RichText::new(tr.t("tl-jump-caption"))
                     .size(kit::CAPTION)
@@ -240,8 +245,6 @@ impl Topic for Timeline {
                     }
                 }
             });
-            ui.add_space(8.0);
-            self.track(ui, tr, pal);
             ui.add_space(4.0);
             ui.label(
                 RichText::new(format!("🖱 {}", tr.t("tl-how")))
@@ -324,6 +327,10 @@ fn lane_key(lane: Lane) -> &'static str {
 }
 
 const STRIPE_H: f32 = 28.0;
+/// Height of the names above the stripe.
+const STRIPE_LABELS: f32 = 18.0;
+/// Gap between the stripe and the track, where the zoom lines run.
+const CONNECT_H: f32 = 30.0;
 const LANE_H: f32 = 72.0;
 /// Rows of labels above a lane's line.
 const LABEL_ROWS: usize = 3;
@@ -335,9 +342,9 @@ impl Timeline {
     fn stripe(&mut self, ui: &mut egui::Ui, tr: &I18n, pal: &Palette) {
         let w = ui.available_width();
         let (rect, resp) =
-            ui.allocate_exact_size(vec2(w, STRIPE_H + 20.0), Sense::click_and_drag());
+            ui.allocate_exact_size(vec2(w, STRIPE_LABELS + STRIPE_H), Sense::click_and_drag());
         let p = ui.painter_at(rect);
-        let bar = Rect::from_min_size(rect.min, vec2(w, STRIPE_H));
+        let bar = Rect::from_min_size(rect.min + vec2(0.0, STRIPE_LABELS), vec2(w, STRIPE_H));
         let (a, b) = whole();
         let x_of = |u: f64| bar.left() + ((u - a) / (b - a)) as f32 * bar.width();
         let u_of = |x: f32| a + ((x - bar.left()) / bar.width()) as f64 * (b - a);
@@ -397,9 +404,10 @@ impl Timeline {
             StrokeKind::Middle,
         );
         p.rect_stroke(bar, 3.0, Stroke::new(1.0, pal.line), StrokeKind::Inside);
+        self.window = Some((v0, v1, bar.bottom() + 1.0));
 
-        // ends and now, under the stripe
-        let y = bar.bottom() + 3.0;
+        // ends and now, above the stripe
+        let y = rect.top() + 1.0;
         draw::text(
             &p,
             pos2(bar.left(), y),
@@ -445,6 +453,20 @@ impl Timeline {
         let w = ui.available_width();
         let h = LANE_H * Lane::ALL.len() as f32 + AXIS_H + 8.0;
         let (rect, resp) = ui.allocate_exact_size(vec2(w, h), Sense::click_and_drag());
+        // the zoom lines: from the view's window on the stripe to the corners
+        // of the track, with a faint fill, like a magnifying glass
+        if let Some((v0, v1, y)) = self.window {
+            let lens = ui.painter();
+            let (tl_, tr_) = (rect.left_top(), rect.right_top());
+            lens.add(egui::Shape::convex_polygon(
+                vec![pos2(v0, y), pos2(v1, y), tr_, tl_],
+                pal.accent.gamma_multiply(0.07),
+                Stroke::NONE,
+            ));
+            let line = Stroke::new(1.5, pal.accent.gamma_multiply(0.75));
+            lens.line_segment([pos2(v0, y), tl_], line);
+            lens.line_segment([pos2(v1, y), tr_], line);
+        }
         let p = ui.painter_at(rect);
         draw::canvas(&p, pal, rect);
         let inner = rect.shrink2(vec2(12.0, 4.0));

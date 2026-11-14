@@ -1,5 +1,13 @@
 # Status
 
+## 2026-11-14 (night) — v0.7.2: zoom lines
+
+Branch `timeline`. Peter's sketch: labels above the stripe, jump buttons
+under the track, lines from the stripe window to the track corners. Built
+as `Timeline.window` (stripe → track) and a convex fill under two lines.
+Verified: fmt, clippy, tests; screenshots EN 1280 (whole, young Earth),
+SK 400.
+
 ## 2026-11-14 (late evening) — v0.7.1: young Earth
 
 Branch `timeline`, after v0.7.0.
