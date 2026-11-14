@@ -227,6 +227,13 @@ impl Topic for Timeline {
         self.glide(ui);
 
         kit::section(ui, pal, &format!("🗺 {}", tr.t("tl-map-title")), |ui| {
+            kit::banner(
+                ui,
+                pal,
+                &format!("⚠ {}", tr.t("tl-not-to-scale")),
+                &tr.attr("tl-not-to-scale", "text"),
+            );
+            ui.add_space(8.0);
             ui.label(tr.t("tl-map-intro"));
             ui.add_space(6.0);
             self.stripe(ui, tr, pal);

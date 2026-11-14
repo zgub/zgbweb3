@@ -462,6 +462,9 @@ tl-grown-fair = Honest spacing blends every position towards a linear scale over
 
 tl-wiki = Read more on Wikipedia (English)
 
+tl-not-to-scale = Not to scale!
+    .text = This line is squeezed and stretched on purpose. Equal widths do not mean equal times: near now one finger's width holds a few centuries, out in the far future it holds billions of billions of years. Without the trick, everything ever known would be one dot. The tools under the line show how the trick works.
+
 tl-rule = Almost all of time is empty. Everything you know of happened in a thin slice near now, and the universe is still young.
 tl-grown-axis = The axis is not linear. In the past, position = log₁₀ t − log₁₀ (t_ago + 1 year), where t is the time since the Big Bang and t_ago the time before now; in the future it goes on as log₁₀ (1 + t_ahead / 1 year) after now. Near the Big Bang this is a logarithm of the time since the start, near now a logarithm of the time ago, so both the first second and the last thousand years get room. Zoomed far in, the scale is almost linear.
 tl-grown-now = Dates are kept the way they are known: "380 000 years after the Big Bang", "4.54 billion years ago", "in 5 billion years". The age of the universe, 13.787 ± 0.020 billion years, is uncertain by more than all of human history, so recent dates are never counted from the Big Bang.

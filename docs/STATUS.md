@@ -1,5 +1,12 @@
 # Status
 
+## 2026-11-14 (night) — v0.7.4: "Not to scale!" banner
+
+Branch `timeline`. Peter: warn visitors at once that the scale is a trick.
+`kit::banner` (note-coloured frame, 2 pt border, 22 pt title), used once at
+the top of the timeline section. Verified: fmt, clippy, tests; screenshots
+EN 1280, SK 400.
+
 ## 2026-11-14 (night) — v0.7.3: scale explainers, source links
 
 Branch `timeline`. Peter: "put every idea in now, so I can show the kids".

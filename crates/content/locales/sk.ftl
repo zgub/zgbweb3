@@ -469,6 +469,9 @@ tl-grown-fair = Poctivé rozostupy posúvajú každú polohu k lineárnej mierke
 
 tl-wiki = Viac na Wikipédii (po anglicky)
 
+tl-not-to-scale = Nie je v mierke!
+    .text = Táto čiara je zámerne stlačená aj natiahnutá. Rovnaká šírka neznamená rovnaký čas: pri dnešku sa do šírky prsta zmestí pár storočí, v ďalekej budúcnosti miliardy miliárd rokov. Bez tohto triku by všetko, čo kedy kto poznal, bola jedna bodka. Nástroje pod čiarou ukážu, ako trik funguje.
+
 tl-rule = Takmer celý čas je prázdny. Všetko, čo poznáš, sa stalo v tenkom prúžku pri dnešku, a vesmír je ešte mladý.
 tl-grown-axis = Os nie je lineárna. V minulosti je poloha = log₁₀ t − log₁₀ (t_pred + 1 rok), kde t je čas od Veľkého tresku a t_pred čas pred dneškom; v budúcnosti pokračuje za dneškom ako log₁₀ (1 + t_o / 1 rok). Pri Veľkom tresku je to logaritmus času od začiatku, pri dnešku logaritmus času dozadu, takže miesto dostane prvá sekunda aj posledných tisíc rokov. Pri veľkom priblížení je mierka takmer lineárna.
 tl-grown-now = Dátumy sú uložené tak, ako ich poznáme: „380 000 rokov po Veľkom tresku“, „pred 4,54 miliardy rokov“, „o 5 miliárd rokov“. Vek vesmíru, 13,787 ± 0,020 miliardy rokov, je neistý o viac, ako trvajú celé dejiny ľudstva, preto sa nedávne dátumy nikdy nepočítajú od Veľkého tresku.

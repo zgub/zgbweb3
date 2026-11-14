@@ -9,6 +9,13 @@ Versions are git tags `vX.Y.Z` (D-036); the version shows in the site footer.
 - Branch flow: `main` = released, `develop` = development, feature branches
   off `develop` (D-036).
 
+## 0.7.4 — 2026-11-14 (branch `timeline`)
+
+**Added**
+- Timeline: a big "⚠ Not to scale!" / "Nie je v mierke!" banner at the top of
+  the timeline, saying the line is squeezed and stretched on purpose (Peter).
+  New shared widget `kit::banner`; DESIGN.md "Banner".
+
 ## 0.7.3 — 2026-11-14 (branch `timeline`)
 
 **Added**

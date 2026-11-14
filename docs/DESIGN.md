@@ -120,6 +120,11 @@ new (changed in this or the previous minor version, `changed_in`), ✏ = draft,
 ⏳ with a dimmed title = planned, nothing there yet. The hover text explains
 the marker under the page's blurb. Menu titles never wrap; they end in "…".
 
+**Banner** (`kit::banner`). A loud warning at the top of a section when the
+picture is not what it seems at first sight ("⚠ Not to scale!"). Note-coloured
+frame with a 2 pt border, 22 pt title with ⚠, body in `strong`. At most one per
+page; it says what the trick is and where the page explains it.
+
 **External links** (D-043). "Read more" links open in a new tab, start with
 📖 and end with ↗, and say which language the page is in. No tracking
 parameters. The evidence behind a number goes in the grown-ups fold-out and

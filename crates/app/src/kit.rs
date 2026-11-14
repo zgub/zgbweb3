@@ -84,6 +84,25 @@ pub fn takeaway(ui: &mut egui::Ui, pal: &Palette, text: impl Into<String>) {
         });
 }
 
+/// A loud warning at the top of a section: something on the page is not what
+/// it seems at first sight ("Not to scale!"). Note-coloured, larger than a
+/// takeaway, at most one per page (DESIGN.md "Banner").
+pub fn banner(ui: &mut egui::Ui, pal: &Palette, title: &str, text: &str) {
+    Frame::new()
+        .fill(lerp(pal.bg, pal.note, 0.16))
+        .stroke(Stroke::new(2.0, pal.note))
+        .corner_radius(CornerRadius::same(5))
+        .inner_margin(Margin::symmetric(14, 10))
+        .show(ui, |ui| {
+            ui.set_width(ui.available_width());
+            ui.label(RichText::new(title).size(BANNER_TITLE).color(pal.note));
+            ui.label(RichText::new(text).color(pal.strong));
+        });
+}
+
+/// Title size of a [`banner`].
+pub const BANNER_TITLE: f32 = 22.0;
+
 /// One option of a [`choice_bar`].
 pub struct Choice<T> {
     pub value: T,
