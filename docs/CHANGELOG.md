@@ -9,6 +9,17 @@ Versions are git tags `vX.Y.Z` (D-036); the version shows in the site footer.
 - Branch flow: `main` = released, `develop` = development, feature branches
   off `develop` (D-036).
 
+## 0.7.6 — 2026-11-14 (branch `timeline`)
+
+**Added**
+- Timeline: "Side view: how bent is the line?" (Peter's idea). Under the
+  timeline, real time is drawn against screen position for the same view,
+  next to a fair ruler (the dashed diagonal). The most squeezed and most
+  stretched places are tagged. Under the mouse a small picture and a sentence
+  say what the bend means: "squeezed 6.8 times: like a ruler tilted 81.6°
+  away from you", or "stretched: as if under a magnifying glass". Honest
+  spacing straightens the curve onto the fair ruler.
+
 ## 0.7.5 — 2026-11-14 (branch `timeline`)
 
 **Added**

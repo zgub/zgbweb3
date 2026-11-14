@@ -1,5 +1,19 @@
 # Status
 
+## 2026-11-14 (midnight) — v0.7.6: side view
+
+Branch `timeline`. Peter: show the deformation from the side, like a ruler
+seen at an angle. `sims::timeline::View` (x, y, squeeze for a view with
+honest spacing; the track's positions now come from it too) and `tilt_deg`,
+both tested (the slope integrates to 1 across the view; at 100 % honest
+spacing the squeeze is 1 everywhere). Side-view canvas, tags, the eye/ruler/
+lens picture, sentences EN and SK. On "Everything" the curve is an L: all of
+the past lies flat, the wall is the far future (the steepest squeeze there is
+only about ×400, because the far future is itself spread out by the log).
+Verified: fmt, clippy, tests (sims 41); screenshots EN 1280 (whole, T. rex,
+Earth, sapiens, whole at 100 %), SK 1280 (Out of Africa), SK 400 (first
+dinosaurs).
+
 ## 2026-11-14 (late night) — v0.7.5: continents, dinosaurs, people
 
 Branch `timeline`. 14 events (web-checked: Homo habilis/erectus dates,

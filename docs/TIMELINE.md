@@ -25,6 +25,10 @@ comes from. Code: `crates/sims/src/timeline.rs` (`EVENTS`); texts:
   drag moves the view there.
 - **Lanes:** Universe, Stars and galaxies, Sun and Earth, Life (v0.7.1),
   People (v0.7.5). Planned: Science (what was known when: the Jules Verne question).
+- **Side view** (v0.7.6, Peter's idea): real time (linear across the view)
+  against screen position; slope = squeeze = years per pixel here ÷ average.
+  A squeeze f reads as a ruler tilted by θ with cos θ = 1/f; a stretch as a
+  magnifying glass. `View`, `tilt_deg` in `sims::timeline`.
 - **Ranges:** an event may carry the span of its estimates, drawn as a dashed
   bar under the lane line (one row per ranged event, so bars never overlap).
 - **Importance:** 1 = turning point, 2 = big, 3 = detail. Drives the stripe;

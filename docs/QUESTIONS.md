@@ -192,5 +192,7 @@ neighbouring power-of-ten ticks, (2) the bracket under the mouse showing how
 much time fits in about 1.5 cm, (3) the "honest spacing" slider that squashes
 the view to a linear scale, (4) "if all of time were a 1 km walk". Which ones
 helped, which confused? The piano (each octave doubles the frequency, yet looks
-the same width) goes on the planned "Counting zeros" page. Also: Slovak
+the same width) goes on the planned "Counting zeros" page. (5), v0.7.6,
+Peter's idea: the side view, the bend of the line as a curve against a fair
+ruler, read as a ruler tilted away from you (or a magnifying glass). Also: Slovak
 Wikipedia articles instead of English ones where good ones exist (D-043).

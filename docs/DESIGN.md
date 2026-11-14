@@ -183,6 +183,14 @@ when they cross lines. Arrows → mean "goes with / corresponds to".
   with "≈ how much" above it on a `deep` tag;
 - *honest spacing*: a slider that blends every position towards a linear
   scale over the same view (0–100 %); ticks thin out to keep 90 pt apart;
+- *side view* (timeline): a short canvas under a stretched axis, x lined up
+  with it, real time up against screen position across; a fair ruler as the
+  dashed diagonal, the curve in amber with the events as small dots; the most
+  squeezed and most stretched places tagged "squeezed ×n" / "stretched ×n"
+  in note colour. Under it a small picture of what the bend means where the
+  mouse is (an eye looking down at the screen; a ruler tilted by θ with
+  cos θ = 1/n, or a magnifying glass for stretching) beside one sentence;
+  stacked on a phone;
 - *walk bar*: one long bar from start to finish with a few marks, the
   distances listed under it in sentences;
 - *log bar chart* (energy ladder, coming back);

@@ -459,6 +459,19 @@ tl-walk-dinosaurs = The dinosaurs die out { $d } before the finish.
 tl-walk-sapiens = People like us appear { $d } before the finish.
 tl-walk-writing = Writing is invented { $d } before the finish: about as thick as five hairs.
 tl-grown-fair = Honest spacing blends every position towards a linear scale over the same view (x = years from now, scaled to the width). The ×10 arcs and the bracket under the mouse show only on the stretched axis. The walk: years before now ÷ 13.787 billion × 1000 m. Its anchors: dinosaurs gone 66 million years ago (Chicxulub impact), our species about 300 000 years (Jebel Irhoud fossils), writing about 5 200 years (Sumer, around 3200 BC).
+tl-side-title = Side view: how bent is the line?
+tl-side-intro = The orange curve is our line seen from the side: across goes the screen, up goes real time. A fair ruler would be the dashed straight line. Where the curve is steep, a lot of time is squeezed into a little screen; where it is flat, a little time is stretched out. Move the mouse along the curve or along the timeline above.
+tl-side-x = screen →
+tl-side-y = real time ↑
+tl-side-fair-line = fair ruler
+tl-side-tag-squeezed = squeezed ×{ $f }
+tl-side-tag-stretched = stretched ×{ $f }
+tl-side-seen = on screen
+tl-side-fair = Here the line is almost a fair ruler: what you see is what there is.
+tl-side-tilted = Here time is squeezed { $f } times: like a ruler tilted { $deg } away from you, it looks { $f } times shorter than it is.
+tl-side-edge = Here time is squeezed { $f } times: like a ruler turned almost edge-on, all of its length shrinks to a sliver.
+tl-side-stretched = Here time is stretched { $f } times: as if you looked at it through a magnifying glass.
+tl-grown-side = The side view plots real time (linear across the view) against screen position. Its slope is the squeeze: years per pixel here ÷ years per pixel on average over the view. A ruler of length L tilted by θ looks L · cos θ long, so a squeeze f matches a tilt with cos θ = 1/f; past about ×1000 the angle is within a few hundredths of a degree of 90°. Stretching (f < 1) cannot be done by tilting: that needs a magnifying glass.
 
 tl-wiki = Read more on Wikipedia (English)
 

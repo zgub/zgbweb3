@@ -7,7 +7,10 @@
 //!   happens where, with the current view marked. It tells a visitor where to
 //!   zoom and which (very long) stretches hold nothing;
 //! - the **track**: the zoomed view, one lane per kind of event, round-value
-//!   ticks, click an event to open its card.
+//!   ticks, click an event to open its card;
+//! - the **side view**: real time against screen position for the same view,
+//!   next to a fair ruler, with a tilted ruler (or a magnifying glass) that
+//!   shows how squeezed or stretched the line is under the mouse.
 
 use egui::{Align2, Color32, FontId, Pos2, Rect, RichText, Sense, Stroke, StrokeKind, pos2, vec2};
 use serde::{Deserialize, Serialize};
@@ -129,6 +132,9 @@ pub struct Timeline {
     /// Where the view sits on the stripe this frame (left x, right x, bottom
     /// y), for the lines that link it to the track below.
     window: Option<(f32, f32, f32)>,
+    /// Where the mouse is across the track this frame (0…1), so the side
+    /// view can follow it.
+    hover_x: Option<f32>,
 }
 
 impl Timeline {
@@ -265,6 +271,11 @@ impl Topic for Timeline {
                     }
                 }
             });
+            ui.add_space(10.0);
+            ui.label(RichText::new(format!("👁 {}", tr.t("tl-side-title"))).strong());
+            ui.label(RichText::new(tr.t("tl-side-intro")).color(pal.text));
+            ui.add_space(4.0);
+            self.side(ui, tr, pal);
             ui.add_space(6.0);
             ui.horizontal_wrapped(|ui| {
                 ui.label(RichText::new(tr.t("tl-fair")).color(pal.text));
@@ -317,6 +328,7 @@ impl Topic for Timeline {
                 "tl-grown-now",
                 "tl-grown-stripe",
                 "tl-grown-fair",
+                "tl-grown-side",
             ] {
                 ui.label(tr.t(k));
             }
@@ -389,6 +401,9 @@ const LANE_FOOT: f32 = 22.0;
 const LABEL_ROWS: usize = 3;
 const AXIS_H: f32 = 64.0;
 const LABEL: f32 = 13.0;
+const SIDE_H: f32 = 150.0;
+const RULER_W: f32 = 210.0;
+const RULER_H: f32 = 120.0;
 
 impl Timeline {
     /// The overview: the whole axis, coloured by how much happens, the view marked.
@@ -553,16 +568,15 @@ impl Timeline {
         // honest spacing blends each position towards a plain, linear time
         // scale over the same view (every year as wide)
         let fair = self.s.fair.clamp(0.0, 1.0);
-        let (n0, n1) = (When::at(u0).from_now(), When::at(u1).from_now());
-        let x_of = |u: f64| {
-            let xw = inner.left() + ((u - u0) / (u1 - u0)) as f32 * inner.width();
-            if fair <= 0.0 || n1 <= n0 {
-                return xw;
-            }
-            let n = When::at(u).from_now();
-            let xl = inner.left() + ((n - n0) / (n1 - n0)) as f32 * inner.width();
-            xw + (xl - xw) * fair
+        let view = tl::View {
+            u0,
+            u1,
+            fair: fair as f64,
         };
+        let x_of = |u: f64| inner.left() + view.x(u) as f32 * inner.width();
+        self.hover_x = resp
+            .hover_pos()
+            .map(|pos| ((pos.x - inner.left()) / inner.width()).clamp(0.0, 1.0));
         let lanes_top = inner.top() + 4.0;
         let axis_y = lanes_top + LANE_H * Lane::ALL.len() as f32;
 
@@ -850,6 +864,187 @@ impl Timeline {
         }
     }
 
+    /// The side view: real time (up) against screen position (across) for the
+    /// current view, with a fair ruler as the dashed diagonal. Under it, what
+    /// the bend means where the mouse is: a ruler tilted away from you, or a
+    /// magnifying glass.
+    fn side(&mut self, ui: &mut egui::Ui, tr: &I18n, pal: &Palette) {
+        let w = ui.available_width();
+        let (rect, resp) = ui.allocate_exact_size(vec2(w, SIDE_H), Sense::hover());
+        let p = ui.painter_at(rect);
+        draw::canvas(&p, pal, rect);
+        // the same left and right margins as the track, so x lines up
+        let inner = Rect::from_min_max(
+            pos2(rect.left() + 12.0, rect.top() + 16.0),
+            pos2(rect.right() - 12.0, rect.bottom() - 18.0),
+        );
+        let view = tl::View {
+            u0: self.s.u0,
+            u1: self.s.u1,
+            fair: self.s.fair.clamp(0.0, 1.0) as f64,
+        };
+        let at = |x: f64, y: f64| {
+            pos2(
+                inner.left() + x as f32 * inner.width(),
+                inner.bottom() - y.clamp(0.0, 1.0) as f32 * inner.height(),
+            )
+        };
+
+        // the future, shaded as on the track
+        let xn = view.x(tl::u_now());
+        if xn < 1.0 {
+            let x = at(xn.max(0.0), 0.0).x;
+            p.rect_filled(
+                Rect::from_min_max(pos2(x, rect.top()), rect.right_bottom()),
+                0.0,
+                lerp(pal.deep, pal.line, 0.22),
+            );
+        }
+        if (0.0..=1.0).contains(&xn) {
+            let x = at(xn, 0.0).x;
+            draw::dashed(
+                &p,
+                pos2(x, inner.top()),
+                pos2(x, inner.bottom()),
+                1.0,
+                pal.weak,
+            );
+        }
+        // axes and the fair ruler
+        let axis = Stroke::new(1.0, pal.line);
+        p.line_segment([inner.left_bottom(), inner.right_bottom()], axis);
+        p.line_segment([inner.left_bottom(), inner.left_top()], axis);
+        draw::dashed(&p, at(0.0, 0.0), at(1.0, 1.0), 1.3, pal.weak);
+        let small = |pos: Pos2, a: Align2, key: &str, c: Color32| {
+            draw::text(&p, pos, a, tr.t(key), 12.0, c)
+        };
+        small(
+            inner.right_bottom() + vec2(0.0, 3.0),
+            Align2::RIGHT_TOP,
+            "tl-side-x",
+            pal.weak,
+        );
+        small(
+            inner.left_top() + vec2(4.0, -14.0),
+            Align2::LEFT_TOP,
+            "tl-side-y",
+            pal.weak,
+        );
+        // the fair-ruler label sits on the diagonal, three quarters along
+        let d = at(0.78, 0.78);
+        let g = p.layout_no_wrap(
+            tr.t("tl-side-fair-line"),
+            FontId::proportional(12.0),
+            pal.weak,
+        );
+        let left = (d.x + 8.0).min(rect.right() - g.size().x - 6.0);
+        let r = Rect::from_min_size(pos2(left, d.y + 2.0), g.size()).expand(2.0);
+        p.rect_filled(r, 2.0, pal.deep);
+        p.galley(r.min + vec2(2.0, 2.0), g, pal.weak);
+
+        // the curve itself
+        const N: usize = 600;
+        let us: Vec<f64> = (0..=N)
+            .map(|i| view.u0 + (view.u1 - view.u0) * i as f64 / N as f64)
+            .collect();
+        let pts: Vec<Pos2> = us.iter().map(|&u| at(view.x(u), view.y(u))).collect();
+        p.add(egui::Shape::line(pts, Stroke::new(2.5, pal.accent)));
+        for e in tl::EVENTS {
+            let u = e.when.u();
+            if u >= view.u0 && u <= view.u1 {
+                p.circle_filled(at(view.x(u), view.y(u)), 3.0, lane_colour(pal, e.lane));
+            }
+        }
+
+        // tag the most squeezed and the most stretched place in view
+        let inside = &us[1..N];
+        let by = |a: &&f64, b: &&f64| view.squeeze(**a).total_cmp(&view.squeeze(**b));
+        let most = inside.iter().max_by(by).copied();
+        let least = inside.iter().min_by(by).copied();
+        let tag = |u: f64, key: &str, f: f64, below: bool| {
+            let text = tr.ta(key, &args!["f" => times(tr, f)]);
+            let g = p.layout_no_wrap(text, FontId::proportional(12.0), pal.note);
+            let pt = at(view.x(u), view.y(u));
+            let dy = if below { 6.0 } else { -6.0 - g.size().y };
+            let left = (pt.x + 6.0).min(rect.right() - g.size().x - 6.0);
+            let top = (pt.y + dy).clamp(rect.top() + 2.0, rect.bottom() - g.size().y - 2.0);
+            let r = Rect::from_min_size(pos2(left, top), g.size()).expand(2.0);
+            p.rect_filled(r, 2.0, pal.deep);
+            p.galley(r.min + vec2(2.0, 2.0), g, pal.note);
+        };
+        if let Some(u) = most
+            && view.squeeze(u) > 3.0
+        {
+            tag(u, "tl-side-tag-squeezed", view.squeeze(u), false);
+        }
+        if let Some(u) = least
+            && view.squeeze(u) < 1.0 / 3.0
+        {
+            tag(u, "tl-side-tag-stretched", view.squeeze(u), true);
+        }
+
+        // where to explain: under the mouse (here or on the track), otherwise
+        // at the most bent place in view
+        let hover = resp
+            .hover_pos()
+            .map(|pos| ((pos.x - inner.left()) / inner.width()).clamp(0.0, 1.0))
+            .or(self.hover_x);
+        let u_here = match hover {
+            Some(hx) => us
+                .iter()
+                .min_by(|a, b| {
+                    (view.x(**a) - hx as f64)
+                        .abs()
+                        .total_cmp(&(view.x(**b) - hx as f64).abs())
+                })
+                .copied(),
+            // a squeezed place reads best (the tilted ruler), else the most
+            // stretched one
+            None => most.filter(|u| view.squeeze(*u) > 1.25).or(least),
+        };
+        let Some(u_here) = u_here else { return };
+        let f = view.squeeze(u_here);
+        let pt = at(view.x(u_here), view.y(u_here));
+        p.line_segment(
+            [pos2(pt.x, inner.top()), pos2(pt.x, inner.bottom())],
+            Stroke::new(1.0, pal.note.gamma_multiply(0.6)),
+        );
+        p.circle_stroke(pt, 5.0, Stroke::new(2.0, pal.note));
+
+        // the picture and the sentence: side by side, or stacked on a phone
+        let sentence = if (0.8..=1.25).contains(&f) {
+            tr.t("tl-side-fair")
+        } else if f < 1.0 {
+            tr.ta("tl-side-stretched", &args!["f" => times(tr, f)])
+        } else {
+            let deg = tl::tilt_deg(f);
+            if deg < 89.95 {
+                let deg = tr.num(&format!("{deg:.1}°"));
+                tr.ta("tl-side-tilted", &args!["f" => times(tr, f), "deg" => deg])
+            } else {
+                tr.ta("tl-side-edge", &args!["f" => times(tr, f)])
+            }
+        };
+        ui.add_space(6.0);
+        let picture = |ui: &mut egui::Ui| {
+            let (r, _) = ui.allocate_exact_size(vec2(RULER_W, RULER_H), Sense::hover());
+            ruler_picture(&ui.painter_at(r), r, tr, pal, f);
+        };
+        if w >= 560.0 {
+            ui.horizontal(|ui| {
+                picture(ui);
+                ui.add_space(8.0);
+                ui.vertical(|ui| {
+                    ui.add_space(12.0);
+                    ui.label(RichText::new(sentence).size(15.0).color(pal.strong));
+                });
+            });
+        } else {
+            picture(ui);
+            ui.label(RichText::new(sentence).size(15.0).color(pal.strong));
+        }
+    }
+
     /// The card of the selected event.
     fn card(&mut self, ui: &mut egui::Ui, tr: &I18n, pal: &Palette, e: &Event, calm: bool) {
         kit::inset(pal).show(ui, |ui| {
@@ -894,6 +1089,139 @@ impl Timeline {
                 }
             });
         });
+    }
+}
+
+/// "40", "2.5", "10⁵⁰": how many times squeezed or stretched (always ≥ 1).
+fn times(tr: &I18n, f: f64) -> String {
+    let g = if f >= 1.0 { f } else { 1.0 / f };
+    tr.num(&sims::fmt::sci(g, 2))
+}
+
+/// What a squeeze of `f` looks like, seen from the side: you look down at a
+/// screen (the bar at the bottom); a fair ruler lies flat on it, a squeezed
+/// one is tilted away from you (cos θ = 1/f), a stretched one is seen
+/// through a magnifying glass.
+fn ruler_picture(p: &egui::Painter, r: Rect, tr: &I18n, pal: &Palette, f: f64) {
+    draw::canvas(p, pal, r);
+    let bar_y = r.bottom() - 26.0;
+    let len = 72.0;
+    let xa = r.left() + 34.0;
+    let xb = xa + len;
+    let seen = Stroke::new(4.0, pal.accent);
+    let ruler = pal.series[1];
+    let sight = pal.weak.gamma_multiply(0.8);
+    // the screen and what you see on it
+    p.line_segment([pos2(xa, bar_y), pos2(xb, bar_y)], seen);
+    draw::text(
+        p,
+        pos2((xa + xb) * 0.5, bar_y + 6.0),
+        Align2::CENTER_TOP,
+        tr.t("tl-side-seen"),
+        12.0,
+        pal.weak,
+    );
+    // you, looking down
+    draw::text(
+        p,
+        pos2(xb + 44.0, r.top() + 8.0),
+        Align2::CENTER_TOP,
+        "👁",
+        22.0,
+        pal.strong,
+    );
+    draw::text(
+        p,
+        pos2(xb + 44.0, r.top() + 34.0),
+        Align2::CENTER_TOP,
+        "↓",
+        18.0,
+        pal.weak,
+    );
+    // a ruler with ticks from a to b
+    let ruled = |a: Pos2, b: Pos2| {
+        p.line_segment([a, b], Stroke::new(3.0, ruler));
+        let d = b - a;
+        let l = d.length();
+        if l < 1.0 {
+            return;
+        }
+        let (dir, normal) = (d / l, vec2(-d.y, d.x) / l);
+        let mut s = 0.0;
+        while s <= l {
+            let q = a + dir * s;
+            p.line_segment([q, q + normal * 5.0], Stroke::new(1.0, ruler));
+            s += 9.0;
+        }
+    };
+    let y0 = bar_y - 14.0;
+    if (0.8..=1.25).contains(&f) {
+        ruled(pos2(xa, y0), pos2(xb, y0));
+        for x in [xa, xb] {
+            draw::dashed(p, pos2(x, r.top() + 4.0), pos2(x, bar_y), 1.0, sight);
+        }
+    } else if f > 1.0 {
+        // tilted away from you by θ; a long ruler runs out of the picture
+        let th = tl::tilt_deg(f).to_radians() as f32;
+        let full = len * f.min(1e6) as f32;
+        let dir = vec2(th.cos(), -th.sin());
+        let room = (y0 - r.top() - 2.0) / th.sin().max(1e-6);
+        let a = pos2(xa, y0);
+        let b = a + dir * full.min(room);
+        for x in [xa, xb] {
+            draw::dashed(p, pos2(x, r.top() + 4.0), pos2(x, bar_y), 1.0, sight);
+        }
+        ruled(a, b);
+        if full > room {
+            draw::text(p, b + vec2(4.0, 2.0), Align2::LEFT_TOP, "…", 14.0, ruler);
+        }
+        // the angle, from lying flat to the ruler
+        let arc: Vec<Pos2> = (0..=16)
+            .map(|i| {
+                let t = th * i as f32 / 16.0;
+                a + vec2(t.cos(), -t.sin()) * 18.0
+            })
+            .collect();
+        p.add(egui::Shape::line(arc, Stroke::new(1.2, pal.note)));
+        draw::text(
+            p,
+            a + vec2(22.0, -12.0),
+            Align2::LEFT_CENTER,
+            "θ",
+            13.0,
+            pal.note,
+        );
+    } else {
+        // stretched: a short ruler, a lens, and the rays that spread out
+        let lr = (len * f as f32).max(2.0);
+        let cx = (xa + xb) * 0.5;
+        let ry = r.top() + 22.0;
+        let (a, b) = (pos2(cx - lr * 0.5, ry), pos2(cx + lr * 0.5, ry));
+        ruled(a, b);
+        let lens_y = (ry + bar_y) * 0.5 - 4.0;
+        p.add(egui::Shape::ellipse_stroke(
+            pos2(cx, lens_y),
+            vec2(len * 0.45, 6.0),
+            Stroke::new(1.5, pal.note),
+        ));
+        for (top, bottom) in [(a, pos2(xa, bar_y)), (b, pos2(xb, bar_y))] {
+            p.line_segment(
+                [top, pos2(cx + (bottom.x - cx) * 0.25, lens_y)],
+                Stroke::new(1.0, sight),
+            );
+            p.line_segment(
+                [pos2(cx + (bottom.x - cx) * 0.25, lens_y), bottom],
+                Stroke::new(1.0, sight),
+            );
+        }
+        draw::text(
+            p,
+            pos2(xb + 44.0, bar_y - 26.0),
+            Align2::CENTER_CENTER,
+            "🔍",
+            18.0,
+            pal.note,
+        );
     }
 }
 

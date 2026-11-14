@@ -604,6 +604,66 @@ pub fn density(events: &[Event], u0: f64, u1: f64, n: usize, sigma: f64) -> Vec<
     out
 }
 
+// --- Side view: how bent the axis is ----------------------------------------
+
+/// The part of the axis from `u0` to `u1` as drawn across the screen, with
+/// honest spacing `fair` (0 = the stretched axis, 1 = every year as wide).
+/// Screen position `x` and real time `y` both run from 0 at the left edge of
+/// the view to 1 at the right, so a fair ruler is the diagonal `y = x`: the
+/// "side view" of the line.
+#[derive(Clone, Copy, Debug, PartialEq)]
+pub struct View {
+    pub u0: f64,
+    pub u1: f64,
+    pub fair: f64,
+}
+
+impl View {
+    fn ends(self) -> (f64, f64) {
+        (When::at(self.u0).from_now(), When::at(self.u1).from_now())
+    }
+
+    /// Real time at `u`: 0 at the left edge of the view, 1 at the right.
+    pub fn y(self, u: f64) -> f64 {
+        let (n0, n1) = self.ends();
+        if n1 <= n0 {
+            return (u - self.u0) / (self.u1 - self.u0);
+        }
+        (When::at(u).from_now() - n0) / (n1 - n0)
+    }
+
+    /// Screen position of `u`: 0 at the left edge, 1 at the right.
+    pub fn x(self, u: f64) -> f64 {
+        let w = (u - self.u0) / (self.u1 - self.u0);
+        let s = self.fair.clamp(0.0, 1.0);
+        if s <= 0.0 {
+            return w;
+        }
+        w + (self.y(u) - w) * s
+    }
+
+    /// How squeezed time is at `u`, compared with a fair ruler over the same
+    /// view: years per pixel here ÷ years per pixel on average (the slope of
+    /// the side view). Above 1 time is squeezed (the curve is steep), below 1
+    /// it is stretched (the curve is flat).
+    pub fn squeeze(self, u: f64) -> f64 {
+        let (n0, n1) = self.ends();
+        if n1 <= n0 {
+            return 1.0;
+        }
+        let s = self.fair.clamp(0.0, 1.0);
+        let dy = When::at(u).years_per_u() / (n1 - n0);
+        let dx = (1.0 - s) / (self.u1 - self.u0) + s * dy;
+        dy / dx
+    }
+}
+
+/// How far a ruler must be tilted away from you to look `squeeze` times
+/// shorter: cos θ = 1 / squeeze, in degrees (0 for squeeze ≤ 1).
+pub fn tilt_deg(squeeze: f64) -> f64 {
+    (1.0 / squeeze.max(1.0)).acos().to_degrees()
+}
+
 #[cfg(test)]
 mod tests {
     use super::*;
@@ -795,5 +855,51 @@ mod tests {
         assert!(at(u_now()) > 0.05);
         assert!(at(When::Ago(4.4e9).u()) > 0.5);
         assert!(at(When::Ahead(1e40).u()) < 0.01);
+    }
+
+    #[test]
+    fn side_view() {
+        // dinosaurs to now: squeezed at the start, stretched near now
+        let v = View {
+            u0: When::Ago(231e6).u(),
+            u1: u_now(),
+            fair: 0.0,
+        };
+        assert!(v.squeeze(v.u0) > 10.0, "{}", v.squeeze(v.u0));
+        assert!(v.squeeze(When::Ago(1000.0).u()) < 0.01);
+        assert!((v.x(v.u0), v.y(v.u0)) == (0.0, 0.0));
+        assert!((v.x(v.u1) - 1.0).abs() < 1e-12 && (v.y(v.u1) - 1.0).abs() < 1e-9);
+        // the slope adds up: the curve climbs from 0 to 1 across the view
+        let n = 20_000;
+        let mut sum = 0.0;
+        for i in 0..n {
+            let (a, b) = (
+                v.u0 + (v.u1 - v.u0) * i as f64 / n as f64,
+                v.u0 + (v.u1 - v.u0) * (i + 1) as f64 / n as f64,
+            );
+            sum += v.squeeze((a + b) * 0.5) * (v.x(b) - v.x(a));
+        }
+        assert!((sum - 1.0).abs() < 0.02, "{sum}");
+        // honest spacing makes it a fair ruler everywhere
+        let f = View { fair: 1.0, ..v };
+        for u in [v.u0, When::Ago(66e6).u(), When::Ago(10.0).u()] {
+            assert!((f.squeeze(u) - 1.0).abs() < 1e-9);
+            assert!((f.x(u) - f.y(u)).abs() < 1e-12);
+        }
+        // a close-up is almost fair already
+        let c = View {
+            u0: When::Ago(155e6).u(),
+            u1: When::Ago(66e6).u(),
+            fair: 0.0,
+        };
+        assert!((0.5..2.0).contains(&c.squeeze(When::Ago(100e6).u())));
+    }
+
+    #[test]
+    fn tilted_ruler() {
+        assert_eq!(tilt_deg(1.0), 0.0);
+        assert_eq!(tilt_deg(0.5), 0.0);
+        assert!((tilt_deg(2.0) - 60.0).abs() < 1e-9);
+        assert!(tilt_deg(1e50) > 89.99);
     }
 }

@@ -466,6 +466,19 @@ tl-walk-dinosaurs = Dinosaury vyhynú { $d } pred cieľom.
 tl-walk-sapiens = Ľudia ako my sa objavia { $d } pred cieľom.
 tl-walk-writing = Písmo vznikne { $d } pred cieľom: asi ako hrúbka piatich vlasov.
 tl-grown-fair = Poctivé rozostupy posúvajú každú polohu k lineárnej mierke v tom istom pohľade (x = roky od dneška, prepočítané na šírku). Oblúky ×10 a zátvorka pod myšou sú len na natiahnutej osi. Prechádzka: roky pred dneškom ÷ 13,787 miliardy × 1000 m. Jej body: dinosaury zmizli pred 66 miliónmi rokov (dopad pri Chicxulube), náš druh asi pred 300 000 rokmi (fosílie z Džebel Irhúd), písmo asi pred 5 200 rokmi (Sumer, okolo roku 3200 pred n. l.).
+tl-side-title = Pohľad zboku: ako veľmi je čiara ohnutá?
+tl-side-intro = Oranžová krivka je naša čiara videná zboku: doprava ide obrazovka, hore skutočný čas. Poctivé pravítko by bola rovná prerušovaná čiara. Kde je krivka strmá, veľa času je natlačeného do malého kúska obrazovky; kde je plochá, málo času je roztiahnutého. Prejdi myšou po krivke alebo po časovej osi vyššie.
+tl-side-x = obrazovka →
+tl-side-y = skutočný čas ↑
+tl-side-fair-line = poctivé pravítko
+tl-side-tag-squeezed = stlačené ×{ $f }
+tl-side-tag-stretched = natiahnuté ×{ $f }
+tl-side-seen = na obrazovke
+tl-side-fair = Tu je čiara takmer poctivé pravítko: čo vidíš, to aj je.
+tl-side-tilted = Tu je čas stlačený { $f }-krát: ako pravítko naklonené od teba o { $deg }, zboku vyzerá { $f }-krát kratšie, než je.
+tl-side-edge = Tu je čas stlačený { $f }-krát: ako pravítko otočené takmer hranou k tebe, celá jeho dĺžka sa scvrkne na tenký prúžok.
+tl-side-stretched = Tu je čas natiahnutý { $f }-krát: ako pod lupou.
+tl-grown-side = Pohľad zboku kreslí skutočný čas (lineárne cez celý pohľad) proti polohe na obrazovke. Jeho sklon je stlačenie: roky na pixel tu ÷ priemerné roky na pixel v pohľade. Pravítko dĺžky L naklonené o uhol θ vyzerá dlhé L · cos θ, takže stlačeniu f zodpovedá náklon s cos θ = 1/f; nad zhruba ×1000 je uhol od 90° vzdialený len stotiny stupňa. Natiahnutie (f < 1) sa naklonením urobiť nedá: na to treba lupu.
 
 tl-wiki = Viac na Wikipédii (po anglicky)
 
