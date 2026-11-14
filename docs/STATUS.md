@@ -1,5 +1,25 @@
 # Status
 
+## 2026-11-14 (late evening) — v0.7.1: young Earth
+
+Branch `timeline`, after v0.7.0.
+
+**Done**
+- Six events between the Earth's birth and the first life (web-checked:
+  Moon age studies 2017/2023/2024, Jack Hills zircons, late veneer incl. a
+  2026 challenge, water D/H incl. comet 12P 2025, LUCA 2024, Dresser
+  stromatolites). LUCA's card mentions hydrothermal vents (Peter's point).
+- Lane Life; `Event.range` with dashed bars; adaptive "zoom here"; ticks only
+  where their part of the axis is wide enough; jump "The young Earth".
+
+**Verified**
+- fmt, clippy clean; tests: content 6, sims 38, app 17, server 1.
+- Screenshots EN 1280 (young Earth, crust card), SK 1280 (first life), SK 400 (Moon).
+
+**Next**
+1. Peter: `trunk serve`, `#/timeline/crust`.
+2. Life after the first traces: photosynthesis, Great Oxidation Event, … (TIMELINE.md Next).
+
 ## 2026-11-14 (evening) — v0.7.0: timeline barebone
 
 Branch `timeline`, off `develop` (not off `linear`: the two are independent).

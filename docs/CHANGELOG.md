@@ -9,6 +9,22 @@ Versions are git tags `vX.Y.Z` (D-036); the version shows in the site footer.
 - Branch flow: `main` = released, `develop` = development, feature branches
   off `develop` (D-036).
 
+## 0.7.1 — 2026-11-14 (branch `timeline`)
+
+**Added**
+- Timeline: the young Earth. The Moon-forming impact, the oldest piece of
+  Earth (4.404 Gyr zircon), the late rain of asteroids (late veneer), the
+  first oceans and where their water came from, our last common ancestor
+  (LUCA, at a hot vent or spring) and the oldest sure traces of life (3.48 Gyr
+  stromatolites). A fourth lane, Life. Uncertainty ranges drawn as dashed
+  bars and given on the card. Jump button "The young Earth".
+
+**Changed**
+- "Zoom here" and event links zoom just far enough to separate the event
+  from its nearest neighbour (crowded places get a closer view).
+- Lanes are taller (three label rows); ticks are hidden in a part of the
+  view too narrow to say how it counts.
+
 ## 0.7.0 — 2026-11-14 (branch `timeline`)
 
 **Added**

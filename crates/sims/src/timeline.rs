@@ -378,12 +378,14 @@ pub enum Lane {
     Cosmos,
     /// Stars and galaxies.
     Stars,
-    /// The Sun, the Earth, life and people.
+    /// The Sun and the Earth as places: rock, water, air.
     Earth,
+    /// Living things.
+    Life,
 }
 
 impl Lane {
-    pub const ALL: [Lane; 3] = [Lane::Cosmos, Lane::Stars, Lane::Earth];
+    pub const ALL: [Lane; 4] = [Lane::Cosmos, Lane::Stars, Lane::Earth, Lane::Life];
 }
 
 /// One event on the timeline. Its texts are `tl-ev-<id>` (title) and
@@ -400,6 +402,8 @@ pub struct Event {
     pub importance: u8,
     /// The date is a model's forecast or a rough estimate, not a measurement.
     pub uncertain: bool,
+    /// Where the estimates lie, earliest first; drawn as a dashed bar.
+    pub range: Option<(When, When)>,
 }
 
 const fn ev(id: &'static str, when: When, lane: Lane, importance: u8, uncertain: bool) -> Event {
@@ -409,10 +413,18 @@ const fn ev(id: &'static str, when: When, lane: Lane, importance: u8, uncertain:
         lane,
         importance,
         uncertain,
+        range: None,
     }
 }
 
-/// The starter set (v0.7): one end to the other, sparse on purpose.
+impl Event {
+    const fn between(mut self, earliest: When, latest: When) -> Event {
+        self.range = Some((earliest, latest));
+        self
+    }
+}
+
+/// The starter set (v0.7.0), then the young Earth (v0.7.1).
 /// Every value is in docs/TIMELINE.md with its source.
 pub static EVENTS: &[Event] = &[
     ev(
@@ -434,6 +446,15 @@ pub static EVENTS: &[Event] = &[
     ev("second-stars", When::After(5.0e8), Lane::Stars, 2, true),
     ev("sun", When::Ago(4.567e9), Lane::Earth, 2, false),
     ev("earth", When::Ago(4.54e9), Lane::Earth, 1, false),
+    // Young Earth (v0.7.1)
+    ev("moon", When::Ago(4.51e9), Lane::Earth, 1, true)
+        .between(When::Ago(4.53e9), When::Ago(4.43e9)),
+    ev("crust", When::Ago(4.404e9), Lane::Earth, 2, false),
+    ev("late-veneer", When::Ago(4.35e9), Lane::Earth, 3, true)
+        .between(When::Ago(4.5e9), When::Ago(3.8e9)),
+    ev("oceans", When::Ago(4.3e9), Lane::Earth, 2, true),
+    ev("luca", When::Ago(4.2e9), Lane::Life, 2, true).between(When::Ago(4.33e9), When::Ago(4.09e9)),
+    ev("first-life", When::Ago(3.48e9), Lane::Life, 1, false),
     ev("now", When::Ago(0.0), Lane::Earth, 1, false),
     ev("andromeda", When::Ahead(4.5e9), Lane::Stars, 2, true),
     ev("red-giant", When::Ahead(5.0e9), Lane::Earth, 1, true),
@@ -618,8 +639,17 @@ mod tests {
                 e.id
             );
         }
-        // the Sun is a little older than the Earth
-        assert!(event("sun").unwrap().when.u() < event("earth").unwrap().when.u());
+        // the Sun is a little older than the Earth, the Moon a little younger
+        let u = |id: &str| event(id).unwrap().when.u();
+        assert!(u("sun") < u("earth") && u("earth") < u("moon"));
+        assert!(u("crust") < u("oceans") && u("oceans") < u("first-life"));
+        // ranges run forward in time and hold their dot
+        for e in EVENTS {
+            if let Some((a, b)) = e.range {
+                assert!(a.u() < b.u(), "{}", e.id);
+                assert!(a.u() <= e.when.u() && e.when.u() <= b.u(), "{}", e.id);
+            }
+        }
     }
 
     #[test]
@@ -629,8 +659,10 @@ mod tests {
         assert_eq!(d.len(), 400);
         assert!(d.iter().all(|v| (0.0..=1.0).contains(v)));
         let at = |u: f64| d[(((u - u0) / (u1 - u0)) * 400.0) as usize];
-        // around now is busier than the empty stretch between 10²⁰ and 10⁶⁰ years
-        assert!(at(u_now()) > 0.3);
+        // around now and around the young Earth is busier than the empty
+        // stretch between 10²⁰ and 10⁶⁰ years
+        assert!(at(u_now()) > 0.05);
+        assert!(at(When::Ago(4.4e9).u()) > 0.5);
         assert!(at(When::Ahead(1e40).u()) < 0.01);
     }
 }

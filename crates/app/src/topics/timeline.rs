@@ -60,15 +60,17 @@ enum Jump {
     Beginning,
     Stars,
     SunEarth,
+    YoungEarth,
     Future,
 }
 
 impl Jump {
-    const ALL: [Jump; 5] = [
+    const ALL: [Jump; 6] = [
         Jump::Whole,
         Jump::Beginning,
         Jump::Stars,
         Jump::SunEarth,
+        Jump::YoungEarth,
         Jump::Future,
     ];
 
@@ -78,6 +80,7 @@ impl Jump {
             Jump::Beginning => "tl-jump-beginning",
             Jump::Stars => "tl-jump-stars",
             Jump::SunEarth => "tl-jump-sun-earth",
+            Jump::YoungEarth => "tl-jump-young-earth",
             Jump::Future => "tl-jump-future",
         }
     }
@@ -88,6 +91,7 @@ impl Jump {
             Jump::Beginning => "💥",
             Jump::Stars => "⭐",
             Jump::SunEarth => "🌍",
+            Jump::YoungEarth => "☄",
             Jump::Future => "🌑",
         }
     }
@@ -98,6 +102,7 @@ impl Jump {
             Jump::Beginning => (tl::u_start() - 1.0, When::After(1e6).u()),
             Jump::Stars => (When::After(1e5).u(), When::After(2e9).u()),
             Jump::SunEarth => (When::Ago(8e9).u(), When::Ahead(2e10).u()),
+            Jump::YoungEarth => (When::Ago(4.65e9).u(), When::Ago(3.3e9).u()),
             Jump::Future => (When::Ahead(1e9).u(), tl::u_end() + 2.0),
         }
     }
@@ -184,10 +189,18 @@ impl Timeline {
         self.clamp();
     }
 
-    /// A view around one event, wide enough to show its neighbourhood.
+    /// A view around one event: wide enough that its nearest neighbour sits
+    /// well apart from it (about a tenth of the view), at most 3 units of `u`.
     fn around(e: &Event) -> (f64, f64) {
         let u = e.when.u();
-        (u - 1.5, u + 1.5)
+        let gap = tl::EVENTS
+            .iter()
+            .filter(|o| o.id != e.id)
+            .map(|o| (o.when.u() - u).abs())
+            .filter(|d| *d > 1e-9)
+            .fold(f64::INFINITY, f64::min);
+        let half = (gap * 6.0).clamp(MIN_WIDTH * 50.0, 1.5);
+        (u - half, u + half)
     }
 
     fn select(&mut self, id: &str) {
@@ -291,12 +304,13 @@ impl Topic for Timeline {
 
 // --- Drawing -------------------------------------------------------------------
 
-/// Lane colours: cosmos sky, stars amber, the Sun and Earth teal.
+/// Lane colours: cosmos sky, stars amber, the Sun and Earth teal, life olive.
 fn lane_colour(pal: &Palette, lane: Lane) -> Color32 {
     match lane {
         Lane::Cosmos => pal.series[3],
         Lane::Stars => pal.series[0],
         Lane::Earth => pal.series[1],
+        Lane::Life => pal.series[5],
     }
 }
 
@@ -305,11 +319,14 @@ fn lane_key(lane: Lane) -> &'static str {
         Lane::Cosmos => "tl-lane-cosmos",
         Lane::Stars => "tl-lane-stars",
         Lane::Earth => "tl-lane-earth",
+        Lane::Life => "tl-lane-life",
     }
 }
 
 const STRIPE_H: f32 = 28.0;
-const LANE_H: f32 = 58.0;
+const LANE_H: f32 = 72.0;
+/// Rows of labels above a lane's line.
+const LABEL_ROWS: usize = 3;
 const AXIS_H: f32 = 44.0;
 const LABEL: f32 = 13.0;
 
@@ -492,7 +509,24 @@ impl Timeline {
             [pos2(inner.left(), axis_y), pos2(inner.right(), axis_y)],
             Stroke::new(1.0, pal.line),
         );
+        // parts of the view counted "since the Big Bang", "ago" and "from now";
+        // a part too narrow for its caption gets no ticks either
+        let parts = [
+            (u0, u1.min(tl::u_switch()), "tl-axis-after"),
+            (u0.max(tl::u_switch()), u1.min(tl::u_now()), "tl-axis-ago"),
+            (u0.max(tl::u_now()), u1, "tl-axis-ahead"),
+        ];
+        let wide = |from: f64, to: f64| to > from && x_of(to) - x_of(from) > 100.0;
         for t in tl::ticks(u0, u1, inner.width() as f64, 118.0) {
+            let part = match t.when {
+                When::After(_) => parts[0],
+                When::Ago(_) => parts[1],
+                When::Ahead(_) => parts[2],
+            };
+            let is_now = matches!(t.when, When::Ago(0.0));
+            if !is_now && !wide(part.0, part.1) {
+                continue;
+            }
             let x = x_of(t.u);
             p.line_segment(
                 [pos2(x, lanes_top), pos2(x, axis_y)],
@@ -517,11 +551,7 @@ impl Timeline {
         }
         // which way the ticks count, per part of the view
         let cap_y = axis_y + 24.0;
-        for (from, to, key) in [
-            (u0, u1.min(tl::u_switch()), "tl-axis-after"),
-            (u0.max(tl::u_switch()), u1.min(tl::u_now()), "tl-axis-ago"),
-            (u0.max(tl::u_now()), u1, "tl-axis-ahead"),
-        ] {
+        for (from, to, key) in parts {
             if to > from {
                 let (xa, xb) = (x_of(from), x_of(to));
                 if xb - xa > 100.0 {
@@ -546,6 +576,29 @@ impl Timeline {
         let font = FontId::proportional(LABEL);
         let mut placed: Vec<Rect> = lane_names;
         let mut hits: Vec<(Rect, Pos2, &'static str)> = Vec::new();
+        // ranges of estimates: dashed bars just under the lane line, one row
+        // per ranged event of the lane so they never run into each other
+        let mut rows_used = [0usize; Lane::ALL.len()];
+        for e in tl::EVENTS {
+            let Some((a, b)) = e.range else { continue };
+            let li = Lane::ALL.iter().position(|l| *l == e.lane).unwrap_or(0);
+            let row = rows_used[li];
+            rows_used[li] += 1;
+            let (ua, ub) = (a.u().max(u0), b.u().min(u1));
+            if ub <= ua {
+                continue;
+            }
+            let y = lanes_top + LANE_H * (li as f32 + 1.0) - 10.0 + 6.0 + row as f32 * 5.0;
+            let c = lerp(pal.deep, lane_colour(pal, e.lane), 0.75);
+            let (xa, xb) = (x_of(ua), x_of(ub));
+            draw::dashed(&p, pos2(xa, y), pos2(xb, y), 2.0, c);
+            for (u, x) in [(a.u(), xa), (b.u(), xb)] {
+                if u >= u0 && u <= u1 {
+                    p.line_segment([pos2(x, y - 3.0), pos2(x, y + 3.0)], Stroke::new(1.5, c));
+                }
+            }
+        }
+
         let mut order: Vec<&Event> = tl::EVENTS.iter().collect();
         order.sort_by_key(|e| e.importance);
         for e in order {
@@ -571,7 +624,7 @@ impl Timeline {
             let g = p.layout_no_wrap(tr.t(&format!("tl-ev-{}", e.id)), font.clone(), c);
             let size = g.size();
             let mut label_rect = None;
-            for row in 0..2 {
+            for row in 0..LABEL_ROWS {
                 let top = base - 10.0 - (row as f32 + 1.0) * (size.y + 2.0);
                 let left = (x - size.x * 0.5).clamp(inner.left(), inner.right() - size.x);
                 let cand = Rect::from_min_size(pos2(left, top), size).expand2(vec2(3.0, 0.0));
@@ -643,6 +696,9 @@ impl Timeline {
                     .color(c),
             );
             ui.label(RichText::new(when_text(tr, e.when)).color(pal.weak));
+            if let Some((a, b)) = e.range {
+                ui.label(RichText::new(range_text(tr, a, b)).small().color(pal.weak));
+            }
             ui.add_space(4.0);
             ui.label(tr.attr(&key, "text"));
             if e.uncertain {
@@ -706,6 +762,23 @@ fn when_text(tr: &I18n, w: When) -> String {
     }
 }
 
+/// "Estimates: 4.53 billion years to 4.43 billion years ago", for a range in one form.
+fn range_text(tr: &I18n, a: When, b: When) -> String {
+    let amt = |w: When| amount_text(tr, &tl::amount(value(w), 3));
+    let key = match (a, b) {
+        (When::After(_), When::After(_)) => "tl-range-after",
+        (When::Ago(_), When::Ago(_)) => "tl-range-ago",
+        (When::Ahead(_), When::Ahead(_)) => "tl-range-ahead",
+        _ => {
+            return tr.ta(
+                "tl-range-mixed",
+                &args!["a" => when_text(tr, a), "b" => when_text(tr, b)],
+            );
+        }
+    };
+    tr.ta(key, &args!["a" => amt(a), "b" => amt(b)])
+}
+
 #[cfg(test)]
 mod tests {
     use super::*;
@@ -764,5 +837,13 @@ mod tests {
         let sk = I18n::new(Lang::Sk);
         assert_eq!(when_text(&sk, When::Ahead(5e9)), "asi o 5 mld. r.");
         assert_eq!(when_text(&sk, When::Ago(4.54e9)), "asi pred 4,54 mld. r.");
+        assert_eq!(
+            range_text(&tr, When::Ago(4.53e9), When::Ago(4.43e9)),
+            "Estimates: from 4.53 billion years to 4.43 billion years ago"
+        );
+        assert_eq!(
+            range_text(&sk, When::Ago(4.53e9), When::Ago(4.43e9)),
+            "Odhady: pred 4,53 mld. r. až 4,43 mld. r."
+        );
     }
 }

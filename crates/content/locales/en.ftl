@@ -425,6 +425,26 @@ tl-ev-bh-biggest = The biggest black holes are gone
 tl-ev-heat-death = Heat death
     .text = No stars, no black holes, only an ever thinner and colder spread of light and particles, all at the same temperature. When nothing is hotter than anything else, nothing more can happen. It is not a date but a slow approach; the dot only marks where the line ends.
 
+tl-jump-young-earth = The young Earth
+tl-lane-life = Life
+tl-range-after = Estimates: from { $a } to { $b } after the Big Bang
+tl-range-ago = Estimates: from { $a } to { $b } ago
+tl-range-ahead = Estimates: in { $a } to { $b }
+tl-range-mixed = Estimates: from { $a } to { $b }
+
+tl-ev-moon = The Moon is born
+    .text = A body about the size of Mars, often called Theia, hits the young Earth. The blow melts the planet's surface, and the debris thrown out gathers into the Moon. Tiny zircon crystals in rocks brought back by Apollo astronauts say it happened at least 4.46 billion years ago, one study says 4.51. Many Moon rocks look younger, about 4.35 billion years, probably because the Moon's surface melted again later.
+tl-ev-crust = The oldest piece of Earth
+    .text = The molten surface cools and a solid crust forms. The oldest thing we have from the Earth is a zircon grain from the Jack Hills in Western Australia, 4.404 billion years old and smaller than a grain of sand. The rock it grew in is long gone; the grain survived inside much younger sandstone. Its oxygen hints that the rock had already met liquid water.
+tl-ev-late-veneer = A late rain of asteroids
+    .text = While the Earth was molten, iron sank to its centre and took with it the metals that cling to iron: gold, platinum, iridium. Yet the rock under our feet holds more of them than it should. The usual explanation: after the core had formed, asteroids kept falling, adding about half a percent of the Earth's mass, and their metals stayed in the rock instead of sinking. When exactly and how is still argued about; a 2026 study even says the metal of anything bigger than about a kilometre should have sunk anyway.
+tl-ev-oceans = Oceans
+    .text = By about 4.3 billion years ago the old zircons show a surface cool enough for liquid water, maybe oceans. Where the water came from is still argued about. Water-rich asteroids fit best by the water's heavy-hydrogen fingerprint; some comets match too (in 2025 the water of comet 12P matched the oceans'); and some researchers think much of it was in the Earth's building material from the start. Most likely it was a mix.
+tl-ev-luca = Our last common ancestor
+    .text = Every living thing today, bacteria, trees and you, descends from one population of cells. By comparing the genes of 700 living organisms and counting how they changed, a 2024 study put this ancestor, nicknamed LUCA, at about 4.2 billion years ago. It probably lived somewhere hot, in the sea, at a hydrothermal vent or in a hot spring, and it lived without oxygen; it already shared its home with other microbes and was defending itself against viruses. The date comes from a genetic clock, not from a fossil.
+tl-ev-first-life = First life: the oldest sure traces
+    .text = Stromatolites, layered mounds built by mats of microbes, in 3.48-billion-year-old rocks in the Pilbara, Western Australia. Older claims exist (3.7 billion years in Greenland, perhaps even older in Quebec), but they are disputed: rocks that old have been squeezed and heated so much that traces of life are hard to tell from plain chemistry.
+
 tl-rule = Almost all of time is empty. Everything you know of happened in a thin slice near now, and the universe is still young.
 tl-grown-axis = The axis is not linear. In the past, position = log₁₀ t − log₁₀ (t_ago + 1 year), where t is the time since the Big Bang and t_ago the time before now; in the future it goes on as log₁₀ (1 + t_ahead / 1 year) after now. Near the Big Bang this is a logarithm of the time since the start, near now a logarithm of the time ago, so both the first second and the last thousand years get room. Zoomed far in, the scale is almost linear.
 tl-grown-now = Dates are kept the way they are known: "380 000 years after the Big Bang", "4.54 billion years ago", "in 5 billion years". The age of the universe, 13.787 ± 0.020 billion years, is uncertain by more than all of human history, so recent dates are never counted from the Big Bang.

@@ -23,14 +23,16 @@ comes from. Code: `crates/sims/src/timeline.rs` (`EVENTS`); texts:
   coloured by event density (importance-weighted, smoothed, scaled to the
   busiest place). Shows where to zoom and which stretches are empty. Click or
   drag moves the view there.
-- **Lanes:** Universe, Stars and galaxies, Sun and Earth. Planned: Life,
-  People, Science (what was known when: the Jules Verne question).
+- **Lanes:** Universe, Stars and galaxies, Sun and Earth, Life (v0.7.1).
+  Planned: People, Science (what was known when: the Jules Verne question).
+- **Ranges:** an event may carry the span of its estimates, drawn as a dashed
+  bar under the lane line (one row per ranged event, so bars never overlap).
 - **Importance:** 1 = turning point, 2 = big, 3 = detail. Drives the stripe;
   later also which labels show at which zoom.
 - **Uncertain** events (models, forecasts) are drawn as rings, measured or
   well-dated ones as filled dots.
 
-## Events (v0.7.0 starter set, sparse on purpose)
+## Events (v0.7.0 starter set, v0.7.1 young Earth)
 
 | id | when | lane | imp | sure? | value and source |
 |---|---|---|---|---|---|
@@ -41,6 +43,12 @@ comes from. Code: `crates/sims/src/timeline.rs` (`EVENTS`); texts:
 | `second-stars` | 500 Myr after | Stars | 2 | rough | Placement is a teaching choice: second-generation (Pop II) stars began within tens of Myr after the first; oldest Milky Way stars ~13 Gyr |
 | `sun` | 4.567 Gyr ago | Earth | 2 | yes | Oldest meteorite inclusions (CAIs), 4567 Myr |
 | `earth` | 4.54 Gyr ago | Earth | 1 | yes | Radiometric age of Earth and meteorites, 4.54 ± 0.05 Gyr |
+| `moon` | 4.51 Gyr ago (range 4.53–4.43) | Earth | 1 | rough | Giant impact (Theia). Lunar zircons: 4.51 ± 0.01 Gyr (Barboni et al. 2017, Apollo 14); at least 4.46 Gyr (Greer et al. 2023, Apollo 17, atom-probe tomography); 4.43–4.53 with remelting at 4.35 (Nimmo et al. 2024) |
+| `crust` | 4.404 Gyr ago | Earth | 2 | yes | Jack Hills detrital zircon, 4404 ± 8 Myr; δ¹⁸O hints at liquid water (Wilde et al., Nature 2001) |
+| `late-veneer` | dot 4.35 Gyr ago (range 4.5–3.8) | Earth | 3 | debated | ~0.5 % of Earth's mass of chondritic material after core formation, inferred from highly siderophile elements (Pt, Au, Ir) in the mantle. Re-enrichment complete before 3.81 Ga (Coggon et al. 2013). The dot is a placement, not a date. Challenged by Anslow et al. 2026 (arXiv 2603.17961): metal from impactors > ~1 km should sink to the core |
+| `oceans` | 4.3 Gyr ago | Earth | 2 | rough | Jack Hills zircons: liquid water before 4.3 Gyr (Mojzsis et al. 2001; Valley et al. 2014). Source of water debated: carbonaceous asteroids (D/H), some comets (12P/Pons-Brooks D/H matches oceans, Nature Astronomy 2025; 67P re-analysis 2024), or water in the building material from the start |
+| `luca` | 4.2 Gyr ago (range 4.33–4.09) | Life | 2 | model | Last universal common ancestor, molecular clock on 700 genomes (Moody et al., Nature Ecology & Evolution 2024); probably at a hydrothermal vent or hot spring, anaerobic |
+| `first-life` | 3.48 Gyr ago | Life | 1 | yes | Dresser Formation stromatolites, Pilbara (Hickman-Lewis et al. 2023); older claims disputed: Isua 3.7 Gyr (Greenland), Nuvvuagittuq 3.77–4.28 Gyr (Quebec) |
 | `now` | now | Earth | 1 | — | — |
 | `andromeda` | in 4.5 Gyr | Stars | 2 | forecast | Classic forecast ~4.5 Gyr; Sawala et al., Nature Astronomy 2025 (Hubble + Gaia): only ~50 % chance of a merger within 10 Gyr (ESA/Hubble heic2508, 2 June 2025). A 2026 follow-up with newer Gaia data reportedly put it higher (~90 %, median ~6.5 Gyr): **to verify before the card is final** |
 | `red-giant` | in 5 Gyr | Earth | 1 | forecast | Sun leaves the main sequence in ~5 Gyr; red-giant-branch tip ~7.6 Gyr from now. Oceans boil away in ~1 Gyr (Sun ~10 % brighter) |
@@ -53,8 +61,11 @@ comes from. Code: `crates/sims/src/timeline.rs` (`EVENTS`); texts:
 ## Next (Peter's plan: sparse end to end, then fill in)
 
 1. Peter reviews the starter set and the feel of the zoom (`trunk serve`, `#/timeline`).
-2. Earth and life: Moon-forming impact, oceans, first life, oxygen, Cambrian,
-   dinosaurs and their end, first humans (Q-031 decides the lanes).
+2. Life after the first traces (Peter, 2026-11-14): photosynthesis
+   (cyanobacteria), the Great Oxidation Event (~2.4 Gyr ago: oxygen poisons
+   much anaerobic life and changes the air), first complex cells, snowball
+   Earth, Cambrian, dinosaurs and their end, first humans. Maybe the Late
+   Heavy Bombardment (contested) and the Moon drifting away.
 3. People: farming, writing (Sumer), Greeks, Romans, … up to now; then a
    Science lane ("what was known when").
 4. Future: Moon drifting away (3.8 cm per year), oceans boiling.

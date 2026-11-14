@@ -432,6 +432,26 @@ tl-ev-bh-biggest = Zmiznú aj najväčšie čierne diery
 tl-ev-heat-death = Tepelná smrť
     .text = Žiadne hviezdy, žiadne čierne diery, len stále redšie a chladnejšie rozptýlené svetlo a častice, všetko s rovnakou teplotou. Keď nič nie je teplejšie ako niečo iné, nemôže sa už nič stať. Nie je to dátum, ale pomalé približovanie; bodka len označuje, kde končí čiara.
 
+tl-jump-young-earth = Mladá Zem
+tl-lane-life = Život
+tl-range-after = Odhady: { $a } až { $b } po Veľkom tresku
+tl-range-ago = Odhady: pred { $a } až { $b }
+tl-range-ahead = Odhady: o { $a } až { $b }
+tl-range-mixed = Odhady: od { $a } do { $b }
+
+tl-ev-moon = Vznik Mesiaca
+    .text = Teleso veľké asi ako Mars, často nazývané Theia, narazí do mladej Zeme. Úder roztaví povrch planéty a z vyvrhnutých úlomkov sa poskladá Mesiac. Drobné kryštáliky zirkónu v horninách, ktoré priniesli astronauti z Apolla, hovoria, že sa to stalo najmenej pred 4,46 miliardy rokov, podľa jednej štúdie pred 4,51. Mnohé mesačné horniny vyzerajú mladšie, asi 4,35 miliardy rokov, pravdepodobne preto, že sa povrch Mesiaca neskôr znova roztavil.
+tl-ev-crust = Najstarší kúsok Zeme
+    .text = Roztavený povrch chladne a vznikne pevná kôra. Najstaršia vec, ktorú zo Zeme máme, je zrnko zirkónu z Jack Hills v západnej Austrálii, staré 4,404 miliardy rokov a menšie ako zrnko piesku. Hornina, v ktorej narástlo, už dávno neexistuje; zrnko prežilo v oveľa mladšom pieskovci. Jeho kyslík naznačuje, že hornina sa už stretla s tekutou vodou.
+tl-ev-late-veneer = Neskorý dážď asteroidov
+    .text = Kým bola Zem roztavená, železo kleslo do jej stredu a zobralo so sebou kovy, ktoré sa k železu viažu: zlato, platinu, irídium. Hornina pod našimi nohami ich však má viac, než by mala. Bežné vysvetlenie: keď už jadro vzniklo, asteroidy padali ďalej, pridali asi pol percenta hmotnosti Zeme a ich kovy zostali v hornine namiesto toho, aby klesli. Kedy presne a ako, sa stále rieši; štúdia z roku 2026 dokonca tvrdí, že kov z čohokoľvek väčšieho ako asi kilometer mal aj tak klesnúť.
+tl-ev-oceans = Oceány
+    .text = Asi pred 4,3 miliardy rokov ukazujú staré zirkóny povrch dosť chladný na tekutú vodu, možno oceány. Odkiaľ sa voda vzala, sa stále rieši. Podľa „odtlačku“ ťažkého vodíka sedia najlepšie asteroidy bohaté na vodu; sedia aj niektoré kométy (v roku 2025 sa voda kométy 12P zhodovala s oceánmi); a niektorí vedci si myslia, že veľká časť vody bola v stavebnom materiáli Zeme od začiatku. Najskôr to bola zmes.
+tl-ev-luca = Náš posledný spoločný predok
+    .text = Všetko živé dnes, baktérie, stromy aj ty, pochádza z jednej populácie buniek. Porovnaním génov 700 žijúcich organizmov a spočítaním, ako sa menili, umiestnila štúdia z roku 2024 tohto predka, prezývaného LUCA, asi pred 4,2 miliardy rokov. Pravdepodobne žil niekde v teple, v mori, pri hydrotermálnom prieduchu alebo v horúcom prameni, a žil bez kyslíka; už vtedy mal okolo seba iné mikróby a bránil sa vírusom. Dátum pochádza z genetických hodín, nie z fosílie.
+tl-ev-first-life = Prvý život: najstaršie isté stopy
+    .text = Stromatolity, vrstevnaté kopčeky, ktoré postavili povlaky mikróbov, v horninách starých 3,48 miliardy rokov v oblasti Pilbara v západnej Austrálii. Existujú aj staršie tvrdenia (3,7 miliardy rokov v Grónsku, možno ešte staršie v Quebecu), ale sú sporné: také staré horniny boli toľko stláčané a zohrievané, že stopy života sa ťažko odlišujú od obyčajnej chémie.
+
 tl-rule = Takmer celý čas je prázdny. Všetko, čo poznáš, sa stalo v tenkom prúžku pri dnešku, a vesmír je ešte mladý.
 tl-grown-axis = Os nie je lineárna. V minulosti je poloha = log₁₀ t − log₁₀ (t_pred + 1 rok), kde t je čas od Veľkého tresku a t_pred čas pred dneškom; v budúcnosti pokračuje za dneškom ako log₁₀ (1 + t_o / 1 rok). Pri Veľkom tresku je to logaritmus času od začiatku, pri dnešku logaritmus času dozadu, takže miesto dostane prvá sekunda aj posledných tisíc rokov. Pri veľkom priblížení je mierka takmer lineárna.
 tl-grown-now = Dátumy sú uložené tak, ako ich poznáme: „380 000 rokov po Veľkom tresku“, „pred 4,54 miliardy rokov“, „o 5 miliárd rokov“. Vek vesmíru, 13,787 ± 0,020 miliardy rokov, je neistý o viac, ako trvajú celé dejiny ľudstva, preto sa nedávne dátumy nikdy nepočítajú od Veľkého tresku.
